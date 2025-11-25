@@ -55,7 +55,7 @@ export default function Header() {
         </h1>
       </div>
 
-      <div className="flex flex-col items-center justify-end w-full">
+      <div className="flex flex-col items-center justify-end w-full mr-2">
         <span className="italic text-xs text-end w-full text-foreground">
           {currentTime}
         </span>
