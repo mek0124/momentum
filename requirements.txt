@@ -1,0 +1,4 @@
+setuptools==80.9.0
+uv==0.9.13
+uvloop==0.22.1
+wheel==0.45.1
