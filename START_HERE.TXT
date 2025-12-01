@@ -1,0 +1,26 @@
+You will need to create your own config class in a "config" directory
+
+python file below
+
+```python
+from dotenv import load_dotenv
+
+import os
+
+
+load_dotenv()
+
+
+class Config:
+    storage_version = ""
+    core_version = ""
+    cli_version = ""
+    tui_version = ""
+    desktop_version = ""
+    mobile_version = ""
+    web_version = ""
+```
+
+WARNING: Without this file, this application cannot run! This template will continue to grow as the application grows. 
+
+NOTE: this config class supports basic application configurations and some user specific configurations that are needed to be present at runtime. If the class/values do not exist, the program will not run!
