@@ -1,0 +1,1 @@
+Task Manager - Core Library Change Log
