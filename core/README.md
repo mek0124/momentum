@@ -26,41 +26,6 @@ Welcome to the core library for the task manager application. This library handl
 
 <h3 id="how-to-use">How To Use</h3>
 
-To use this library in your regular project, you can clone the repository and pip install it
-
-1. Open Command Prompt
-2. Run `git clone https://github.com/mek0124/task-manager.git`
-3. Change directories `cd task-manager`
-4. Install the module
-  - create a virtual environment in your project if you haven't already and activate it
-  - run `pip install -e core`
-
-from here, you would just import and use as normal
-
-```python
-from core import CoreController
-
-from uuid import uuid4
-from datetime import datetime, timedelta
-
-core_controller = CoreController()
-
-new_task = {
-  "id": uudi4(),
-  "title": "Some Awesome Title",
-  "details": "Some really awesome details about this task item",
-  "priority": 1,
-  "created_at": datetime.now(),
-  "updated_at": datetime.now() + timedelta(days=4),
-  "is_completed": False
-}
-
-did_convert, response = core_controller.convert_from_dict(new_task)
-
-if not did_convert:
-    raise Exception(f"Error Converted Dict to TaskResponse Model: {response}")
-```
-
 [Top](#top)
 
 ---
