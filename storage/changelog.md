@@ -33,6 +33,7 @@ v0.2.0
 v0.4.0
   - reconstructed controller.py and controllers/offline.py to be 'local storage first' in storage. 
   - if online connection fails, default storage is relational
+  - fixed return types
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 v0.6.0 (possible version)
