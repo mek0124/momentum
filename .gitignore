@@ -1,2 +1,3 @@
 redo/
 config/
+*.egg-info/
