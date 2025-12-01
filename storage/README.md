@@ -3,6 +3,7 @@
 <div align="center">
   <img src="../original.png" alt="app icon" width="60" height="60" />
   <h1>Task Manager - Storage Library</h1>
+  <h3>Active Version: 0.4.0</h3>
   <h5>SQLAlchemy | MongoDB</h5>
 </div>
 
