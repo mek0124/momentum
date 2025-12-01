@@ -1,6 +1,7 @@
 <label id="top"></label>
 
 <div align="center">
+  <img src="./original.png" alt="app icon" width="60" height="60" />
   <h1>Task Manager</h1>
   <h3>A suite of applications sharing a like-minded core and storage library</h3>
   <h5>CLI | TUI | Desktop | Mobile | Web</h5>
@@ -14,16 +15,19 @@ Table of Contents
 - [Project Layout](#project-layout)
 - [How To Install](#how-to-install)
 - [How To Use](#how-to-use)
-- [Issues](#issues)
 - [Contributing](#contributing)
+- [Licensing](#licensing)
+- [Issues](#issues)
 
 ---
 
 <div align="center">
-<h2 id="introduction">Introduction</h2>
+  <h2 id="introduction">Introduction</h2>
+  
   Welcome to <b><u><i>Task Manager</i></u></b>, a light-weight task tracking application developed by mek0124 as a portfolio project. This repository contains the full codebase for the project, spanning multiple platforms. It includes a Python desktop application for a Graphical User Interface (GUI), a Python Textual Text-Based User Interface (TUI), alongside a powerful Command-Line Interface (CLI). The ecosystem is completed by a cross-platform mobile app (Expo) and a modern web application (Next.js).
 </div>
 
+[Top](#top)
 ---
 
 <h3 id="project-layout">Project Layout</h3>
@@ -56,7 +60,9 @@ todo/
 
 ---
 
-<h3 id="issues">Issues</h3>
+<h3 id="licensing">Licensing</h3>
+
+This suite, its components, various ui's, core logic, storage algorithms, etc are all sole proprietary property of mek0124.
 
 [Top](#top)
 
@@ -67,4 +73,13 @@ todo/
 This is a portfolio project for me. All assistance in welcome in sharing knowledge and expertise. I do ask that any fellow developer who would like to contribute to this project to please fork the repository to your repo and push to those forks. Please [join the discord]() for easier communication.
 
 [Top](#top)
+
+---
+
+<h3 id="issues">Issues</h3>
+
+For any and all issues, please create a new issues on the [issues page](https://github.com/mek0124/task-manager/issues)
+
+[Top](#top)
+
 ---
