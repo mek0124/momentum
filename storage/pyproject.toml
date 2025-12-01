@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools >= 77.0.3"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "task-manager-storage"
+version = "0.1.0"
+dependencies = []
+requires-python = ">= 3.12"
+authors = [
+  {name = "mek0124", email = "mek0124@proton.me"}
+]
+description = "the storage library for the task manager application"
+readme = "README.md"
+license = {text = "Proprietary"}
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Programming Language :: Python :: 3.12"
+]
+
+[project.urls]
+Homepage = "https://github.com/mek0124/task-manager/storage"
+Documentation = "https://github.com/mek0124/task-manager/storage/docs"
+Repository = "https://github.com/mek0124/task-manager"
+Issues = "https://github.com/mek0124/task-manager/issues"
+Changelog = "https://github.com/mek0124/task-manager/changelog.md"
