@@ -11,7 +11,7 @@ class StorageController:
         self.offline_storage = OfflineStorageController()
         self.online_storage = OnlineStorageController()
 
-    def get_storage_controller(self, online: bool = False) -> Union[OfflineStorageController, OnlineStorageController]:
+    def get_storage_controller(self, online: bool = False) -> Tuple[bool, Union[OfflineStorageController, OnlineStorageController, str]]:
         if online:
             return self.get_online_storage_controller()
         else:
