@@ -8,3 +8,4 @@ uvloop==0.22.1
 wheel==0.45.1
 
 task-manager-config==0.1.0
+task-manager-storage==0.4.0
