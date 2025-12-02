@@ -15,6 +15,7 @@ Table of Contents
 - [Project Layout](#project-layout)
 - [How To Install](#how-to-install)
 - [How To Use](#how-to-use)
+- [Scripts](#scripts)
 - [Contributing](#contributing)
 - [Licensing](#licensing)
 - [Issues](#issues)
@@ -50,12 +51,6 @@ todo/
 
 <h3 id="how-to-install">How To Install</h3>
 
-STEP ONE!
-
-`bash requirements.sh` will install the dependencies you need for this applicaton and will create a requirements.txt
-
-NOTE: If you **do not** use UV and UV Loop for your package manager, then remove their prefixes from the bash file before running it
-
 [Top](#top)
 
 ---
@@ -71,6 +66,16 @@ NOTE: If you **do not** use UV and UV Loop for your package manager, then remove
 This suite, its components, various ui's, core logic, storage algorithms, etc are all sole proprietary property of mek0124.
 
 [Top](#top)
+
+---
+
+<h3 id="scripts">Scripts</h3>
+
+> NOTE: If you **do not** use UV and UV Loop for your package manager, then remove their prefixes from the bash file before running it
+
+|name|command|usage|
+|-|-|-|
+|requirements.sh|`bash scripts/requirements.sh`|installs the applications dependencies, in categories with separation messages|
 
 ---
 
