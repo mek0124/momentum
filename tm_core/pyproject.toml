@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools >= 77.0.3"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tm_core"
+version = "1.0.0"
+dependencies = ["sqlalchemy >= 2.0.0"]
+requires-python = ">= 3.12"
+authors = [
+  {name = "mek0124", email = "mek0124@proton.me"}
+]
+description = "the core library for the task manager application"
+readme = "README.md"
+license = {text = "Proprietary"}
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Programming Language :: Python :: 3.12"
+]
+
+[project.urls]
+Homepage = "https://github.com/mek0124/task-manager/core/"
+Documentation = "https://github.com/mek0124/task-manager/core/docs"
+Repository = "https://github.com/mek0124/task-manager/"
+Issues = "https://github.com/mek0124/task-manager/issues/"
+Changelog = "https://github.com/mek0124/task-manager/core/changelog.md"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["models", "validators"]

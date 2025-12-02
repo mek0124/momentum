@@ -174,5 +174,9 @@ class Config:
     def get_database_type(self) -> str:
         db_config = self.get_database_config()
         return db_config.get("type", "sqlite")
+    
+    def get_online_storage_preference(self) -> bool:
+        # update later
+        return False
 
 config = Config()

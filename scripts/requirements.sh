@@ -1,32 +1,35 @@
 #!/bin/bash
 
 # Check if script is being run from project root
-if [ ! -f "pyproject.toml" ] && [ ! -d "config" ] && [ ! -d "core" ] && [ ! -d "storage" ]; then
+if [ ! -d "tm_config" ] && [ ! -d "tm_core" ] && [ ! -d "tm_storage" ]; then
     echo "Error: This script must be run from the task-manager project root directory."
     echo "Please navigate to the project root and try again."
     echo "Example: cd /path/to/task-manager && bash scripts/requirements.sh"
     exit 1
 fi
 
-echo -e "Installing Application Self-Libraries... Please Wait..."
+echo -e "Checking and upgrading existing requirements... Please Wait..."
 
-uv pip install -e config
-uv pip install -e core
-uv pip install -e storage
+# Check if requirements.txt exists and upgrade dependencies
+if [ -f "requirements.txt" ]; then
+    echo "Found existing requirements.txt. Upgrading dependencies..."
 
-echo -e "Installing Application Dependencies... Please Wait..."
+    uv pip install --upgrade -r requirements.txt  
+fi
+
+echo -e "Install project dependencies"
 
 uv pip install \
-  wheel \
   setuptools \
-  click \
-  textual \
-  pyside6 \
-  python-dotenv \
+  wheel \
   bcrypt \
+  click \
+  pyside6 \
+  pytest \
+  python-dotenv \
   sqlalchemy \
-  pytest
-
-uv pip freeze > requirements.txt
-
-echo -e "Installation complete! Dependencies saved to requirements.txt"
+  textual \
+  tm_config \
+  tm_core \
+  tm_storage \
+  tm_cli

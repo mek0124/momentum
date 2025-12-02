@@ -1,44 +1,46 @@
-import sys
 from pathlib import Path
-
-# add project root so config is importable
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
-from config.config import config
-from core.models import Task
-from typing import Tuple, Union
+from tm_config.config import config
+from tm_core.models import Task
+from typing import Tuple, Union, Optional
+
 
 class Database:
-    def __init__(self) -> None:
+    def __init__(self, db_path: Optional[str] = None) -> None:
         self.engine = None
         self.SessionLocal = None
+        self._db_path_override = db_path
         self._initialize_db()
     
     def _initialize_db(self) -> Tuple[bool, str]:
         try:
-            db_path = config.get_database_path()
-            db_type = config.get_database_type()
-            
-            # Create data directory if it doesn't exist
-            data_dir = Path(db_path).parent
-            data_dir.mkdir(parents=True, exist_ok=True)
-            
-            # Create connection string
+            if self._db_path_override:
+                db_path = self._db_path_override
+
+            else:
+                base_dir = Path(__file__).parent
+                data_dir = base_dir / "data"
+                data_dir.mkdir(parents=True, exist_ok=True)
+                db_path = str(data_dir / "tasks.db")
+
+            db_type = "sqlite"
+            data_parent = Path(db_path).parent
+            data_parent.mkdir(parents=True, exist_ok=True)
+
             if db_type == "sqlite":
                 connection_string = f"sqlite:///{db_path}"
+
             else:
                 raise ValueError(f"Unsupported database type: {db_type}")
-            
+
             self.engine = create_engine(connection_string, echo=False)
             self.SessionLocal = sessionmaker(bind=self.engine)
-            
-            # Create tables
+
             Task.metadata.create_all(self.engine)
-            
+
             return True, "Database initialized successfully"
-        
+
         except Exception as e:
             return False, f"Failed to initialize database: {e}"
     
@@ -49,5 +51,5 @@ class Database:
         if self.engine:
             self.engine.dispose()
 
-# Global database instance
+
 db = Database()

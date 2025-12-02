@@ -4,31 +4,18 @@ import pytest
 import tempfile
 import shutil
 
-# Add project root to path
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
+import storage.database as sdb
+from storage.database import Database
+
+
 @pytest.fixture(scope="session")
 def temp_db_dir():
-    """Create temporary directory for test databases"""
     temp_dir = tempfile.mkdtemp()
-    yield temp_dir
+    db_file = Path(temp_dir) / "test_tasks.db"
+    sdb.db = Database(db_path=str(db_file))
+    yield str(db_file)
     shutil.rmtree(temp_dir)
-
-@pytest.fixture
-def mock_config(temp_db_dir, monkeypatch):
-    """Mock config for testing with temporary database"""
-    from config.config import Config
-    
-    # Create a mock config object
-    class MockConfig:
-        def get_database_config(self):
-            return {"type": "sqlite", "path": f"{temp_db_dir}/test_tasks.db"}
-        
-        def get_database_path(self):
-            return f"{temp_db_dir}/test_tasks.db"
-        
-        def get_database_type(self):
-            return "sqlite"
-    
-    return MockConfig()
+    sdb.db = Database()
