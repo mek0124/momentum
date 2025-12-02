@@ -19,7 +19,7 @@ class StorageController:
 
     def get_offline_storage_controller(self) -> Tuple[bool, Union[OfflineStorageController, str]]:
         try:
-            controller_connected, response = self.offline_storage.check_controller_connection()
+            controller_connected, response = self.offline_storage.get_db_path()
 
             if not controller_connected:
                 return False, response
@@ -34,7 +34,7 @@ class StorageController:
 
         try:
             while tries > 0:
-                controller_connected, response = self.online_storage.check_controller_connection()
+                controller_connected, response = self.online_storage.get_db_path()
 
                 if controller_connected:
                     return True, self.online_storage
@@ -94,3 +94,13 @@ class StorageController:
             return False, controller_response
         
         return controller_response.delete_task(task_id)
+
+
+# if __name__ == '__main__':
+#     storage_controller = StorageController()
+#     controller_found, controller_response = storage_controller.get_storage_controller()
+
+#     if not controller_found:
+#         raise Exception(controller_response)
+    
+#     print(controller_response)
