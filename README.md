@@ -57,6 +57,10 @@ todo/
 
 <h3 id="how-to-use">How To Use</h3>
 
+> NOTE: All error handling happens at the base level of storage when storing an item and is passed back up through inheritance to the client with the error message.
+
+> NOTE: All error handling happens at the base level of core when validating an item and is passed back up through inheritance to the client with the error message.
+
 [Top](#top)
 
 ---
