@@ -3,3 +3,4 @@ redo/
 .env
 requirements.txt
 assessments/
+__pycache__/
