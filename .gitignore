@@ -2,3 +2,4 @@ redo/
 *.egg-info/
 .env
 requirements.txt
+assessments/
