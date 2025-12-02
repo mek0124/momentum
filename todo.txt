@@ -1,8 +1,0 @@
-- create config library
-- create core library
-
-- create cli tool
-- create TUI tool
-- create desktop app
-- create mobile app
-- create web app
