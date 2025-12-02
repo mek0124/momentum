@@ -4,15 +4,15 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "storage"
-version = "0.4.0"
-dependencies = []
+version = "0.6.0"
+dependencies = ["sqlalchemy >= 2.0.0"]
 requires-python = ">= 3.12"
 authors = [
   {name = "mek0124", email = "mek0124@proton.me"}
 ]
 description = "the storage library for the task manager application"
 readme = "README.md"
-license = { text = "Proprietary" }
+license = {text = "Proprietary"}
 classifiers = [
   "Development Status :: 3 - Alpha",
   "Programming Language :: Python :: 3.12"
