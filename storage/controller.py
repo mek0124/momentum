@@ -1,7 +1,12 @@
+import sys
+from pathlib import Path
+from typing import Tuple, Union, List
+
+# add project root so imports work
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
 from controllers.offline import OfflineStorageController
 from controllers.online import OnlineStorageController
-
-from typing import Tuple, Union, List
 
 import time
 
@@ -19,11 +24,6 @@ class StorageController:
 
     def get_offline_storage_controller(self) -> Tuple[bool, Union[OfflineStorageController, str]]:
         try:
-            controller_connected, response = self.offline_storage.get_db_path()
-
-            if not controller_connected:
-                return False, response
-
             return True, self.offline_storage
         
         except Exception as e:
@@ -34,7 +34,7 @@ class StorageController:
 
         try:
             while tries > 0:
-                controller_connected, response = self.online_storage.get_db_path()
+                controller_connected, response = self.online_storage.check_controller_connection()
 
                 if controller_connected:
                     return True, self.online_storage
@@ -63,7 +63,7 @@ class StorageController:
         
         return controller_response.get_all_tasks()
     
-    def list_task_by_id(self, task_id, use_online_storage: bool = False) -> Tuple[bool, Union[dict, str]]:
+    def list_task_by_id(self, task_id: str, use_online_storage: bool = False) -> Tuple[bool, Union[dict, str]]:
         controller_found, controller_response = self.get_storage_controller(use_online_storage)
 
         if not controller_found:
@@ -85,7 +85,9 @@ class StorageController:
         if not controller_found:
             return False, controller_response
         
-        return controller_response.update_task(task_id, updated_task)
+        # Ensure task_id is in the updated_task dict
+        updated_task["id"] = task_id
+        return controller_response.update_task(updated_task)
     
     def delete_task(self, task_id: str, use_online_storage: bool = False) -> Tuple[bool, str]:
         controller_found, controller_response = self.get_storage_controller(use_online_storage)
@@ -95,12 +97,3 @@ class StorageController:
         
         return controller_response.delete_task(task_id)
 
-
-# if __name__ == '__main__':
-#     storage_controller = StorageController()
-#     controller_found, controller_response = storage_controller.get_storage_controller()
-
-#     if not controller_found:
-#         raise Exception(controller_response)
-    
-#     print(controller_response)

@@ -8,6 +8,17 @@ import json
 class Config:
     def __init__(self) -> None:
         self.curr_dir = Path(__file__).parent
+        self.config_path = self.curr_dir / "config.json"
+        self.config_data = self._load_config()
+
+    def _load_config(self) -> dict:
+        try:
+            with open(self.config_path, 'r', encoding="utf-8-sig") as f:
+                return json.load(f)
+        except FileNotFoundError:
+            raise FileNotFoundError(f"Config file not found at {self.config_path}")
+        except json.JSONDecodeError:
+            raise ValueError(f"Invalid JSON in config file: {self.config_path}")
 
     def get_config_file_path(self) -> Tuple[bool, Union[Path, str]]:
         try:
@@ -152,3 +163,16 @@ class Config:
         
         except Exception as e:
             return False, f"Failed to delete version: {e}"
+    
+    def get_database_config(self) -> dict:
+        return self.config_data.get("database", {})
+    
+    def get_database_path(self) -> str:
+        db_config = self.get_database_config()
+        return db_config.get("path", "data/tasks.db")
+    
+    def get_database_type(self) -> str:
+        db_config = self.get_database_config()
+        return db_config.get("type", "sqlite")
+
+config = Config()
