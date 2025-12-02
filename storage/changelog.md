@@ -34,6 +34,7 @@ v0.4.0
   - reconstructed controller.py and controllers/offline.py to be 'local storage first' in storage. 
   - if online connection fails, default storage is relational
   - fixed return types
+  - created get_db_path instead of creating the path in every function
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 v0.6.0 (possible version)
