@@ -1,6 +1,8 @@
 from typing import Tuple, Union, List
 from tm_storage.controllers.offline import OfflineStorageController
 from tm_storage.controllers.online import OnlineStorageController
+from tm_core.models import Task
+
 import time
 
 
@@ -36,42 +38,40 @@ class StorageController:
 
         return True, self.offline_storage
     
-    def get_all_tasks(self, use_online_storage: bool) -> Tuple[bool, Union[List[dict], str]]:
-        controller_found, controller = self.get_storage_controller(use_online_storage)
+    def get_all_tasks(self) -> Tuple[bool, Union[List[dict], str]]:
+        controller_found, controller = self.get_storage_controller(False)
 
         if not controller_found:
             return False, controller
 
         return controller.get_all_tasks()
     
-    def get_task_by_id(self, task_id: str, use_online_storage: bool) -> Tuple[bool, Union[dict, str]]:
-        controller_found, controller = self.get_storage_controller(use_online_storage)
+    def get_task_by_id(self, task_id: str) -> Tuple[bool, Union[dict, str]]:
+        controller_found, controller = self.get_storage_controller(False)
 
         if not controller_found:
             return False, controller
 
-        return controller.list_task_by_id(task_id)
+        return controller.get_task_by_id(task_id)
         
-    def create_task(self, new_task: dict, use_online_storage: bool) -> Tuple[bool, str]:
-        controller_found, controller = self.get_storage_controller(use_online_storage)
+    def create_task(self, task: Task) -> Tuple[bool, str]:
+        controller_found, controller = self.get_storage_controller(False)
 
         if not controller_found:
             return False, controller
 
-        return controller.create_task(new_task)
+        return controller.create_task(task)  # Pass Task model
     
-    def update_task(self, task_id: str, updated_task: dict, use_online_storage: bool) -> Tuple[bool, str]:
-        controller_found, controller = self.get_storage_controller(use_online_storage)
+    def update_task(self, task: Task) -> Tuple[bool, str]:
+        controller_found, controller = self.get_storage_controller(False)
 
         if not controller_found:
             return False, controller
 
-        updated_task["id"] = task_id
-
-        return controller.update_task(updated_task)
+        return controller.update_task(task)
     
-    def delete_task(self, task_id: str, use_online_storage: bool) -> Tuple[bool, str]:
-        controller_found, controller = self.get_storage_controller(use_online_storage)
+    def delete_task(self, task_id: str) -> Tuple[bool, str]:
+        controller_found, controller = self.get_storage_controller(False)
 
         if not controller_found:
             return False, controller
