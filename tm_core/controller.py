@@ -6,6 +6,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from tm_storage.controller import StorageController
 from tm_core.validators import Validators
+from tm_core.models import Task
 from typing import Tuple, Union, List
 from uuid import uuid4
 from datetime import datetime
@@ -30,7 +31,7 @@ class CoreController:
         if not controller_found:
             return False, controller
 
-        return controller.get_all_tasks(use_online_storage)
+        return controller.get_all_tasks()
     
     def get_task_by_id(self, task_id: str, use_online_storage: bool) -> Tuple[bool, Union[dict, str]]:
         controller_found, controller = self.set_storage_controller(use_online_storage)
@@ -41,7 +42,7 @@ class CoreController:
         if not self.validators.validate_id(task_id):
             return False, f"Invalid ID: {task_id}"
 
-        return controller.get_task_by_id(task_id, use_online_storage)
+        return controller.get_task_by_id(task_id)
 
     def create_task(self, new_task: dict, use_online_storage: bool) -> Tuple[bool, str]:
         controller_found, controller = self.set_storage_controller(use_online_storage)
@@ -62,11 +63,17 @@ class CoreController:
         if not details_validated:
             return False, details
         
-        new_task["id"] = str(uuid4())
-        new_task["created_at"] = datetime.now()
-        new_task["updated_at"] = datetime.now()
+        task_model = Task(
+            id=str(uuid4()),
+            title=new_task["title"],
+            details=new_task.get("details", ""),
+            priority=new_task["priority"],
+            created_at=datetime.now(),
+            updated_at=datetime.now(),
+            is_completed=new_task.get("is_completed", 0),
+        )
 
-        return controller.create_task(new_task, use_online_storage)
+        return controller.create_task(task_model)
 
     def update_task(self, task_id: str, updated_task: dict, use_online_storage: bool) -> Tuple[bool, str]:
         controller_found, controller = self.set_storage_controller(use_online_storage)
@@ -83,7 +90,22 @@ class CoreController:
         if not self.validators.validate_id(task_id):
             return False, f"Invalid ID: {task_id}"
 
-        return controller.update_task(task_id, updated_task, use_online_storage)
+        task_found, task_response = self.get_task_by_id(task_id, use_online_storage)
+
+        if not task_found:
+            return False, task_response
+
+        task_model = Task(
+            id=task_id,
+            title=updated_task.get("title", task_response.get("title")),
+            details=updated_task.get("details", task_response.get("details", "")),
+            priority=updated_task.get("priority", task_response.get("priority", 3)),
+            created_at=task_response.get("created_at", datetime.now()),
+            updated_at=datetime.now(),
+            is_completed=updated_task.get("is_completed", task_response.get("is_completed", 0)),
+        )
+
+        return controller.update_task(task_model)
 
     def delete_task(self, task_id: str, use_online_storage: bool) -> Tuple[bool, str]:
         controller_found, controller = self.set_storage_controller(use_online_storage)
@@ -94,4 +116,4 @@ class CoreController:
         if not self.validators.validate_id(task_id):
             return False, f"Invalid ID: {task_id}"
 
-        return controller.delete_task(task_id, use_online_storage)
+        return controller.delete_task(task_id)
