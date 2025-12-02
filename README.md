@@ -50,6 +50,12 @@ todo/
 
 <h3 id="how-to-install">How To Install</h3>
 
+STEP ONE!
+
+`bash requirements.sh` will install the dependencies you need for this applicaton and will create a requirements.txt
+
+NOTE: If you **do not** use UV and UV Loop for your package manager, then remove their prefixes from the bash file before running it
+
 [Top](#top)
 
 ---
