@@ -16,5 +16,16 @@ uv pip install \
   pyside6 \
   python-dotenv \
   bcrypt \
+  sqlalchemy
+
+echo -e "Installed Application DEV Dependencies... Please Wait..."
+
+uv pip install \
+  pytest
+
+echo -e "Creating requirements.txt"
 
 uv pip freeze > requirements.txt
+
+read -p "Installation Finished. Press Enter to Exit..."
+exit
