@@ -1,11 +1,25 @@
-pyside6==6.10.1
-textual==6.7.0
+bcrypt==5.0.0
 click==8.3.1
+-e file:///home/mekasu0124/Documents/dev/portfolio/task-manager/config
+-e file:///home/mekasu0124/Documents/dev/portfolio/task-manager/core
+linkify-it-py==2.0.3
+markdown-it-py==4.0.0
+mdit-py-plugins==0.5.0
+mdurl==0.1.2
+pip @ file:///home/task_176313218821961/conda-bld/pip_1763132220821/work
+platformdirs==4.5.0
+pygments==2.19.2
+pyside6==6.10.1
+pyside6-addons==6.10.1
+pyside6-essentials==6.10.1
 python-dotenv==1.2.1
+rich==14.2.0
 setuptools==80.9.0
+shiboken6==6.10.1
+-e file:///home/mekasu0124/Documents/dev/portfolio/task-manager/storage
+textual==6.7.1
+typing-extensions==4.15.0
+uc-micro-py==1.0.3
 uv==0.9.13
 uvloop==0.22.1
 wheel==0.45.1
-
-task-manager-config==0.1.0
-task-manager-storage==0.4.0
