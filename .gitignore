@@ -4,3 +4,4 @@ redo/
 requirements.txt
 assessments/
 __pycache__/
+tasks.db
