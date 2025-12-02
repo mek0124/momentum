@@ -9,25 +9,25 @@ class OfflineStorageController:
     def __init__(self) -> None:
         self.curr_dir = Path(__file__).parent
 
-    def check_controller_connection(self) -> Tuple[bool, str]:
+    def get_db_path(self) -> Tuple[bool, Union[Path, str]]:
         try:
-            storage_dir = self.curr_dir.parent
-            data_dir = storage_dir / "data"
+            data_dir = self.curr_dir.parent / "data"
 
             if not data_dir.exists():
-                os.makedirs(data_dir, exist_ok=True)
+                os.makedirs(data_dir)
 
             db_file_path = data_dir / "tasks.db"
 
             if not db_file_path.exists():
                 did_create, response = self.create_db(db_file_path)
-                return did_create, response
 
-            else:
-                return True, "db file exists"
-
+                if not did_create:
+                    return False, response
+                
+            return True, db_file_path
+        
         except Exception as e:
-            return False, f"Error Creating database file: {e}"
+            return False, f"Failed to build db file path: {e}"
 
     def create_db(self, file_path: Path) -> Tuple[bool, str]:
         try:
@@ -53,7 +53,10 @@ class OfflineStorageController:
             return False, f"Failed to create database: {e}"
         
     def create_task(self, new_task: dict) -> Tuple[bool, str]:
-        db_file_path = self.curr_dir.parent / "data" / "tasks.db"
+        db_path_found, db_file_path = self.get_db_path()
+
+        if not db_path_found:
+            return False, db_file_path
 
         try:
             with sql.connect(db_file_path) as mdb:
@@ -91,7 +94,10 @@ class OfflineStorageController:
             return False, f"Unknown Exception: {e}"
         
     def get_all_tasks(self) -> Tuple[bool, Union[List[tuple], str]]:
-        db_file_path = self.curr_dir.parent / "data" / "tasks.db"
+        db_path_found, db_file_path = self.get_db_path()
+
+        if not db_path_found:
+            return False, db_file_path
 
         try:
             with sql.connect(db_file_path) as mdb:
@@ -108,7 +114,10 @@ class OfflineStorageController:
             return False, f"Unknown Exception: {e}"
         
     def list_task_by_id(self, task_id) -> Tuple[bool, Union[dict, str]]:
-        db_file_path = self.curr_dir.parent / "data" / "tasks.db"
+        db_path_found, db_file_path = self.get_db_path()
+
+        if not db_path_found:
+            return False, db_file_path
 
         try:
             with sql.connect(db_file_path) as mdb:
@@ -125,7 +134,10 @@ class OfflineStorageController:
             return False, f"Unknown Exception: {e}"
         
     def update_task(self, updated_task: dict) -> Tuple[bool, str]:
-        db_file_path = self.curr_dir.parent / "data" / "tasks.db"
+        db_path_found, db_file_path = self.get_db_path()
+
+        if not db_path_found:
+            return False, db_file_path
 
         try:
             with sql.connect(db_file_path) as mdb:
@@ -149,7 +161,10 @@ class OfflineStorageController:
             return False, f"Failed to update task: {e}"
         
     def delete_task(self, task_id) -> Tuple[bool, str]:
-        db_file_path = self.curr_dir.parent / "data" / "tasks.db"
+        db_path_found, db_file_path = self.get_db_path()
+
+        if not db_path_found:
+            return False, db_file_path
 
         try:
             with sql.connect(db_file_path) as mdb:
