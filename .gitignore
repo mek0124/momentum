@@ -1,7 +1,4 @@
-redo/
-*.egg-info/
-.env
-requirements.txt
-assessments/
+build/
+dist/
 __pycache__/
-tasks.db
+app/data/main.db
