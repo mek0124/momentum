@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# all echo's and sleeps can be removed
+# these are fodder fill to give a bit
+# of realism to the build process instead
+# of instantaniety
+
 clear
 
 echo -e "Building Project... Please Wait..."
