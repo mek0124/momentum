@@ -4,3 +4,4 @@ __pycache__/
 app/data/main.db
 .aidigestignore
 codebase.md
+main.spec
