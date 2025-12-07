@@ -106,3 +106,9 @@
 * auto-gen'd file (3955f10) - mek0124, 2025-11-24
 * created entry file (113c51a) - mek0124, 2025-11-24
 * updated gitignore (c4af1f7) - mek0124, 2025-11-24
+
+
+## 12/07/2025
+
+- updated main.py to correctly adjust terminal height for ua file and app display
+- updated build.sh to add some fodder for realism. All echo's and sleep's can be removed
