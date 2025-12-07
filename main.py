@@ -7,6 +7,8 @@ from app.database.db import Base, engine
 import json
 import sys
 import os
+import shutil
+import time
 
 
 def update_config_read_write(file_path: Path) -> Tuple[bool, str]:
@@ -29,13 +31,14 @@ def update_config_read_write(file_path: Path) -> Tuple[bool, str]:
     
 def display_file(file_path: Path):
     os.system('cls' if os.name == 'nt' else 'clear')
+    time.sleep(0.1)
     
     with open(file_path, 'r') as agreement_file:
         text = agreement_file.read()
     
     try:
-        terminal_height = os.get_terminal_size().lines
-
+        terminal_size = shutil.get_terminal_size()
+        terminal_height = terminal_size.lines
     except:
         terminal_height = 24
     
@@ -43,27 +46,29 @@ def display_file(file_path: Path):
     line_index = 0
     total_lines = len(lines)
     
+    lines_per_page = max(1, terminal_height - 4)
+    total_pages = (total_lines + lines_per_page - 1) // lines_per_page
+    
+    current_page = 1
+    
     while line_index < total_lines:
         os.system('cls' if os.name == 'nt' else 'clear')
-        
-        lines_per_page = max(1, terminal_height - 22)
         
         for i in range(lines_per_page):
             if line_index + i < total_lines:
                 print(lines[line_index + i])
-
             else:
                 print()
         
         line_index += lines_per_page
         
         if line_index < total_lines:
-            print()
-            input("Press Enter To Continue...")
-
+            print("\n" + "=" * 50)
+            input(f"{current_page}/{total_pages} - Press Enter to continue...")
+            current_page += 1
         else:
-            print()
-            input("Press Enter to finish...")
+            print("\n" + "=" * 50)
+            input(f"{current_page}/{total_pages} - Press Enter to finish...")
 
 def get_perms(config_json: Path, agreement_text_file: Path) -> bool:
     display_file(agreement_text_file)
