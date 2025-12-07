@@ -27,7 +27,7 @@ fi
 
 sleep 1
 
-echo -e "\nBuilding project using: 'pyinstaller --onefile --windowed --add-data \"app/data:app/data\" main.py' \n"
+echo -e "\nBuilding project using: 'python3 -m build'... Please Wait... \n"
 
 sleep 2
 
