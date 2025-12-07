@@ -9,5 +9,3 @@ if [ -d ./build ]; then
 fi
 
 pyinstaller --onefile --windowed --add-data "app/data:app/data" main.py
-
-bash ./run.sh
