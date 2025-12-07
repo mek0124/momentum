@@ -1,5 +1,5 @@
+build
 pydantic
-pyinstaller
 pytest
 pytest-asyncio
 setuptools
