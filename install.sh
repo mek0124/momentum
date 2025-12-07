@@ -156,7 +156,7 @@ Exec=$LAUNCHER_PATH
 Icon=$INSTALL_DIR/icon.png
 Terminal=false
 Categories=Utility;Chat;
-StartupWMClass=Task Manager
+StartupWMClass=task_manager
 EOF
 echo -e "${GREEN}✓ Desktop entry created${NC}"
 echo ""
