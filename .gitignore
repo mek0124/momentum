@@ -5,3 +5,4 @@ app/data/main.db
 .aidigestignore
 codebase.md
 main.spec
+*.egg-info
