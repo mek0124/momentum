@@ -1,6 +1,6 @@
 [project]
 name = "task-manager"
-version = "1.2.2"
+version = "1.2.4"
 description = "A Text TUI application for task management"
 authors = [{ name = "mek0124", email = "mek0124@proton.me" }]
 readme = "README.md"
