@@ -24,6 +24,12 @@ def update_config_read_write(file_path: Path) -> Tuple[bool, str]:
         Base.metadata.create_all(bind=engine)
 
         return True
+    
+    except FileNotFoundError:
+        with open(file_path, 'w+', encoding="utf-8-sig") as nf:
+            json.dump({"rw_agree": 0}, nf, indent=2)
+
+        return update_config_read_write(file_path)
 
     except Exception as e:
         print(f"\nUnknown Exception: Creating UA File: {e}")
