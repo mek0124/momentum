@@ -58,8 +58,8 @@ class TaskManager(App):
             return task_list.mount(
                 Vertical(
                     Static("No Current Tasks Exist"),
-                    Static("To create a new task"),
-                    Static("Press ctrl + n"),
+                    Static("Press ctrl + n to create a new task"),
+                    Static("Press ctrl + q to exit"),
                     classes="task-card"
                 ),
             )
