@@ -1,8 +1,0 @@
-build
-pydantic
-pytest
-pytest-asyncio
-setuptools
-sqlalchemy
-textual
-wheel
