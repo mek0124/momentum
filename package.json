@@ -17,6 +17,8 @@
     "@fortawesome/react-fontawesome": "^3.1.1",
     "@tauri-apps/api": "^2",
     "@tauri-apps/plugin-opener": "^2",
+    "crypto-js": "^4.2.0",
+    "idb": "^8.0.3",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-hot-toast": "^2.6.0",
