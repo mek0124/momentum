@@ -40,7 +40,7 @@ export default function Header() {
   }, [userLocation]);
 
   return (
-    <div className="flex flex-row items-center justify-center w-full border-b-2 border-b-gray-500">
+    <div className="flex flex-row items-center justify-center w-full border-b-2 border-b-gray-500 fixed top-0">
       <div className="flex flex-row items-center justify-start w-full">
         <img
           src={AppIcon}
