@@ -1,0 +1,12 @@
+.git/
+.vscode/
+node_modules/
+public/
+src/assets/
+src-tauri/
+.gitignore
+LICENSE.txt
+postcss.config.js
+README.md
+tailwind.config.js
+vite.config.js

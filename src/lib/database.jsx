@@ -1,28 +1,14 @@
-import { openDB, DBSchema, IDBPDatabase } from 'idb';
+import { openDB } from 'idb';
 import CryptoJS from 'crypto-js';
 
-interface EncryptedTask {
-  id: string;
-  encryptedData: string; // Encrypted JSON string
-  iv: string; // Initialization vector for AES
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-interface MomentumDB extends DBSchema {
-  tasks: {
-    key: string;
-    value: EncryptedTask;
-    indexes: { 'by-createdAt': Date };
-  };
-}
-
 class DatabaseService {
-  private db: IDBPDatabase<MomentumDB> | null = null;
-  private encryptionKey: string = 'user-defined-secret-key'; // Should be user-provided!
+  constructor() {
+    this.db = null;
+    this.encryptionKey = 'user-defined-secret-key';
+  }
 
   async initialize() {
-    this.db = await openDB<MomentumDB>('momentum-db', 1, {
+    this.db = await openDB('momentum-db', 1, {
       upgrade(db) {
         const taskStore = db.createObjectStore('tasks', { keyPath: 'id' });
         taskStore.createIndex('by-createdAt', 'createdAt');
@@ -30,8 +16,7 @@ class DatabaseService {
     });
   }
 
-  // Encryption methods
-  encryptTask(task: any): { encryptedData: string; iv: string } {
+  encryptTask(task) {
     const iv = CryptoJS.lib.WordArray.random(128 / 8).toString();
     const encrypted = CryptoJS.AES.encrypt(
       JSON.stringify(task),
@@ -44,7 +29,7 @@ class DatabaseService {
     };
   }
 
-  decryptTask(encryptedTask: EncryptedTask): any {
+  decryptTask(encryptedTask) {
     const decrypted = CryptoJS.AES.decrypt(
       encryptedTask.encryptedData,
       this.encryptionKey,
@@ -53,14 +38,13 @@ class DatabaseService {
     return JSON.parse(decrypted.toString(CryptoJS.enc.Utf8));
   }
 
-  // CRUD operations
-  async saveTask(task: any): Promise<string> {
+  async saveTask(task) {
     if (!this.db) await this.initialize();
     
     const id = task.id || Date.now().toString();
     const { encryptedData, iv } = this.encryptTask(task);
     
-    await this.db!.put('tasks', {
+    await this.db.put('tasks', {
       id,
       encryptedData,
       iv,
@@ -71,16 +55,16 @@ class DatabaseService {
     return id;
   }
 
-  async getAllTasks(): Promise<any[]> {
+  async getAllTasks() {
     if (!this.db) await this.initialize();
     
-    const encryptedTasks = await this.db!.getAll('tasks');
+    const encryptedTasks = await this.db.getAll('tasks');
     return encryptedTasks.map(task => this.decryptTask(task));
   }
 
-  async deleteTask(id: string): Promise<void> {
+  async deleteTask(id) {
     if (!this.db) await this.initialize();
-    await this.db!.delete('tasks', id);
+    await this.db.delete('tasks', id);
   }
 }
 

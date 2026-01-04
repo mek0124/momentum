@@ -13,14 +13,14 @@ export default function Header() {
     const updateClock = async () => {
       const now = new Date();
 
-      const timeOptions: Intl.DateTimeFormatOptions = {
+      const timeOptions = {
         hour12: false,
         hour: '2-digit',
         minute: '2-digit',
         second: '2-digit'
       };
       
-      const dateOptions: Intl.DateTimeFormatOptions = {
+      const dateOptions = {
         year: 'numeric',
         day: 'numeric',
         month: 'numeric'
@@ -40,7 +40,7 @@ export default function Header() {
   }, [userLocation]);
 
   return (
-    <div className="flex flex-row items-center justify-center w-full border-b-2 border-b-gray-500 fixed top-0">
+    <div className="flex flex-row items-center justify-center w-full border-b-2 border-b-accent fixed top-0">
       <div className="flex flex-row items-center justify-start w-full">
         <img
           src={AppIcon}
@@ -50,17 +50,17 @@ export default function Header() {
           className="rounded-full m-1"
         />
 
-        <h1 className="font-bold italic text-sm">
+        <h1 className="font-bold italic text-sm text-foreground">
           Momentum
         </h1>
       </div>
 
       <div className="flex flex-col items-end justify-center mr-3">
-        <span className="italic text-sm">
+        <span className="italic text-sm text-foreground">
           {cTime}
         </span>
 
-        <span className="italic text-sm">
+        <span className="italic text-sm text-foreground">
           {cDate}
         </span>
       </div>

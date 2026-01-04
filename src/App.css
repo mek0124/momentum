@@ -18,21 +18,20 @@ body {
   color: white;
 }
 
-/* Custom scrollbar styles */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #000; /* Matches the application's background color */
+  background: #000;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #555; /* Matches the application's gray tones */
+  background: #555;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #888; /* Slightly lighter gray for hover effect */
+  background: #888;
 }

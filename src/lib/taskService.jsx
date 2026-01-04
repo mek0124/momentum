@@ -1,19 +1,7 @@
 import { dbService } from './database';
 
-export interface Task {
-  id: string;
-  title: string;
-  details: string;
-  dueDate?: string;
-  dueTime?: string;
-  priority: number;
-  completed: boolean;
-  updatedAt?: string;
-}
-
 export const taskService = {
-  async saveTask(task: Task): Promise<string> {
-    // Check for duplicates (decrypt and compare in memory)
+  async saveTask(task) {
     const allTasks = await this.getAllTasks();
     const duplicate = allTasks.find(t => 
       t.id !== task.id && t.title.toLowerCase() === task.title.toLowerCase()
@@ -26,15 +14,15 @@ export const taskService = {
     return await dbService.saveTask(task);
   },
 
-  async getAllTasks(): Promise<Task[]> {
+  async getAllTasks() {
     return await dbService.getAllTasks();
   },
 
-  async deleteTask(id: string): Promise<void> {
+  async deleteTask(id) {
     await dbService.deleteTask(id);
   },
 
-  async updateTask(id: string, updates: Partial<Task>): Promise<void> {
+  async updateTask(id, updates) {
     const allTasks = await this.getAllTasks();
     const taskIndex = allTasks.findIndex(t => t.id === id);
     

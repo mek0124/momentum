@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "Momentum",
+        "title": "momentum",
         "width": 800,
         "height": 600
       }
