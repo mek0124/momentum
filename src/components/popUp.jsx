@@ -23,7 +23,7 @@ export default function PopUp({
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-500 mb-1">
-              Title <span className="text-gra-500 text-xs">(max 75 chars)</span>
+              Title <span className="text-gray-500 text-xs">(max 75 chars)</span>
             </label>
 
             <input
