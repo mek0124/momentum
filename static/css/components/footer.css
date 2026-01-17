@@ -1,0 +1,21 @@
+.footer-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 50px;
+}
+
+.footer-text {
+  font-weight: bold;
+  font-style: italic;
+  font-size: 0.8rem;
+  color: var(--text-primary);
+  width: 100%;
+  text-align: center;
+}
+
+.footer-text > a {
+  color: var(--text-primary);
+}

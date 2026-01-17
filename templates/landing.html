@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <link rel="icon" href="{{ url_for('static', filename='images/icon.png') }}" />
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}" />
+
+    <title>Momentum</title>
+  </head>
+  <body>
+    {% include 'components/header.html' %}
+
+    {% if not user %}
+      {% include 'components/welcome.html' %}
+    {% else %}
+      {% include 'dashboard.html' %}
+    {% endif %}
+
+    {% include 'components/footer.html' %}
+  </body>
+</html>

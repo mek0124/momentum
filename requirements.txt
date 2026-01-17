@@ -1,0 +1,6 @@
+flask
+sqlalchemy
+setuptools
+wheel
+python-dotenv
+pydantic

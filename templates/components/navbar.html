@@ -1,0 +1,31 @@
+<div class="nav-bar">
+  <a
+    href="{{ url_for('index') }}"
+    class="nav-button {% if request.endpoint == 'index' %}nav-button-active{% endif %}"
+  >
+    Dashboard
+  </a>
+
+  <a
+    href="{{ url_for('app_form') }}"
+    class="nav-button {% if request.endpoint == 'app_form' %}nav-button-active{% endif %}"
+  >
+    App Entry  
+  </a>
+
+  <script>
+    // Fallback JavaScript for active state (in case template logic doesn't work)
+    document.addEventListener('DOMContentLoaded', function() {
+      const pathname = window.location.pathname;
+      const navButtons = document.querySelectorAll('.nav-button');
+      
+      navButtons.forEach(button => {
+        if (button.getAttribute('href') === pathname) {
+          button.classList.add('nav-button-active');
+        } else {
+          button.classList.remove('nav-button-active');
+        }
+      });
+    });
+  </script>
+</div>

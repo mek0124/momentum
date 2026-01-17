@@ -1,0 +1,41 @@
+:root {
+  --background: #2c2932;
+  --surface: #110065;
+  --surface-light: #210098;
+  --primary: #4000fe;
+  --primary-dim: #3100c7;
+  --secondary: #5000fe;
+  --accent: #5000fe;
+  --blue-accent: #4000fe;
+  --green-accent: #16a34a;
+  --red-accent: #dc2626;
+  --text-primary: #f2efff;
+  --text-secondary: #a75efd;
+  --text-muted: #8b86a0;
+  --success: #16a34a;
+  --warning: #a75efd;
+  --error: #dc2626;
+}
+
+
+* {
+  letter-spacing: 0.1em;
+  word-spacing: 0.1em;
+}
+
+
+body {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(
+    180deg,
+    var(--background),
+    var(--surface),
+    var(--surface-light)
+  );
+  font-family: system-ui, -apple-system, sans-serif;
+}

@@ -1,0 +1,34 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Git Update",
+      "type": "shell",
+      "command": "git fetch origin && git pull origin master",
+      "windows": {
+        "command": "git fetch origin && git pull origin master"
+      },
+      "linux": {
+        "command": "git fetch origin && git pull origin master"
+      },
+      "osx": {
+        "command": "git fetch origin && git pull origin master"
+      },
+      "problemMatcher": [],
+      "group": "none",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "dedicated",
+        "showReuseMessage": true
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "detail": "Fetches and pulls from origin/master branch"
+    }
+  ]
+}

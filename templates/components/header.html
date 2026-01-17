@@ -1,0 +1,64 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='css/components/header.css') }}" />
+
+<header class="header-container">
+  <img
+    src="{{ url_for('static', filename='images/icon.png') }}"
+    alt="Momentum Icon"
+    width="60"
+    height="60"
+    class="app-icon"
+  />
+
+  <h1 class="title">
+    Momentum
+  </h1>
+
+  <div class="clock-container">
+    <span class="clock-display" id="cTime"></span>
+    <span class="clock-display" id="cDate"></span>
+  </div>
+
+    <script>
+      let clockInterval;
+
+      function updateClock() {
+        const now = new Date();
+        const userLocation = navigator.language;
+
+        const timeOptions = {
+          hour12: true,
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit'
+        };
+
+        const dateOptions = {
+          year: 'numeric',
+          month: 'numeric',
+          day: 'numeric',
+          weekday: 'short'
+        };
+
+
+        const timeLabel = document.getElementById("cTime");
+        const dateLabel = document.getElementById("cDate");
+
+        timeLabel.textContent = now.toLocaleTimeString(userLocation, timeOptions);
+        dateLabel.textContent = now.toLocaleDateString(userLocation, dateOptions);
+      }
+
+      function initClock() {
+        updateClock();
+        clockInterval = setInterval(updateClock, 1000);
+      }
+
+      function cleanupClock() {
+        if (clockInterval) {
+          clearInterval(clockInterval);
+        };
+      };
+
+      document.addEventListener('DOMContentLoaded', initClock);
+      window.addEventListener('beforeunload', cleanupClock);
+    </script>
+</header>
