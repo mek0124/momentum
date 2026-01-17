@@ -1,0 +1,46 @@
+.dashboard-container,
+.no-task-container {
+  display: flex;
+  align-items: center;
+}
+
+.dashboard-container {
+  flex-direction: row;
+  width: 100%;
+  flex-grow: 1;
+  justify-content: center;
+}
+
+.no-task-container {
+  flex-direction: column;
+  justify-content: space-evenly;
+  width: 50%;
+  height: 450px;
+}
+
+.no-task-label {
+  font-weight: bold;
+  font-style: italic;
+  font-size: 1.2rem;
+  color: var(--text-primary);
+  width: 100%;
+  text-align: center;
+}
+
+.new-task-button {
+  border: 2px solid var(--accent);
+  border-radius: 10px;
+  background-color: var(--surface);
+  color: var(--text-primary);
+  font-size: 1rem;
+  padding: 0.5rem 0;
+  width: 30%;
+  transition: all 0.3s ease-in;
+  cursor: pointer;
+}
+
+.new-task-button:hover {
+  background-color: var(--surface-light);
+  box-shadow: 0 4px 6px -1px var(--text-secondary);
+  transform: translateY(-0.5rem);
+}

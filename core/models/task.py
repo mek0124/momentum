@@ -1,6 +1,7 @@
 from sqlalchemy import (
     Column, Integer, String,
-    Boolean, DateTime, ForeignKey
+    Boolean, DateTime, ForeignKey,
+    Date, Time, SmallInteger
 )
 from sqlalchemy.orm import relationship
 from datetime import datetime
@@ -42,6 +43,23 @@ class Task(Base):
     user_id = Column(
         String,
         ForeignKey('users.id'),
+        nullable=False
+    )
+    
+    priority = Column(
+        SmallInteger,
+        index = True,
+        default = 2
+    )
+    
+    due_date = Column(
+        Date,
+        index = True,
+        nullable=False
+    )
+    
+    due_time = Column(
+        Time,
         nullable=False
     )
     

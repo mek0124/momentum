@@ -20,12 +20,13 @@
   margin: 0.5rem;
 }
 
-.title {
+.header-title {
   font-weight: bold;
   font-style: italic;
   font-size: 1.3rem;
   color: var(--text-primary);
   width: 100%;
+  text-align: start;
 }
 
 .clock-display {
