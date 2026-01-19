@@ -1,96 +1,132 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}" />
-
 <div class="dashboard-container">
-  {% if not user.tasks %}
-    <div class="no-task-container">
-      <span class="no-task-label">
-        You do not have any tasks at this time...
-      </span>
-
-      <span class="no-task-label">
-        Get started with tracking your tasks by clicking the button below
-      </span>
-
-      <button type="button" class="new-task-button">
-        New Task
-      </button>
-    </div>
-  {% endif %}
-
-  <div id="taskPopup" class="modal">
-    <div class="modal-content">
-      <span class="close-btn">&times;</span>
-      <h2>Create New Task</h2>
-      <form id="taskForm" method="POST" action="{{ url_for('create_task') }}">
-        <div class="form-group">
-          <label for="taskTitle">Task Title *</label>
-          <input type="text" id="taskTitle" name="title" placeholder="Enter task title" required>
-        </div>
-        
-        <div class="form-group">
-          <label for="taskContent">Description *</label>
-          <textarea id="taskContent" name="content" placeholder="Enter task description" rows="4" required></textarea>
-        </div>
-        
-        <div class="form-group">
-          <label for="taskPriority">Priority *</label>
-          <select id="taskPriority" name="priority" required>
-            <option value="">Select priority</option>
-            <option value="3">Low (3)</option>
-            <option value="2" selected>Medium (2)</option>
-            <option value="1">High (1)</option>
-          </select>
-        </div>
-        
-        <div class="form-group-row">
-          <div class="form-group half">
-            <label for="dueDate">Due Date *</label>
-            <input type="date" id="dueDate" name="due_date" required>
+  <div class="task-panel">
+    {% if not user.tasks %}
+      <div class="no-task-container">
+        <span class="no-task-label">
+          You do not have any tasks at this time...
+        </span>
+        <span class="no-task-label">
+          Create your first task using the form on the right
+        </span>
+      </div>
+    {% else %}
+      {% for task in user.tasks %}
+        <div class="task-card" data-task-id="{{ task.id }}" data-task-title="{{ task.title }}" data-task-content="{{ task.content }}" data-task-priority="{{ task.priority }}" data-task-due-date="{{ task.due_date }}" data-task-due-time="{{ task.due_time }}">
+          <div class="task-card-title">{{ task.title }}</div>
+          <div class="task-card-content">{{ task.content[:100] }}{% if task.content|length > 100 %}...{% endif %}</div>
+          <div class="task-card-meta">
+            <div>Due: 
+              {% if task.due_date %}{{ task.due_date }}{% else %}No date{% endif %}
+              {% if task.due_time %}{{ task.due_time }}{% endif %}
+            </div>
+            <div class="task-card-priority {% if task.priority == 1 %}high{% elif task.priority == 2 %}medium{% else %}low{% endif %}">
+              {% if task.priority == 1 %}High{% elif task.priority == 2 %}Medium{% else %}Low{% endif %}
+            </div>
           </div>
-          
-          <div class="form-group half">
-            <label for="dueTime">Due Time *</label>
-            <input type="time" id="dueTime" name="due_time" required>
-          </div>
+          {% if task.completed %}
+            <div style="color: var(--green-accent); font-size: 0.8rem; margin-top: 0.5rem;">✓ Completed</div>
+          {% endif %}
         </div>
-        
-        <button type="submit" class="btn btn-primary">Create Task</button>
-      </form>
-    </div>
+      {% endfor %}
+    {% endif %}
   </div>
+  
+  <div class="form-panel">
+    <h2 class="form-title" id="formTitle">Create New Task</h2>
+    <form method="POST" action="{{ url_for('create_task') }}" id="taskForm">
+      <input type="hidden" id="taskId" name="task_id" value="{{ form_data.get('task_id', '') }}">
+      <div class="form-group">
+        <label for="taskTitle">Task Title *</label>
+        <input type="text" id="taskTitle" name="title" placeholder="Enter task title" required value="{{ form_data.get('title', '') }}">
+      </div>
+      <div class="form-group">
+        <label for="taskContent">Description *</label>
+        <textarea id="taskContent" name="content" placeholder="Enter task description" rows="4" required>{{ form_data.get('content', '') }}</textarea>
+      </div>
+      <div class="form-group">
+        <label for="taskPriority">Priority *</label>
+        <select id="taskPriority" name="priority" required>
+          <option value="">Select priority</option>
+          <option value="3" {% if form_data.get('priority') == '3' %}selected{% endif %}>Low (3)</option>
+          <option value="2" {% if form_data.get('priority') == '2' or not form_data %}selected{% endif %}>Medium (2)</option>
+          <option value="1" {% if form_data.get('priority') == '1' %}selected{% endif %}>High (1)</option>
+        </select>
+      </div>
+      <div class="form-group-row">
+        <div class="form-group half">
+          <label for="dueDate">Due Date</label>
+          <input type="date" id="dueDate" name="due_date" value="{{ form_data.get('due_date', '') }}">
+        </div>
+        <div class="form-group half">
+          <label for="dueTime">Due Time</label>
+          <input type="time" id="dueTime" name="due_time" value="{{ form_data.get('due_time', '') }}">
+        </div>
+      </div>
+      <button type="submit" class="btn-primary" id="submitBtn">Create Task</button>
+      <button type="button" class="btn-secondary" id="cancelBtn" style="display: none;">Cancel Edit</button>
+    </form>
+  </div>
+</div>
 
-  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const modal = document.getElementById('taskPopup');
-      const closeBtn = document.querySelector('.close-btn');
-      const newTaskBtn = document.querySelector('.new-task-button');
-      
-      if (newTaskBtn) {
-        newTaskBtn.addEventListener('click', function() {
-          modal.style.display = 'block';
-          
-          const today = new Date().toISOString().split('T')[0];
-          document.getElementById('dueDate').min = today;
-          
-          const now = new Date();
-          now.setHours(now.getHours() + 1);
-          const timeString = now.toTimeString().slice(0, 5);
-          document.getElementById('dueTime').value = timeString;
-        });
-      }
-      
-      if (closeBtn) {
-        closeBtn.addEventListener('click', function() {
-          modal.style.display = 'none';
-        });
-      }
-      
-      window.addEventListener('click', function(event) {
-        if (event.target === modal) {
-          modal.style.display = 'none';
-        }
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const dueDateInput = document.getElementById('dueDate');
+    const dueTimeInput = document.getElementById('dueTime');
+    const taskCards = document.querySelectorAll('.task-card');
+    const taskForm = document.getElementById('taskForm');
+    const formTitle = document.getElementById('formTitle');
+    const submitBtn = document.getElementById('submitBtn');
+    const cancelBtn = document.getElementById('cancelBtn');
+    const taskIdInput = document.getElementById('taskId');
+    const taskTitleInput = document.getElementById('taskTitle');
+    const taskContentInput = document.getElementById('taskContent');
+    const taskPriorityInput = document.getElementById('taskPriority');
+
+    taskCards.forEach(card => {
+      card.addEventListener('click', function() {
+        const taskId = this.dataset.taskId;
+        const taskTitle = this.dataset.taskTitle;
+        const taskContent = this.dataset.taskContent;
+        const taskPriority = this.dataset.taskPriority;
+        const taskDueDate = this.dataset.taskDueDate;
+        const taskDueTime = this.dataset.taskDueTime;
+
+        taskIdInput.value = taskId;
+        taskTitleInput.value = taskTitle;
+        taskContentInput.value = taskContent;
+        taskPriorityInput.value = taskPriority;
+        dueDateInput.value = taskDueDate;
+        dueTimeInput.value = taskDueTime;
+
+        taskForm.action = "{{ url_for('update_task') }}";
+        formTitle.textContent = "Edit Task";
+        submitBtn.textContent = "Update Task";
+        cancelBtn.style.display = 'inline-block';
+
+        taskCards.forEach(c => c.classList.remove('selected'));
+        this.classList.add('selected');
       });
     });
-  </script>
-</div>
+
+    cancelBtn.addEventListener('click', function() {
+      resetForm();
+    });
+
+    function resetForm() {
+      taskIdInput.value = '';
+      taskTitleInput.value = '';
+      taskContentInput.value = '';
+      taskPriorityInput.value = '2';
+      dueDateInput.value = '';
+      dueTimeInput.value = '';
+
+      taskForm.action = "{{ url_for('create_task') }}";
+      formTitle.textContent = "Create New Task";
+      submitBtn.textContent = "Create Task";
+      cancelBtn.style.display = 'none';
+
+      taskCards.forEach(c => c.classList.remove('selected'));
+    }
+  });
+</script>
