@@ -1,34 +1,27 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/components/welcome.css') }}" />
-
 <div class="welcome-container">
   <div class="welcome-title-container">
     <h1 class="welcome-title">
       Welcome to Momentum
     </h1>
-
     <h3 class="sub-title">
       A light-weight, task management application
     </h3>
   </div>
-
   <div class="welcome-body">
     <span class="welcome-body-text">
       You have not created a username
     </span>
-    
     <span class="welcome-body-text">
-      Even though this application run locally on your system...
+      Even though this application runs locally on your system...
     </span>
-
     <span class="welcome-body-text">
       We ask for a username to give the app a more realistic feel!
     </span>
-    
     <span class="welcome-body-text">
       To get started using Momentum, create a new username
     </span>
   </div>
-
   <form 
     method="POST"
     action="{{ url_for('register') }}"
@@ -37,7 +30,6 @@
     <label for="username" class="welcome-label">
       Create A Username
     </label>
-
     <input 
       type="text" 
       name="username"
@@ -47,7 +39,6 @@
       required
       class="welcome-user-input"
     />
-
     <button 
       type="submit"
       class="welcome-button"
@@ -56,79 +47,3 @@
     </button>
   </form>
 </div>
-
-<div id="taskPopup" class="modal">
-  <div class="modal-content">
-    <span class="close-btn">&times;</span>
-    <h2>Create New Task</h2>
-    <form id="taskForm" method="POST" action="{{ url_for('create_task') }}">
-      <div class="form-group">
-        <label for="taskTitle">Task Title *</label>
-        <input type="text" id="taskTitle" name="title" placeholder="Enter task title" required>
-      </div>
-      
-      <div class="form-group">
-        <label for="taskContent">Description *</label>
-        <textarea id="taskContent" name="content" placeholder="Enter task description" rows="4" required></textarea>
-      </div>
-      
-      <div class="form-group">
-        <label for="taskPriority">Priority *</label>
-        <select id="taskPriority" name="priority" required>
-          <option value="">Select priority</option>
-          <option value="3">Low (3)</option>
-          <option value="2" selected>Medium (2)</option>
-          <option value="1">High (1)</option>
-        </select>
-      </div>
-      
-      <div class="form-group-row">
-        <div class="form-group half">
-          <label for="dueDate">Due Date *</label>
-          <input type="date" id="dueDate" name="due_date" required>
-        </div>
-        
-        <div class="form-group half">
-          <label for="dueTime">Due Time *</label>
-          <input type="time" id="dueTime" name="due_time" required>
-        </div>
-      </div>
-      
-      <button type="submit" class="btn btn-primary">Create Task</button>
-    </form>
-  </div>
-</div>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const modal = document.getElementById('taskPopup');
-    const closeBtn = document.querySelector('.close-btn');
-    const newTaskBtn = document.querySelector('.new-task-button');
-    
-    if (newTaskBtn) {
-      newTaskBtn.addEventListener('click', function() {
-        modal.style.display = 'block';
-        
-        const today = new Date().toISOString().split('T')[0];
-        document.getElementById('dueDate').min = today;
-        
-        const now = new Date();
-        now.setHours(now.getHours() + 1);
-        const timeString = now.toTimeString().slice(0, 5);
-        document.getElementById('dueTime').value = timeString;
-      });
-    }
-    
-    if (closeBtn) {
-      closeBtn.addEventListener('click', function() {
-        modal.style.display = 'none';
-      });
-    }
-    
-    window.addEventListener('click', function(event) {
-      if (event.target === modal) {
-        modal.style.display = 'none';
-      }
-    });
-  });
-</script>

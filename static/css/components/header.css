@@ -6,7 +6,6 @@
   width: 100%;
   border-bottom: 1px solid var(--accent);
 }
-
 .clock-container {
   display: flex;
   flex-direction: column;
@@ -15,11 +14,9 @@
   width: 30%;
   margin-right: 2rem;
 }
-
 .app-icon {
   margin: 0.5rem;
 }
-
 .header-title {
   font-weight: bold;
   font-style: italic;
@@ -28,7 +25,6 @@
   width: 100%;
   text-align: start;
 }
-
 .clock-display {
   font-style: italic;
   font-size: 0.8rem;

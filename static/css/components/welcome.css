@@ -6,7 +6,6 @@
   width: 100%;
   flex-grow: 1;
 }
-
 .welcome-title-container {
   display: flex;
   flex-direction: column;
@@ -15,7 +14,6 @@
   width: 50%;
   margin-bottom: 5rem;
 }
-
 .welcome-body {
   display: flex;
   flex-direction: column;
@@ -24,7 +22,6 @@
   width: 100%;
   gap: 2rem;
 }
-
 .welcome-title {
   font-weight: bold;
   font-style: italic;
@@ -35,7 +32,6 @@
   text-align: center;
   margin-bottom: 0;
 }
-
 .sub-title {
   font-style: italic;
   font-size: 0.8rem;
@@ -43,7 +39,6 @@
   width: 100%;
   text-align: center;
 }
-
 .card {
   display: flex;
   flex-direction: column;
@@ -54,7 +49,6 @@
   border-left: 2px solid var(--accent);
   border-radius: 10px;
 }
-
 .welcome-input-container {
   display: flex;
   flex-direction: column;
@@ -65,7 +59,6 @@
   height: 100%;
   flex-grow: 1;
 }
-
 .welcome-label {
   font-weight: bold;
   font-style: italic;
@@ -74,7 +67,6 @@
   width: 100%;
   text-align: center;
 }
-
 .welcome-user-input {
   border: 2px solid var(--accent);
   border-radius: 10px;
@@ -87,23 +79,19 @@
   transition: all 0.3s ease-in;
   cursor: pointer;
 }
-
 .welcome-user-input::placeholder {
   color: var(--text-secondary);
 }
-
 .welcome-user-input:hover {
   background-color: var(--surface-light);
   box-shadow: 0 4px 6px -1px var(--text-secondary);
   transform: translateY(-0.5rem);
 }
-
 .welcome-user-input:focus {
   background-color: var(--surface-light);
   transform: translateY(-0.5rem);
   outline: none;
 }
-
 .welcome-button {
   border: 2px solid var(--accent);
   border-radius: 10px;
@@ -115,13 +103,11 @@
   transition: all 0.3s ease-in;
   cursor: pointer;
 }
-
 .welcome-button:hover {
   background-color: var(--surface-light);
   box-shadow: 0 4px 6px -1px var(--text-secondary);
   transform: translateY(-0.5rem);
 }
-
 .welcome-button:focus {
   outline: none;
 }
