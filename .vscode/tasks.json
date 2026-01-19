@@ -6,15 +6,15 @@
     {
       "label": "Git Update",
       "type": "shell",
-      "command": "git fetch origin && git pull origin master",
+      "command": "git fetch origin && git pull origin main",
       "windows": {
-        "command": "git fetch origin && git pull origin master"
+        "command": "git fetch origin && git pull origin main"
       },
       "linux": {
-        "command": "git fetch origin && git pull origin master"
+        "command": "git fetch origin && git pull origin main"
       },
       "osx": {
-        "command": "git fetch origin && git pull origin master"
+        "command": "git fetch origin && git pull origin main"
       },
       "problemMatcher": [],
       "group": "none",
@@ -28,7 +28,7 @@
       "options": {
         "cwd": "${workspaceFolder}"
       },
-      "detail": "Fetches and pulls from origin/master branch"
+      "detail": "Fetches and pulls from origin/main branch"
     }
   ]
 }

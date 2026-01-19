@@ -15,11 +15,11 @@
       },
       "args": [
         "run",
-        "--no-debugger",
-        "--no-reload"
+        "--debugger",
+        "--reload"
       ],
       "jinja": true,
-      "autoStartBrowser": false
+      "autoStartBrowser": true
     }
   ]
 }
