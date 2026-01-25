@@ -16,4 +16,3 @@ class Task(Base):
     priority = Column(Integer, index = True, default = 3)
     created_at = Column(DateTime, index = True, default = lambda: datetime.now())
     updated_at = Column(DateTime, index = True, default = lambda: datetime.now(), onupdate = lambda: datetime.now())
-    is_completed = Column(Boolean, index = True, default = False)
