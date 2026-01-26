@@ -1,6 +1,7 @@
 MIT License
 
-Copyright (c) 2026 Mekasu
+Copyright (c) 2024 Momentum Task Management Application
+Copyright (c) 2024 mek0124 (https://github.com/mek0124)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
