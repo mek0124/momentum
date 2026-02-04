@@ -7,6 +7,9 @@ from app.core.logic import MomentumLogic
 from app.database.db import get_base, get_engine, get_db
 from app.models.task import Task
 
+from updater.app import Updater
+
+import tomllib
 import json
 import sys
 
@@ -72,6 +75,7 @@ def get_user_agreement(root_dir: Path) -> bool:
 
 
 def check_perms(root_dir: Path) -> bool:
+    
     ua_file = root_dir / "app" / "storage" / "config.json"
     
     try:
@@ -95,12 +99,13 @@ def check_perms(root_dir: Path) -> bool:
         return False
 
 
-
-def run():
+def run_main():
+    """
+    A function that handles displaying the main application
+    window to the user for user interaction
+    """
     app = QApplication(sys.argv)
-
     root_dir = Path(__file__).parent
-
     did_agree = check_perms(root_dir)
 
     if not did_agree:
@@ -122,6 +127,83 @@ def run():
     window.show()
 
     sys.exit(app.exec())
+
+
+def run_updater():
+    """
+    A function that handles displaying the Updater
+    window to notify the user that update is available.
+
+    - buttons
+        - update notes
+            - navigates from dashboard to update notes screen
+        - cancel
+            - exits the updater application so that the main application can run
+        - update
+            - updates the application to the newest version
+    """
+    app = QApplication(sys.argv)
+    root_dir = Path(__file__).parent
+    color_theme_path = root_dir / "updater" / "utils" / "color_theme.json"
+    pyproject_toml_path = root_dir / "pyproject.toml"
+
+    with open(color_theme_path, 'r', encoding="utf-8-sig") as f:
+        color_theme = json.load(f)
+
+    with open(pyproject_toml_path, 'rb') as file:
+        pyproject_data = tomllib.load(file)
+
+        if "project" in pyproject_data and "version" in pyproject_data["project"]:
+            curr_version = pyproject_data["project"]["version"]
+
+    new_version = "0.0.0"
+
+    window = Updater(color_theme, new_version, curr_version)
+    window.setWindowTitle("Momentum - Updater")
+    window.setMinimumWidth(800)
+    window.setMinimumHeight(600)
+    window.setWindowIcon(QPixmap("./app/assets/icon.png"))
+    window.show()
+
+    sys.exit(app.exec())
+
+
+def check_for_update(self):
+    """
+    A function that handles querying the lates releases version
+    from the github repo, compares that version to the version
+    that is in the pyproject.toml file. If the latest version
+    does not match the version in the pyproject.toml file, then
+    return True for an update to exist. If the two version numbers
+    match, then return False for no update available.
+    """
+    github_repo_route = "https://github.com/mek0124/momentum"
+    return True
+
+
+def run():
+    """
+    A function to handle checking if an update is available
+
+    - True
+        - run_updater()
+        - run_main()
+    - False
+        - run_main()
+
+    if an update exists, run the updater application. when the
+    user clicks Update and the updates finishes, or when the user
+    clicks the cancel button, the updater application should exit
+    and the main application should run.
+    """
+    update_available = check_for_update()
+
+    if update_available:
+        run_updater()
+        run_main()
+    
+    else:
+        run_main()
 
 
 if __name__ == '__main__':
