@@ -7,7 +7,6 @@ from PySide6.QtWidgets import (
 from PySide6.QtCore import Qt, QTimer
 
 from ..models.task import Task
-from ..utils.color_theme import COLOR_THEME
 
 
 class Dashboard(QWidget):
@@ -17,6 +16,7 @@ class Dashboard(QWidget):
         self.setObjectName("Dashboard")
 
         self.db = parent.db
+        self.color_theme = parent.color_theme
 
         self.all_tasks = self.db.query(Task).all()
         self.editing_id = ""
@@ -69,8 +69,8 @@ class Dashboard(QWidget):
         panel.setStyleSheet(
             f"""
                 QWidget {{
-                    border-left: 2px solid {COLOR_THEME['primary']};
-                    border-right: 2px solid {COLOR_THEME['primary']};
+                    border-left: 2px solid {self.color_theme['primary']};
+                    border-right: 2px solid {self.color_theme['primary']};
                 }}
             """
         )
@@ -86,7 +86,7 @@ class Dashboard(QWidget):
                 f"""
                     QLabel {{
                         border: none;
-                        color: {COLOR_THEME['primary']};
+                        color: {self.color_theme['primary']};
                         font-weight: bold;
                         font-style: italic;
                         font-size: 16px;
@@ -102,7 +102,7 @@ class Dashboard(QWidget):
                         font-style: italic;
                         font-size: 12px;
                         border: none;
-                        color: {COLOR_THEME['text_primary']};
+                        color: {self.color_theme['text_primary']};
                     }}
                 """
             )
@@ -129,9 +129,9 @@ class Dashboard(QWidget):
                 task_card.setStyleSheet(
                     f"""
                         QWidget {{
-                            background-color: {COLOR_THEME['surface']};
-                            border: 1px solid {COLOR_THEME['primary']};
-                            border-radius: {COLOR_THEME['border_radius_medium']};
+                            background-color: {self.color_theme['surface']};
+                            border: 1px solid {self.color_theme['primary']};
+                            border-radius: {self.color_theme['border_radius_medium']};
                         }}
                     """
                 )
@@ -149,7 +149,7 @@ class Dashboard(QWidget):
                             font-weight: bold;
                             font-style: italic;
                             font-size: 12px;
-                            color: {COLOR_THEME['primary']};
+                            color: {self.color_theme['primary']};
                             border: none;
                         }}
                     """
@@ -161,7 +161,7 @@ class Dashboard(QWidget):
                     f"""
                         QLabel {{
                             font-size: 10px;
-                            color: {COLOR_THEME['text_primary']};
+                            color: {self.color_theme['text_primary']};
                             border: none;
                         }}
                     """
@@ -181,7 +181,7 @@ class Dashboard(QWidget):
                     f"""
                         QLabel {{
                             font-size: 10px;
-                            color: {COLOR_THEME['text_primary']};
+                            color: {self.color_theme['text_primary']};
                         }}
                     """
                 )
@@ -193,7 +193,7 @@ class Dashboard(QWidget):
                     f"""
                         QLabel {{
                             font-size: 10px;
-                            color: {COLOR_THEME['text_primary']};
+                            color: {self.color_theme['text_primary']};
                         }}
                     """
                 )
@@ -209,7 +209,7 @@ class Dashboard(QWidget):
                         f"""
                             QLabel {{
                                 font-size: 10px;
-                                color: {COLOR_THEME['text_primary']};
+                                color: {self.color_theme['text_primary']};
                             }}
                         """
                     )
@@ -230,8 +230,8 @@ class Dashboard(QWidget):
                 edit_btn.setStyleSheet(
                     f"""
                         QPushButton {{
-                            border: 2px solid {COLOR_THEME['primary']};
-                            border-radius: {COLOR_THEME['border_radius_small']};
+                            border: 2px solid {self.color_theme['primary']};
+                            border-radius: {self.color_theme['border_radius_small']};
                             background-color: transparent;
                             width: 40px;
                             height: 20px;
@@ -239,7 +239,7 @@ class Dashboard(QWidget):
                         }}
 
                         QPushButton::hover {{
-                            background-color: {COLOR_THEME['surface_light']};
+                            background-color: {self.color_theme['surface_light']};
                         }}
                     """
                 )
@@ -249,8 +249,8 @@ class Dashboard(QWidget):
                 del_btn.setStyleSheet(
                     f"""
                         QPushButton {{
-                            border: 2px solid {COLOR_THEME['primary']};
-                            border-radius: {COLOR_THEME['border_radius_small']};
+                            border: 2px solid {self.color_theme['primary']};
+                            border-radius: {self.color_theme['border_radius_small']};
                             background-color: transparent;
                             width: 40px;
                             height: 20px;
@@ -258,7 +258,7 @@ class Dashboard(QWidget):
                         }}
 
                         QPushButton::hover {{
-                            background-color: {COLOR_THEME['surface_light']};
+                            background-color: {self.color_theme['surface_light']};
                         }}
                     """
                 )
@@ -294,7 +294,7 @@ class Dashboard(QWidget):
                 QLabel {{
                     border: none;
                     font-style: italic;
-                    color: {COLOR_THEME['primary']};
+                    color: {self.color_theme['primary']};
                     font-size: 12px;
                 }}
             """
@@ -306,18 +306,18 @@ class Dashboard(QWidget):
             f"""
                 QLineEdit {{
                     background-color: transparent;
-                    border: 2px solid {COLOR_THEME['primary']};
-                    border-radius: {COLOR_THEME['border_radius_small']};
+                    border: 2px solid {self.color_theme['primary']};
+                    border-radius: {self.color_theme['border_radius_small']};
                     height: 30px;
                     font-size: 12px;
                 }}
 
                 QLineEdit::hover {{
-                    background-color: {COLOR_THEME['surface_light']};
+                    background-color: {self.color_theme['surface_light']};
                 }}
 
                 QLineEdit::cursor {{
-                    color: {COLOR_THEME['primary']};
+                    color: {self.color_theme['primary']};
                 }}
             """
         )
@@ -329,7 +329,7 @@ class Dashboard(QWidget):
                 QLabel {{
                     border: none;
                     font-style: italic;
-                    color: {COLOR_THEME['primary']};
+                    color: {self.color_theme['primary']};
                     font-size: 12px;
                 }}
             """
@@ -341,13 +341,13 @@ class Dashboard(QWidget):
             f"""
                 QTextEdit {{
                     background-color: transparent;
-                    border: 2px solid {COLOR_THEME['primary']};
-                    border-radius: {COLOR_THEME['border_radius_small']};
+                    border: 2px solid {self.color_theme['primary']};
+                    border-radius: {self.color_theme['border_radius_small']};
                     font-size: 12px;
                 }}
 
                 QTextEdit::hover {{
-                    background-color: {COLOR_THEME['surface_light']};
+                    background-color: {self.color_theme['surface_light']};
                 }}
             """
         )
@@ -358,7 +358,7 @@ class Dashboard(QWidget):
                 QLabel {{
                     border: none;
                     font-style: italic;
-                    color: {COLOR_THEME['primary']};
+                    color: {self.color_theme['primary']};
                     font-size: 12px;
                 }}
             """
@@ -376,25 +376,25 @@ class Dashboard(QWidget):
         self.radio_low.setStyleSheet(
             f"""
                 QRadioButton {{
-                    color: {COLOR_THEME['primary']};
+                    color: {self.color_theme['primary']};
                     font-size: 12px;
                 }}
 
                 QRadioButton::indicator {{
                     width: 20px;
                     height: 20px;
-                    border-radius: {COLOR_THEME["border_radius_medium"]};
+                    border-radius: {self.color_theme["border_radius_medium"]};
                 }}
 
                 QRadioButton::indicator::unchecked {{
                     background-color: transparent;
-                    border: 2px solid {COLOR_THEME['primary']};
+                    border: 2px solid {self.color_theme['primary']};
                 }}
 
                 QRadioButton::indicator::checked {{
-                    background-color: {COLOR_THEME['primary']};
+                    background-color: {self.color_theme['primary']};
                     border: transparent;
-                    border-radius: {COLOR_THEME['border_radius_medium']};
+                    border-radius: {self.color_theme['border_radius_medium']};
                 }}
             """
         )
@@ -403,25 +403,25 @@ class Dashboard(QWidget):
         self.radio_medium.setStyleSheet(
             f"""
                 QRadioButton {{
-                    color: {COLOR_THEME['primary']};
+                    color: {self.color_theme['primary']};
                     font-size: 12px;
                 }}
 
                 QRadioButton::indicator {{
                     width: 20px;
                     height: 20px;
-                    border-radius: {COLOR_THEME["border_radius_medium"]};
+                    border-radius: {self.color_theme["border_radius_medium"]};
                 }}
 
                 QRadioButton::indicator::unchecked {{
                     background-color: transparent;
-                    border: 2px solid {COLOR_THEME['primary']};
+                    border: 2px solid {self.color_theme['primary']};
                 }}
 
                 QRadioButton::indicator::checked {{
-                    background-color: {COLOR_THEME['primary']};
+                    background-color: {self.color_theme['primary']};
                     border: transparent;
-                    border-radius: {COLOR_THEME['border_radius_medium']};
+                    border-radius: {self.color_theme['border_radius_medium']};
                 }}
             """
         )
@@ -430,25 +430,25 @@ class Dashboard(QWidget):
         self.radio_high.setStyleSheet(
             f"""
                 QRadioButton {{
-                    color: {COLOR_THEME['primary']};
+                    color: {self.color_theme['primary']};
                     font-size: 12px;
                 }}
 
                 QRadioButton::indicator {{
                     width: 20px;
                     height: 20px;
-                    border-radius: {COLOR_THEME["border_radius_medium"]};
+                    border-radius: {self.color_theme["border_radius_medium"]};
                 }}
 
                 QRadioButton::indicator::unchecked {{
                     background-color: transparent;
-                    border: 2px solid {COLOR_THEME['primary']};
+                    border: 2px solid {self.color_theme['primary']};
                 }}
 
                 QRadioButton::indicator::checked {{
-                    background-color: {COLOR_THEME['primary']};
+                    background-color: {self.color_theme['primary']};
                     border: transparent;
-                    border-radius: {COLOR_THEME['border_radius_medium']};
+                    border-radius: {self.color_theme['border_radius_medium']};
                 }}
             """
         )
@@ -464,8 +464,8 @@ class Dashboard(QWidget):
         clear_btn.setStyleSheet(
             f"""
                 QPushButton {{
-                    border: 2px solid {COLOR_THEME['primary']};
-                    border-radius: {COLOR_THEME['border_radius_small']};
+                    border: 2px solid {self.color_theme['primary']};
+                    border-radius: {self.color_theme['border_radius_small']};
                     background-color: transparent;
                     width: 40px;
                     height: 20px;
@@ -473,7 +473,7 @@ class Dashboard(QWidget):
                 }}
 
                 QPushButton::hover {{
-                    background-color: {COLOR_THEME['surface_light']};
+                    background-color: {self.color_theme['surface_light']};
                 }}
             """
         )
@@ -484,8 +484,8 @@ class Dashboard(QWidget):
         submit_btn.setStyleSheet(
             f"""
                 QPushButton {{
-                    border: 2px solid {COLOR_THEME['primary']};
-                    border-radius: {COLOR_THEME['border_radius_small']};
+                    border: 2px solid {self.color_theme['primary']};
+                    border-radius: {self.color_theme['border_radius_small']};
                     background-color: transparent;
                     width: 40px;
                     height: 20px;
@@ -493,7 +493,7 @@ class Dashboard(QWidget):
                 }}
 
                 QPushButton::hover {{
-                    background-color: {COLOR_THEME['surface_light']};
+                    background-color: {self.color_theme['surface_light']};
                 }}
             """
         )
@@ -529,10 +529,10 @@ class Dashboard(QWidget):
     def handle_error_success(self, is_error: bool, msg: str, duration: int = 3000):
         if is_error:
             self.status_bar.setStyleSheet(
-                f"background-color: {COLOR_THEME['error']}; color: black;")
+                f"background-color: {self.color_theme['error']}; color: black;")
         else:
             self.status_bar.setStyleSheet(
-                f"background-color: {COLOR_THEME['success']}; color: black;")
+                f"background-color: {self.color_theme['success']}; color: black;")
 
         self.status_bar.showMessage(msg, duration)
 
