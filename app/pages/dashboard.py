@@ -15,10 +15,10 @@ class Dashboard(QWidget):
 
         self.setObjectName("Dashboard")
 
-        self.db = parent.db
+        self.logic = parent.logic
         self.color_theme = parent.color_theme
 
-        self.all_tasks = self.db.query(Task).all()
+        self.all_tasks = self.logic.get_all_tasks()
         self.editing_id = ""
 
         self.setup_ui()
@@ -526,7 +526,7 @@ class Dashboard(QWidget):
         self.editing_id = ""
         self.setup_ui()
 
-    def handle_error_success(self, is_error: bool, msg: str, duration: int = 3000):
+    def handle_error_success(self, is_error: bool, msg: str):
         if is_error:
             self.status_bar.setStyleSheet(
                 f"background-color: {self.color_theme['error']}; color: black;")
@@ -534,10 +534,10 @@ class Dashboard(QWidget):
             self.status_bar.setStyleSheet(
                 f"background-color: {self.color_theme['success']}; color: black;")
 
-        self.status_bar.showMessage(msg, duration)
+        self.status_bar.showMessage(msg)
 
         self.timer = QTimer()
-        self.timer.setInterval(duration)
+        self.timer.setInterval(3000)
         self.timer.setSingleShot(True)
         self.timer.timeout.connect(self.reset_status_bar)
         self.timer.start()
@@ -559,19 +559,13 @@ class Dashboard(QWidget):
         new_details = self.details_input.toPlainText().strip()
         
         if not new_title:
-            self.handle_error_success(True, "Title Error: title cannot be empty", 3000)
+            self.handle_error_success(True, "Title Error: title cannot be empty")
             return
         
         if not new_details:
             self.handle_error_success(True, "Details Error: details cannot be empty", 3000)
             return
         
-        title_exists = self.db.query(Task).filter(Task.title == new_title).first()
-
-        if title_exists:
-            self.handle_error_success(True, "Title Error: title already exists", 3000)
-            return
-        
         if self.radio_low.isChecked():
             priority = 3
         elif self.radio_medium.isChecked():
@@ -581,44 +575,25 @@ class Dashboard(QWidget):
         else:
             priority = 3
 
-        new_task = Task(
-            title = new_title,
-            details = new_details,
-            priority = priority
-        )
+        new_task = {
+            "title": new_title,
+            "details": new_details,
+            "priority": priority
+        }
 
-        try:
-            self.db.add(new_task)
-            self.db.commit()
-            self.load_tasks()
-            self.handle_error_success(False, "Task created successfully!", 3000)
-
-        except Exception as e:
-            self.handle_error_success(True, f"Unknown Error Saving Task: {e}", 3000)
-            self.db.rollback()
-            return
+        did_save, response = self.logic.save_task(new_task)
+        self.load_tasks()
+        return self.handle_error_success(did_save, response)
 
     def update_task(self):
         new_title = self.title_input.text().strip()
         new_details = self.details_input.toPlainText().strip()
 
         if not new_title:
-            self.handle_error_success(
-                True, "Title Error: title cannot be empty", 3000)
-            return
+            return self.handle_error_success(True, "Title Error: title cannot be empty")
 
         if not new_details:
-            self.handle_error_success(
-                True, "Details Error: details cannot be empty", 3000)
-            return
-
-        title_exists = self.db.query(Task).filter(
-            Task.title == new_title, Task.id != int(self.editing_id)).first()
-
-        if title_exists:
-            self.handle_error_success(
-                True, "Title Error: title already exists", 3000)
-            return
+            return self.handle_error_success(True, "Details Error: details cannot be empty")
 
         if self.radio_low.isChecked():
             priority = 3
@@ -629,21 +604,15 @@ class Dashboard(QWidget):
         else:
             priority = 3
 
-        try:
-            task = self.db.query(Task).filter(
-                Task.id == int(self.editing_id)).first()
-            task.title = new_title
-            task.details = new_details
-            task.priority = priority
-            self.db.commit()
-            self.handle_error_success(
-                False, "Task updated successfully!", 3000)
+        updated_task = {
+            "title": new_title,
+            "details": new_details,
+            "priority": priority
+        }
+        
+        did_update, response = self.logic.update_task(self.editing_id, updated_task)
 
-        except Exception as e:
-            self.handle_error_success(
-                True, f"Unknown Error Saving Task: {e}", 3000)
-            self.db.rollback()
-            return
+        return self.handle_error_success(did_update, response)
 
     def populate_form(self):
         sender = self.sender()
@@ -668,23 +637,16 @@ class Dashboard(QWidget):
     def delete_task(self):
         sender = self.sender()
         task_id = sender.property("task_id")
-        
-        try:
-            self.db.query(Task).filter(Task.id == int(task_id)).delete()
-            self.db.commit()
-            self.handle_error_success(False, "Task Deleted Successfully", 3000)
-            self.load_tasks()
-        
-        except Exception as e:
-            self.handle_error_success(True, str(e), 3000)
-            self.db.rollback()
-            self.load_tasks()
+
+        did_delete, response = self.logic.delete_task(task_id)
+        self.load_tasks()
+        return self.handle_error_success(did_delete, response)
 
     def load_tasks(self):
         self.title_input.clear()
         self.details_input.clear()
         self.title_input.setFocus()
         self.radio_low.setChecked(True)
-        self.all_tasks = self.db.query(Task).all()
+        self.all_tasks = self.logic.get_all_tasks()
         self.editing_id = ""
         self.setup_ui()
