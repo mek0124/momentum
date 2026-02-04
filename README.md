@@ -5,7 +5,7 @@
 ![Flask](https://img.shields.io/badge/Flask-3.0+-lightgrey)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
-Momentum is a **local-first**, minimalist task manager built with Flask and SQLAlchemy.
+Momentum is a **local-first**, minimalist task manager built with PySide6 and SQLAlchemy.
 No accounts. No cloud. No tracking. Just tasks.
 
 ---
@@ -13,11 +13,10 @@ No accounts. No cloud. No tracking. Just tasks.
 ## Why Momentum?
 
 Most task managers are bloated, cloud-dependent, or opinionated.
-Momentum is intentionally boring — fast, local, and hackable.
+Momentum is intentionally boring, fast, and local.
 
 - 🗂 Local SQLite database
 - 🌓 Dark UI, modern CSS
-- ⚡ Zero JS frameworks
 - 🔒 Your data never leaves your machine
 
 ---
@@ -38,9 +37,15 @@ Momentum is intentionally boring — fast, local, and hackable.
 ```bash
 git clone https://github.com/mek0124/momentum.git
 cd momentum
-python -m venv venv
-source venv/bin/activate
-pip install -e ".[dev]"
+python3 -m venv .venv
+
+# linux
+source .venv/bin/activate
+
+# windows
+.venv\Scripts\Activate.ps1
+
+pip install -r pyproject.toml
 ```
 
 Create `.env`:
@@ -53,20 +58,22 @@ SQLALCHEMY_DB_URL=sqlite:///./core/storage/main.db
 Run:
 
 ```bash
-python -m flask --app main run --debug
+python3 main.py
 ```
-
-Open http://localhost:5000
 
 ---
 
 ## Project Layout
 
 ```
-core/        database + models
-static/     css + assets
-templates/  jinja templates
-main.py     flask app
+- app/
+  - assets/ - holds images
+  - database/ - SQLAlchemy Database Configuration
+  - models/ - An SQLAlchemy ORM for the Task
+  - pages/ - the UI layer folder
+  - storage/ - home of the database folder
+  - utils/ - a centralized area for configs and color themes
+- main.py - the main entry file
 ```
 
 ---
