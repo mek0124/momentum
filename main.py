@@ -3,6 +3,7 @@ from PySide6.QtGui import QPixmap
 from pathlib import Path
 
 from app.app import Momentum
+from app.core.logic import MomentumLogic
 from app.database.db import get_base, get_engine, get_db
 from app.models.task import Task
 
@@ -111,8 +112,9 @@ def run():
         color_theme = json.load(f)
 
     db = next(get_db())
+    logic = MomentumLogic(db)
 
-    window = Momentum(color_theme, db)
+    window = Momentum(color_theme, logic)
     window.setWindowTitle("Momentum")
     window.setMinimumWidth(800)
     window.setMinimumHeight(600)
