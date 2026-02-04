@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "momentum"
-version = "1.0.0"
+version = "1.0.2"
 description = "A light-weight local-first task tracking desktop application"
 readme = "README.md"
 requires-python = ">=3.12"
