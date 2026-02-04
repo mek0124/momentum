@@ -181,30 +181,32 @@ def check_for_update(self):
     return True
 
 
-def run():
-    """
-    A function to handle checking if an update is available
+# def run():
+#     """
+#     A function to handle checking if an update is available
 
-    - True
-        - run_updater()
-        - run_main()
-    - False
-        - run_main()
+#     - True
+#         - run_updater()
+#         - run_main()
+#     - False
+#         - run_main()
 
-    if an update exists, run the updater application. when the
-    user clicks Update and the updates finishes, or when the user
-    clicks the cancel button, the updater application should exit
-    and the main application should run.
-    """
-    update_available = check_for_update()
+#     if an update exists, run the updater application. when the
+#     user clicks Update and the updates finishes, or when the user
+#     clicks the cancel button, the updater application should exit
+#     and the main application should run.
+#     """
+#     update_available = check_for_update()
 
-    if update_available:
-        run_updater()
-        run_main()
+#     if update_available:
+#         run_updater()
+#         run_main()
     
-    else:
-        run_main()
+#     else:
+#         run_main()
 
 
 if __name__ == '__main__':
-    run()
+    # run()
+
+    run_main()
