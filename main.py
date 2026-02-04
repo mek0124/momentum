@@ -1,4 +1,5 @@
 from PySide6.QtWidgets import QApplication
+from PySide6.QtGui import QPixmap
 from pathlib import Path
 
 from app.app import Momentum
@@ -23,6 +24,7 @@ def run():
     window.setWindowTitle("Momentum")
     window.setMinimumWidth(800)
     window.setMinimumHeight(600)
+    window.setWindowIcon(QPixmap("./app/assets/icon.png"))
     window.show()
 
     sys.exit(app.exec())
