@@ -171,7 +171,7 @@ def get_latest_version_from_repo():
         return None
 
 
-def check_for_update(root_dir: Path) -> bool:
+def check_for_update(root_dir: Path):
     pyproject_toml_path = root_dir / "pyproject.toml"
 
     with open(pyproject_toml_path, 'rb') as file:
@@ -182,11 +182,10 @@ def check_for_update(root_dir: Path) -> bool:
 
     latest_version = get_latest_version_from_repo()
 
-    return True, local_version, latest_version \
-        if \
-        latest_version != local_version \
-        else \
-        False
+    if not latest_version:
+        return False, local_version, latest_version
+
+    return latest_version != local_version, local_version, latest_version
 
 
 def run_updater(root_dir, local_version, latest_version):
@@ -209,7 +208,7 @@ if __name__ == '__main__':
 
     update_ready, local_version, latest_version = check_for_update(root_dir)
 
-    if update_ready:
+    if update_ready and latest_version:
         run_updater(root_dir, local_version, latest_version)
     
     else:

@@ -8,6 +8,7 @@ from qfluentwidgets import (
 
 from .pages.dashboard import Dashboard
 from .pages.change_log import ChangeLog
+from .pages.splash import SplashScreen
 
 
 class Updater(MSFluentWindow):
@@ -21,6 +22,7 @@ class Updater(MSFluentWindow):
 
         self.dashboard = Dashboard(self)
         self.change_log = ChangeLog(self)
+        self.splash_screen = SplashScreen(self)
 
         self.apply_app_styles()
         self.init_navigation()
@@ -48,3 +50,9 @@ class Updater(MSFluentWindow):
             fi.CALENDAR,
             "Changelog"
         )
+
+    def show_splash_screen(self):
+        self.stackedWidget.addWidget(self.splash_screen)
+        self.stackedWidget.setCurrentWidget(self.splash_screen)
+        self.navigationInterface.setDisabled(True)
+        self.splash_screen.start_update()

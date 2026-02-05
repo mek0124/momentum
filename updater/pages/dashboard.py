@@ -8,14 +8,13 @@ from PySide6.QtWidgets import (
 
 from PySide6.QtCore import Qt
 
-import sys
-
 
 class Dashboard(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setObjectName("Dashboard")
 
+        self.parent_window = parent
         self.color_theme = parent.color_theme
         self.local_version = parent.local_version
         self.latest_version = parent.latest_version
@@ -131,14 +130,8 @@ class Dashboard(QWidget):
         layout.addStretch()
 
     def exit_app(self):
-        sys.exit(0)
+        from PySide6.QtWidgets import QApplication
+        QApplication.quit()
 
     def update_app(self):
-        """
-        this function should switch off to a QSplashWindow
-        with progress text and a progress bar for updating
-        the application. Once the update is finished, the
-        Update application should exit and the Momentum
-        application should launch
-        """
-        pass
+        self.parent_window.show_splash_screen()
