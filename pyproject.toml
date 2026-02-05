@@ -4,5 +4,11 @@ version = "1.0.0"
 description = "A light-weight task tracking application"
 requires-python = ">=3.12"
 dependencies = [
-  "pyside6>=6.9.1"
+  "pyside6>=6.9.1",
+  "cryptography>=46.0.3",
+  "markdown>=3.10.1",
+  "pyside6-fluent-widgets>=1.10.5",
+  "python-dotenv>=1.2.1",
+  "requests>=2.32.5",
+  "sqlalchemy>=2.0.45"
 ]
