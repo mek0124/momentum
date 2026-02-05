@@ -176,12 +176,19 @@ class Dashboard(QWidget):
                 task_card_row_layout.setSpacing(10)
                 task_card_row_layout.setAlignment(Qt.AlignCenter)
 
+                if task.priority == 3:
+                    color = "success"
+                elif task.priority == 2:
+                    color = "warning"
+                elif task.priority == 1:
+                    color = "error"
+
                 priority_label = QLabel(f"Priority\n{task.priority}")
                 priority_label.setStyleSheet(
                     f"""
                         QLabel {{
                             font-size: 10px;
-                            color: {self.color_theme['text_primary']};
+                            color: {self.color_theme[color]};
                         }}
                     """
                 )
@@ -626,10 +633,13 @@ class Dashboard(QWidget):
 
                 if task.priority == 1:
                     self.radio_high.setChecked(True)
+                    self.radio_high.setStyleSheet(f"background-color: {self.color_theme['error']};")
                 elif task.priority == 2:
                     self.radio_medium.setChecked(True)
+                    self.radio_medium.setStyleSheet(f"background-color: {self.color_theme['warning']};")
                 else:
                     self.radio_low.setChecked(True)
+                    self.radio_low.setStyleSheet(f"background-color: {self.color_theme['success']};")
 
                 self.submit_btn.setText("Update")
                 break
