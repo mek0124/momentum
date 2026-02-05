@@ -1,14 +1,77 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "momentum"
-version = "1.2.0"
-description = "A light-weight task tracking application"
+version = "2.0.0"
+description = "A light-weight, local-first task tracking application"
+readme = "README.md"
 requires-python = ">=3.12"
-dependencies = [
-  "pyside6>=6.9.1",
-  "cryptography>=46.0.3",
-  "markdown>=3.10.1",
-  "pyside6-fluent-widgets>=1.10.5",
-  "python-dotenv>=1.2.1",
-  "requests>=2.32.5",
-  "sqlalchemy>=2.0.45"
+license = "MIT"
+authors = [
+    {name = "mek0124", email = "mek0124@proton.me"},
 ]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: End Users/Desktop",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Office/Business :: Scheduling",
+    "Topic :: Utilities",
+]
+dependencies = [
+    "pyside6>=6.9.1",
+    "qfluentwidgets>=1.10.5",
+    "sqlalchemy>=2.0.45",
+    "python-dotenv>=1.2.1",
+    "requests>=2.32.5",
+    "markdown>=3.10.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "black>=24.8.0",
+    "flake8>=7.1.1",
+    "pytest>=8.3.2",
+    "ruff>=0.7.2",
+]
+
+[project.urls]
+Homepage = "https://github.com/mek0124/momentum"
+Repository = "https://github.com/mek0124/momentum"
+Issues = "https://github.com/mek0124/momentum/issues"
+
+[tool.setuptools]
+packages = [
+    "app",
+    "app.core",
+    "app.database", 
+    "app.models",
+    "app.pages",
+    "app.utils",
+    "updater",
+    "updater.pages",
+    "updater.utils",
+]
+
+[tool.setuptools.package-dir]
+app = "app"
+"app.core" = "app/core"
+"app.database" = "app/database"
+"app.models" = "app/models"
+"app.pages" = "app/pages"
+"app.utils" = "app/utils"
+updater = "updater"
+"updater.pages" = "updater/pages"
+"updater.utils" = "updater/utils"
+
+[tool.setuptools.package-data]
+app = ["assets/*.png"]
+updater = ["pages/*.py", "utils/*.py"]
+
+[project.scripts]
+momentum = "main:run_main"
+
+[project.entry-points."gui_scripts"]
+momentum-gui = "main:run_main"
