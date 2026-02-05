@@ -7,21 +7,19 @@ from qfluentwidgets import (
 )
 
 from .pages.dashboard import Dashboard
-from .pages.notes import Notes
 from .pages.change_log import ChangeLog
 
 
 class Updater(MSFluentWindow):
-    def __init__(self, root_dir, color_theme, latest_version, local_version):
+    def __init__(self, root_dir, color_theme, local_version, latest_version):
         super().__init__()
 
         self.root_dir = root_dir
         self.color_theme = color_theme
-        self.latest_version = latest_version
         self.local_version = local_version
+        self.latest_version = latest_version
 
         self.dashboard = Dashboard(self)
-        self.notes = Notes(self)
         self.change_log = ChangeLog(self)
 
         self.apply_app_styles()
@@ -43,12 +41,6 @@ class Updater(MSFluentWindow):
             self.dashboard,
             fi.APPLICATION,
             "Dashboard"
-        )
-
-        self.addSubInterface(
-            self.notes,
-            fi.QUICK_NOTE,
-            "Notes"
         )
 
         self.addSubInterface(
