@@ -11,4 +11,6 @@ Change Log for Momentum
     - No button -> launches app at current version
     - Yes button -> updates application to newest version and then launches the main application
   - changelog page which displays the changelog of the application to the user for reading
-  
+- merged update thread to separate file
+- updated splash screen progress bar to be more fluid
+- updated readme
