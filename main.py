@@ -182,15 +182,15 @@ def check_for_update(root_dir: Path) -> bool:
 
     latest_version = get_latest_version_from_repo()
 
-    return True, latest_version, local_version \
+    return True, local_version, latest_version \
         if \
         latest_version != local_version \
         else \
         False
 
 
-def run_updater(root_dir, latest_version, local_version):
-    window = Updater(root_dir, COLOR_THEME, latest_version, local_version)
+def run_updater(root_dir, local_version, latest_version):
+    window = Updater(root_dir, COLOR_THEME, local_version, latest_version)
     window.setMinimumWidth(800)
     window.setMinimumHeight(600)
     window.show()
@@ -210,7 +210,7 @@ if __name__ == '__main__':
     update_ready, local_version, latest_version = check_for_update(root_dir)
 
     if update_ready:
-        run_updater(root_dir, latest_version, local_version)
+        run_updater(root_dir, local_version, latest_version)
     
     else:
         run_main()
