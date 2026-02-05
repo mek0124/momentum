@@ -7,7 +7,6 @@ from PySide6.QtWidgets import (
 from PySide6.QtCore import Qt, QTimer
 
 from ..models.task import Task
-from ..utils.color_theme import COLOR_THEME
 
 
 class Dashboard(QWidget):
@@ -16,9 +15,10 @@ class Dashboard(QWidget):
 
         self.setObjectName("Dashboard")
 
-        self.db = parent.db
+        self.logic = parent.logic
+        self.color_theme = parent.color_theme
 
-        self.all_tasks = self.db.query(Task).all()
+        self.all_tasks = self.logic.get_all_tasks()
         self.editing_id = ""
 
         self.setup_ui()
@@ -56,6 +56,7 @@ class Dashboard(QWidget):
         status_bar_container_layout.setAlignment(Qt.AlignCenter)
 
         self.status_bar = QStatusBar()
+        self.status_bar.setStyleSheet("border: none; height: 30px;")
 
         status_bar_container_layout.addWidget(self.status_bar)
 
@@ -68,7 +69,8 @@ class Dashboard(QWidget):
         panel.setStyleSheet(
             f"""
                 QWidget {{
-                    border-right: 2px solid {COLOR_THEME['primary']};
+                    border-left: 2px solid {self.color_theme['primary']};
+                    border-right: 2px solid {self.color_theme['primary']};
                 }}
             """
         )
@@ -84,7 +86,7 @@ class Dashboard(QWidget):
                 f"""
                     QLabel {{
                         border: none;
-                        color: {COLOR_THEME['primary']};
+                        color: {self.color_theme['primary']};
                         font-weight: bold;
                         font-style: italic;
                         font-size: 16px;
@@ -100,7 +102,7 @@ class Dashboard(QWidget):
                         font-style: italic;
                         font-size: 12px;
                         border: none;
-                        color: {COLOR_THEME['text_primary']};
+                        color: {self.color_theme['text_primary']};
                     }}
                 """
             )
@@ -127,9 +129,9 @@ class Dashboard(QWidget):
                 task_card.setStyleSheet(
                     f"""
                         QWidget {{
-                            background-color: {COLOR_THEME['surface']};
-                            border: 1px solid {COLOR_THEME['primary']};
-                            border-radius: {COLOR_THEME['border_radius_medium']};
+                            background-color: {self.color_theme['surface']};
+                            border: 1px solid {self.color_theme['primary']};
+                            border-radius: {self.color_theme['border_radius_medium']};
                         }}
                     """
                 )
@@ -147,7 +149,7 @@ class Dashboard(QWidget):
                             font-weight: bold;
                             font-style: italic;
                             font-size: 12px;
-                            color: {COLOR_THEME['primary']};
+                            color: {self.color_theme['primary']};
                             border: none;
                         }}
                     """
@@ -159,7 +161,7 @@ class Dashboard(QWidget):
                     f"""
                         QLabel {{
                             font-size: 10px;
-                            color: {COLOR_THEME['text_primary']};
+                            color: {self.color_theme['text_primary']};
                             border: none;
                         }}
                     """
@@ -179,7 +181,7 @@ class Dashboard(QWidget):
                     f"""
                         QLabel {{
                             font-size: 10px;
-                            color: {COLOR_THEME['text_primary']};
+                            color: {self.color_theme['text_primary']};
                         }}
                     """
                 )
@@ -191,7 +193,7 @@ class Dashboard(QWidget):
                     f"""
                         QLabel {{
                             font-size: 10px;
-                            color: {COLOR_THEME['text_primary']};
+                            color: {self.color_theme['text_primary']};
                         }}
                     """
                 )
@@ -207,7 +209,7 @@ class Dashboard(QWidget):
                         f"""
                             QLabel {{
                                 font-size: 10px;
-                                color: {COLOR_THEME['text_primary']};
+                                color: {self.color_theme['text_primary']};
                             }}
                         """
                     )
@@ -228,8 +230,8 @@ class Dashboard(QWidget):
                 edit_btn.setStyleSheet(
                     f"""
                         QPushButton {{
-                            border: 2px solid {COLOR_THEME['primary']};
-                            border-radius: {COLOR_THEME['border_radius_small']};
+                            border: 2px solid {self.color_theme['primary']};
+                            border-radius: {self.color_theme['border_radius_small']};
                             background-color: transparent;
                             width: 40px;
                             height: 20px;
@@ -237,7 +239,7 @@ class Dashboard(QWidget):
                         }}
 
                         QPushButton::hover {{
-                            background-color: {COLOR_THEME['surface_light']};
+                            background-color: {self.color_theme['surface_light']};
                         }}
                     """
                 )
@@ -247,8 +249,8 @@ class Dashboard(QWidget):
                 del_btn.setStyleSheet(
                     f"""
                         QPushButton {{
-                            border: 2px solid {COLOR_THEME['primary']};
-                            border-radius: {COLOR_THEME['border_radius_small']};
+                            border: 2px solid {self.color_theme['primary']};
+                            border-radius: {self.color_theme['border_radius_small']};
                             background-color: transparent;
                             width: 40px;
                             height: 20px;
@@ -256,7 +258,7 @@ class Dashboard(QWidget):
                         }}
 
                         QPushButton::hover {{
-                            background-color: {COLOR_THEME['surface_light']};
+                            background-color: {self.color_theme['surface_light']};
                         }}
                     """
                 )
@@ -283,7 +285,7 @@ class Dashboard(QWidget):
 
         panel_layout = QVBoxLayout(panel)
         panel_layout.setContentsMargins(0, 0, 0, 0)
-        panel_layout.setSpacing(15)
+        panel_layout.setSpacing(10)
         panel_layout.setAlignment(Qt.AlignCenter)
 
         title_label = QLabel("Title")
@@ -292,7 +294,7 @@ class Dashboard(QWidget):
                 QLabel {{
                     border: none;
                     font-style: italic;
-                    color: {COLOR_THEME['primary']};
+                    color: {self.color_theme['primary']};
                     font-size: 12px;
                 }}
             """
@@ -304,18 +306,18 @@ class Dashboard(QWidget):
             f"""
                 QLineEdit {{
                     background-color: transparent;
-                    border: 2px solid {COLOR_THEME['primary']};
-                    border-radius: {COLOR_THEME['border_radius_small']};
+                    border: 2px solid {self.color_theme['primary']};
+                    border-radius: {self.color_theme['border_radius_small']};
                     height: 30px;
                     font-size: 12px;
                 }}
 
                 QLineEdit::hover {{
-                    background-color: {COLOR_THEME['surface_light']};
+                    background-color: {self.color_theme['surface_light']};
                 }}
 
                 QLineEdit::cursor {{
-                    color: {COLOR_THEME['primary']};
+                    color: {self.color_theme['primary']};
                 }}
             """
         )
@@ -327,7 +329,7 @@ class Dashboard(QWidget):
                 QLabel {{
                     border: none;
                     font-style: italic;
-                    color: {COLOR_THEME['primary']};
+                    color: {self.color_theme['primary']};
                     font-size: 12px;
                 }}
             """
@@ -339,13 +341,13 @@ class Dashboard(QWidget):
             f"""
                 QTextEdit {{
                     background-color: transparent;
-                    border: 2px solid {COLOR_THEME['primary']};
-                    border-radius: {COLOR_THEME['border_radius_small']};
+                    border: 2px solid {self.color_theme['primary']};
+                    border-radius: {self.color_theme['border_radius_small']};
                     font-size: 12px;
                 }}
 
                 QTextEdit::hover {{
-                    background-color: {COLOR_THEME['surface_light']};
+                    background-color: {self.color_theme['surface_light']};
                 }}
             """
         )
@@ -356,7 +358,7 @@ class Dashboard(QWidget):
                 QLabel {{
                     border: none;
                     font-style: italic;
-                    color: {COLOR_THEME['primary']};
+                    color: {self.color_theme['primary']};
                     font-size: 12px;
                 }}
             """
@@ -374,25 +376,25 @@ class Dashboard(QWidget):
         self.radio_low.setStyleSheet(
             f"""
                 QRadioButton {{
-                    color: {COLOR_THEME['primary']};
+                    color: {self.color_theme['primary']};
                     font-size: 12px;
                 }}
 
                 QRadioButton::indicator {{
                     width: 20px;
                     height: 20px;
-                    border-radius: {COLOR_THEME["border_radius_medium"]};
+                    border-radius: {self.color_theme["border_radius_medium"]};
                 }}
 
                 QRadioButton::indicator::unchecked {{
                     background-color: transparent;
-                    border: 2px solid {COLOR_THEME['primary']};
+                    border: 2px solid {self.color_theme['primary']};
                 }}
 
                 QRadioButton::indicator::checked {{
-                    background-color: {COLOR_THEME['primary']};
+                    background-color: {self.color_theme['primary']};
                     border: transparent;
-                    border-radius: {COLOR_THEME['border_radius_medium']};
+                    border-radius: {self.color_theme['border_radius_medium']};
                 }}
             """
         )
@@ -401,25 +403,25 @@ class Dashboard(QWidget):
         self.radio_medium.setStyleSheet(
             f"""
                 QRadioButton {{
-                    color: {COLOR_THEME['primary']};
+                    color: {self.color_theme['primary']};
                     font-size: 12px;
                 }}
 
                 QRadioButton::indicator {{
                     width: 20px;
                     height: 20px;
-                    border-radius: {COLOR_THEME["border_radius_medium"]};
+                    border-radius: {self.color_theme["border_radius_medium"]};
                 }}
 
                 QRadioButton::indicator::unchecked {{
                     background-color: transparent;
-                    border: 2px solid {COLOR_THEME['primary']};
+                    border: 2px solid {self.color_theme['primary']};
                 }}
 
                 QRadioButton::indicator::checked {{
-                    background-color: {COLOR_THEME['primary']};
+                    background-color: {self.color_theme['primary']};
                     border: transparent;
-                    border-radius: {COLOR_THEME['border_radius_medium']};
+                    border-radius: {self.color_theme['border_radius_medium']};
                 }}
             """
         )
@@ -428,25 +430,25 @@ class Dashboard(QWidget):
         self.radio_high.setStyleSheet(
             f"""
                 QRadioButton {{
-                    color: {COLOR_THEME['primary']};
+                    color: {self.color_theme['primary']};
                     font-size: 12px;
                 }}
 
                 QRadioButton::indicator {{
                     width: 20px;
                     height: 20px;
-                    border-radius: {COLOR_THEME["border_radius_medium"]};
+                    border-radius: {self.color_theme["border_radius_medium"]};
                 }}
 
                 QRadioButton::indicator::unchecked {{
                     background-color: transparent;
-                    border: 2px solid {COLOR_THEME['primary']};
+                    border: 2px solid {self.color_theme['primary']};
                 }}
 
                 QRadioButton::indicator::checked {{
-                    background-color: {COLOR_THEME['primary']};
+                    background-color: {self.color_theme['primary']};
                     border: transparent;
-                    border-radius: {COLOR_THEME['border_radius_medium']};
+                    border-radius: {self.color_theme['border_radius_medium']};
                 }}
             """
         )
@@ -462,8 +464,8 @@ class Dashboard(QWidget):
         clear_btn.setStyleSheet(
             f"""
                 QPushButton {{
-                    border: 2px solid {COLOR_THEME['primary']};
-                    border-radius: {COLOR_THEME['border_radius_small']};
+                    border: 2px solid {self.color_theme['primary']};
+                    border-radius: {self.color_theme['border_radius_small']};
                     background-color: transparent;
                     width: 40px;
                     height: 20px;
@@ -471,7 +473,7 @@ class Dashboard(QWidget):
                 }}
 
                 QPushButton::hover {{
-                    background-color: {COLOR_THEME['surface_light']};
+                    background-color: {self.color_theme['surface_light']};
                 }}
             """
         )
@@ -482,8 +484,8 @@ class Dashboard(QWidget):
         submit_btn.setStyleSheet(
             f"""
                 QPushButton {{
-                    border: 2px solid {COLOR_THEME['primary']};
-                    border-radius: {COLOR_THEME['border_radius_small']};
+                    border: 2px solid {self.color_theme['primary']};
+                    border-radius: {self.color_theme['border_radius_small']};
                     background-color: transparent;
                     width: 40px;
                     height: 20px;
@@ -491,7 +493,7 @@ class Dashboard(QWidget):
                 }}
 
                 QPushButton::hover {{
-                    background-color: {COLOR_THEME['surface_light']};
+                    background-color: {self.color_theme['surface_light']};
                 }}
             """
         )
@@ -524,18 +526,18 @@ class Dashboard(QWidget):
         self.editing_id = ""
         self.setup_ui()
 
-    def handle_error_success(self, is_error: bool, msg: str, duration: int = 3000):
+    def handle_error_success(self, is_error: bool, msg: str):
         if is_error:
             self.status_bar.setStyleSheet(
-                f"background-color: {COLOR_THEME['error']}; color: black;")
+                f"background-color: {self.color_theme['error']}; color: black;")
         else:
             self.status_bar.setStyleSheet(
-                f"background-color: {COLOR_THEME['success']}; color: black;")
+                f"background-color: {self.color_theme['success']}; color: black;")
 
-        self.status_bar.showMessage(msg, duration)
+        self.status_bar.showMessage(msg)
 
         self.timer = QTimer()
-        self.timer.setInterval(duration)
+        self.timer.setInterval(3000)
         self.timer.setSingleShot(True)
         self.timer.timeout.connect(self.reset_status_bar)
         self.timer.start()
@@ -557,19 +559,13 @@ class Dashboard(QWidget):
         new_details = self.details_input.toPlainText().strip()
         
         if not new_title:
-            self.handle_error_success(True, "Title Error: title cannot be empty", 3000)
+            self.handle_error_success(True, "Title Error: title cannot be empty")
             return
         
         if not new_details:
             self.handle_error_success(True, "Details Error: details cannot be empty", 3000)
             return
         
-        title_exists = self.db.query(Task).filter(Task.title == new_title).first()
-
-        if title_exists:
-            self.handle_error_success(True, "Title Error: title already exists", 3000)
-            return
-        
         if self.radio_low.isChecked():
             priority = 3
         elif self.radio_medium.isChecked():
@@ -579,44 +575,25 @@ class Dashboard(QWidget):
         else:
             priority = 3
 
-        new_task = Task(
-            title = new_title,
-            details = new_details,
-            priority = priority
-        )
+        new_task = {
+            "title": new_title,
+            "details": new_details,
+            "priority": priority
+        }
 
-        try:
-            self.db.add(new_task)
-            self.db.commit()
-            self.load_tasks()
-            self.handle_error_success(False, "Task created successfully!", 3000)
-
-        except Exception as e:
-            self.handle_error_success(True, f"Unknown Error Saving Task: {e}", 3000)
-            self.db.rollback()
-            return
+        did_save, response = self.logic.save_task(new_task)
+        self.load_tasks()
+        return self.handle_error_success(did_save, response)
 
     def update_task(self):
         new_title = self.title_input.text().strip()
         new_details = self.details_input.toPlainText().strip()
 
         if not new_title:
-            self.handle_error_success(
-                True, "Title Error: title cannot be empty", 3000)
-            return
+            return self.handle_error_success(True, "Title Error: title cannot be empty")
 
         if not new_details:
-            self.handle_error_success(
-                True, "Details Error: details cannot be empty", 3000)
-            return
-
-        title_exists = self.db.query(Task).filter(
-            Task.title == new_title, Task.id != int(self.editing_id)).first()
-
-        if title_exists:
-            self.handle_error_success(
-                True, "Title Error: title already exists", 3000)
-            return
+            return self.handle_error_success(True, "Details Error: details cannot be empty")
 
         if self.radio_low.isChecked():
             priority = 3
@@ -627,21 +604,15 @@ class Dashboard(QWidget):
         else:
             priority = 3
 
-        try:
-            task = self.db.query(Task).filter(
-                Task.id == int(self.editing_id)).first()
-            task.title = new_title
-            task.details = new_details
-            task.priority = priority
-            self.db.commit()
-            self.handle_error_success(
-                False, "Task updated successfully!", 3000)
+        updated_task = {
+            "title": new_title,
+            "details": new_details,
+            "priority": priority
+        }
+        
+        did_update, response = self.logic.update_task(self.editing_id, updated_task)
 
-        except Exception as e:
-            self.handle_error_success(
-                True, f"Unknown Error Saving Task: {e}", 3000)
-            self.db.rollback()
-            return
+        return self.handle_error_success(did_update, response)
 
     def populate_form(self):
         sender = self.sender()
@@ -666,23 +637,16 @@ class Dashboard(QWidget):
     def delete_task(self):
         sender = self.sender()
         task_id = sender.property("task_id")
-        
-        try:
-            self.db.query(Task).filter(Task.id == int(task_id)).delete()
-            self.db.commit()
-            self.handle_error_success(False, "Task Deleted Successfully", 3000)
-            self.load_tasks()
-        
-        except Exception as e:
-            self.handle_error_success(True, str(e), 3000)
-            self.db.rollback()
-            self.load_tasks()
+
+        did_delete, response = self.logic.delete_task(task_id)
+        self.load_tasks()
+        return self.handle_error_success(did_delete, response)
 
     def load_tasks(self):
         self.title_input.clear()
         self.details_input.clear()
         self.title_input.setFocus()
         self.radio_low.setChecked(True)
-        self.all_tasks = self.db.query(Task).all()
+        self.all_tasks = self.logic.get_all_tasks()
         self.editing_id = ""
         self.setup_ui()

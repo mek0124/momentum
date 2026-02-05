@@ -8,11 +8,11 @@ from .utils.color_theme import COLOR_THEME
 
 
 class Momentum(MSFluentWindow):
-    def __init__(self, color_theme, db):
+    def __init__(self, color_theme, logic):
         super().__init__()
 
         self.color_theme = color_theme
-        self.db = db
+        self.logic = logic
         self.dashboard = Dashboard(self)
 
         self.set_app_theme()

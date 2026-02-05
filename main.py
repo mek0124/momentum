@@ -2,6 +2,7 @@ from PySide6.QtWidgets import QApplication, QMessageBox
 from pathlib import Path
 
 from app.app import Momentum
+from app.core.logic import MomentumLogic
 from app.database.db import get_base, get_engine, get_db
 from app.models.task import Task
 from app.utils.color_theme import COLOR_THEME
@@ -142,8 +143,9 @@ def check_perms(root_dir: Path) -> bool:
 
 def run_main():
     db = next(get_db())
+    logic = MomentumLogic(db)
 
-    window = Momentum(COLOR_THEME, db)
+    window = Momentum(COLOR_THEME, logic)
     window.setMinimumWidth(800)
     window.setMinimumHeight(600)
     window.show()
