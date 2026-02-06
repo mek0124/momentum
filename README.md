@@ -1,24 +1,25 @@
-# Momentum
+<table align="center">
+  <tr>
+    <th><img src="./app/assets/icon.png" width="60" height="60" /></th>
+    <th>Momentum</th>
+    <th>v2.0.0</th>
+  </tr>
+</table>
 
-![Momentum](https://img.shields.io/badge/Momentum-local--first-blue)
-![Python](https://img.shields.io/badge/Python-3.12+-blue)
-![PySide6](https://img.shields.io/badge/PySide6-6.9+-green)
-![License](https://img.shields.io/badge/License-MIT-green)
-
-Momentum is
-  - FOSS
-  - MIT Licensed
-  - **local-first**
-  - minimalist 
-
-task manager built with PySide6 and SQLAlchemy.
-
-- No online accounts
-- No online cloud
-- No tracking
+<div align="center">
+  
+  ![Momentum](https://img.shields.io/badge/Momentum-local--first-blue)
+  ![Python](https://img.shields.io/badge/Python-3.12+-blue)
+  ![PySide6](https://img.shields.io/badge/PySide6-6.9+-green)
+  ![License](https://img.shields.io/badge/License-MIT-green)
+</div>
 
 
-Just tasks.
+Momentum is a task manager built with PySide6 and SQLAlchemy
+
+-- FOSS --MIT Licensed --**local-first** --minimalist --No online accounts --No online cloud --No tracking
+
+Just You and Your Tasks...
 
 ---
 
@@ -83,6 +84,8 @@ python3 main.py
 # windows
 python main.py
 ```
+
+> The latest release also comes with an executable that <u>is **not** compatible</u> with Windows.
 
 ---
 
