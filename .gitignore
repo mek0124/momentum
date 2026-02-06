@@ -1,5 +1,7 @@
 __pycache__/
 app/storage/
 redo/
+build/
 dist/
 *.egg-info
+*.spec
