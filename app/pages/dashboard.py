@@ -40,7 +40,11 @@ class Dashboard(QWidget):
                     item.widget().deleteLater()
 
         inner_container = QWidget()
+        inner_container.setStyleSheet("background-color: blue;")
+
         inner_container_layout = QHBoxLayout(inner_container)
+        inner_container_layout.setContentsMargins(0, 0, 0, 0)
+        inner_container_layout.setSpacing(0)
 
         self.add_task_panel(inner_container_layout)
         self.add_form_panel(inner_container_layout)
@@ -56,7 +60,7 @@ class Dashboard(QWidget):
         status_bar_container_layout.setAlignment(Qt.AlignCenter)
 
         self.status_bar = QStatusBar()
-        self.status_bar.setStyleSheet("border: none; height: 30px;")
+        self.status_bar.setStyleSheet("border: none; background-color: orange;")
 
         status_bar_container_layout.addWidget(self.status_bar)
 
