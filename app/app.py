@@ -30,5 +30,4 @@ class Momentum(MSFluentWindow):
         self.addSubInterface(self.dashboard, FluentIcon.HOME, "Dashboard")
 
     def closeEvent(self, event):
-        self.db.close()
         event.accept()
