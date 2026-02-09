@@ -1,7 +1,16 @@
 from PySide6.QtWidgets import (
-    QWidget, QVBoxLayout, QHBoxLayout,
-    QLabel, QTextEdit, QLineEdit, QPushButton,
-    QRadioButton, QScrollArea, QStatusBar
+    QWidget,
+    QVBoxLayout,
+    QHBoxLayout,
+    QGridLayout,
+    QLabel,
+    QTextEdit,
+    QLineEdit,
+    QPushButton,
+    QRadioButton,
+    QScrollArea,
+    QStatusBar,
+    QSizePolicy,
 )
 
 from PySide6.QtCore import Qt, QTimer
@@ -236,20 +245,39 @@ class Dashboard(QWidget):
 
         else:
             task_scroll_area = QScrollArea()
+            task_scroll_area.setWidgetResizable(True)
+            task_scroll_area.setStyleSheet(
+                f"""
+                    QScrollArea {{
+                        border: none;
+                        background-color: transparent;
+                    }}
+                    QScrollArea > QWidget > QWidget {{
+                        background-color: transparent;
+                    }}
+                """
+            )
+
+            scroll_content = QWidget()
+            scroll_content.setStyleSheet("border: none; background-color: transparent;")
+
+            scroll_content_layout = QGridLayout(scroll_content)
+            scroll_content_layout.setContentsMargins(10, 10, 10, 10)
+            scroll_content_layout.setSpacing(15)
+            scroll_content_layout.setAlignment(Qt.AlignTop | Qt.AlignLeft)
 
             task_scroll_area_layout = QVBoxLayout(task_scroll_area)
             task_scroll_area_layout.setContentsMargins(10, 0, 0, 0)
             task_scroll_area_layout.setSpacing(10)
             task_scroll_area_layout.setAlignment(Qt.AlignTop | Qt.AlignLeft)
 
-            for task in self.all_tasks:
                 task_card = QWidget()
                 task_card.setProperty("task_id", str(task.id))
                 task_card.setObjectName("card")
 
                 task_card_layout = QVBoxLayout(task_card)
-                task_card_layout.setContentsMargins(5, 5, 5, 5)
-                task_card_layout.setSpacing(0)
+                task_card_layout.setContentsMargins(10, 10, 10, 10)
+                task_card_layout.setSpacing(5)
                 task_card_layout.setAlignment(Qt.AlignCenter | Qt.AlignTop)
 
                 task_title = QLabel(task.title)
@@ -308,8 +336,8 @@ class Dashboard(QWidget):
                 edit_btn.setStyleSheet(
                     f"""
                         QPushButton {{
-                            border: 2px solid {self.color_theme['primary']};
-                            border-radius: {self.color_theme['border_radius_small']};
+                            border: 2px solid {self.color_theme["primary"]};
+                            border-radius: {self.color_theme["border_radius_small"]};
                             background-color: transparent;
                             width: 40px;
                             height: 20px;
@@ -328,8 +356,8 @@ class Dashboard(QWidget):
                 del_btn.setStyleSheet(
                     f"""
                         QPushButton {{
-                            border: 2px solid {self.color_theme['primary']};
-                            border-radius: {self.color_theme['border_radius_small']};
+                            border: 2px solid {self.color_theme["primary"]};
+                            border-radius: {self.color_theme["border_radius_small"]};
                             background-color: transparent;
                             width: 40px;
                             height: 20px;
@@ -351,7 +379,14 @@ class Dashboard(QWidget):
                 task_card_layout.addWidget(task_card_row)
                 task_card_layout.addWidget(btn_container)
 
-                task_scroll_area_layout.addWidget(task_card)
+                row = index // 3
+                col = index % 3
+                scroll_content_layout.addWidget(task_card, row, col, 1, 1)
+
+            for col in range(3):
+                scroll_content_layout.setColumnStretch(col, 1)
+
+            task_scroll_area.setWidget(scroll_content)
 
             panel_layout.addWidget(task_scroll_area)
 
@@ -412,8 +447,8 @@ class Dashboard(QWidget):
         clear_btn.setStyleSheet(
             f"""
                 QPushButton {{
-                    border: 2px solid {self.color_theme['primary']};
-                    border-radius: {self.color_theme['border_radius_small']};
+                    border: 2px solid {self.color_theme["primary"]};
+                    border-radius: {self.color_theme["border_radius_small"]};
                     background-color: transparent;
                     width: 40px;
                     height: 20px;
@@ -432,8 +467,8 @@ class Dashboard(QWidget):
         submit_btn.setStyleSheet(
             f"""
                 QPushButton {{
-                    border: 2px solid {self.color_theme['primary']};
-                    border-radius: {self.color_theme['border_radius_small']};
+                    border: 2px solid {self.color_theme["primary"]};
+                    border-radius: {self.color_theme["border_radius_small"]};
                     background-color: transparent;
                     width: 40px;
                     height: 20px;
@@ -477,10 +512,12 @@ class Dashboard(QWidget):
     def handle_error_success(self, is_error: bool, msg: str):
         if is_error:
             self.status_bar.setStyleSheet(
-                f"background-color: {self.color_theme['error']}; color: black;")
+                f"background-color: {self.color_theme['error']}; color: black;"
+            )
         else:
             self.status_bar.setStyleSheet(
-                f"background-color: {self.color_theme['success']}; color: black;")
+                f"background-color: {self.color_theme['success']}; color: black;"
+            )
 
         self.status_bar.showMessage(msg)
 
@@ -505,15 +542,17 @@ class Dashboard(QWidget):
     def save_task(self):
         new_title = self.title_input.text().strip()
         new_details = self.details_input.toPlainText().strip()
-        
+
         if not new_title:
             self.handle_error_success(True, "Title Error: title cannot be empty")
             return
-        
+
         if not new_details:
-            self.handle_error_success(True, "Details Error: details cannot be empty", 3000)
+            self.handle_error_success(
+                True, "Details Error: details cannot be empty", 3000
+            )
             return
-        
+
         if self.radio_low.isChecked():
             priority = 3
         elif self.radio_medium.isChecked():
@@ -523,11 +562,7 @@ class Dashboard(QWidget):
         else:
             priority = 3
 
-        new_task = {
-            "title": new_title,
-            "details": new_details,
-            "priority": priority
-        }
+        new_task = {"title": new_title, "details": new_details, "priority": priority}
 
         did_save, response = self.logic.save_task(new_task)
         self.load_tasks()
@@ -541,7 +576,9 @@ class Dashboard(QWidget):
             return self.handle_error_success(True, "Title Error: title cannot be empty")
 
         if not new_details:
-            return self.handle_error_success(True, "Details Error: details cannot be empty")
+            return self.handle_error_success(
+                True, "Details Error: details cannot be empty"
+            )
 
         if self.radio_low.isChecked():
             priority = 3
@@ -555,9 +592,9 @@ class Dashboard(QWidget):
         updated_task = {
             "title": new_title,
             "details": new_details,
-            "priority": priority
+            "priority": priority,
         }
-        
+
         did_update, response = self.logic.update_task(self.editing_id, updated_task)
 
         return self.handle_error_success(did_update, response)
