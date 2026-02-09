@@ -145,9 +145,7 @@ def run_main():
     logic = MomentumLogic(db)
 
     window = Momentum(COLOR_THEME, logic)
-    window.setMinimumWidth(800)
-    window.setMinimumHeight(600)
-    window.show()
+    window.showMaximized()
 
     sys.exit(app.exec())
 
