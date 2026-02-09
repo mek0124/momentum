@@ -11,9 +11,69 @@ from PySide6.QtWidgets import (
     QScrollArea,
     QStatusBar,
     QSizePolicy,
+    QFrame,
 )
-
 from PySide6.QtCore import Qt, QTimer
+
+
+MAX_DETAILS_LENGTH = 150
+
+
+class LimitedTextEdit(QTextEdit):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.max_length = MAX_DETAILS_LENGTH
+        self.counter_label = QLabel(self)
+        self.counter_label.setAlignment(Qt.AlignRight | Qt.AlignBottom)
+        self.counter_label.setStyleSheet(
+            """
+            QLabel {
+                background-color: transparent;
+                color: palette(mid);
+                font-size: 10px;
+                padding: 2px;
+            }
+            """
+        )
+        self.textChanged.connect(self.update_counter)
+
+    def resizeEvent(self, event):
+        super().resizeEvent(event)
+        self.update_counter_position()
+
+    def update_counter_position(self):
+        self.counter_label.setGeometry(self.width() - 65, self.height() - 18, 60, 16)
+
+    def update_counter(self):
+        current = len(self.toPlainText())
+        self.counter_label.setText(f"{current}/{self.max_length}")
+        self.update_counter_position()
+
+    def keyPressEvent(self, event):
+        current_text = self.toPlainText()
+        if len(current_text) >= self.max_length:
+            if event.key() in (
+                Qt.Key_Backspace,
+                Qt.Key_Delete,
+                Qt.Key_Left,
+                Qt.Key_Right,
+                Qt.Key_A,
+                Qt.Key_C,
+                Qt.Key_X,
+                Qt.Key_Z,
+                Qt.Key_Y,
+                Qt.Key_Up,
+                Qt.Key_Down,
+                Qt.Key_Tab,
+                Qt.Key_Home,
+                Qt.Key_End,
+                Qt.Key_Control,
+                Qt.Key_Shift,
+                Qt.Key_Alt,
+            ):
+                super().keyPressEvent(event)
+            return
+        super().keyPressEvent(event)
 
 
 class Dashboard(QWidget):
@@ -151,10 +211,7 @@ class Dashboard(QWidget):
 
                 task_card = QWidget()
                 task_card.setProperty("task_id", str(task.id))
-                # task_card.setSizePolicy(
-                #     QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding
-                # )
-                task_card.setFixedSize(250,300)
+                task_card.setFixedSize(250, 300)
                 task_card.setStyleSheet(
                     f"""
                         QWidget {{
@@ -380,7 +437,7 @@ class Dashboard(QWidget):
         )
         content_label.setAlignment(Qt.AlignCenter)
 
-        self.details_input = QTextEdit()
+        self.details_input = LimitedTextEdit()
         self.details_input.setStyleSheet(
             f"""
                 QTextEdit {{
