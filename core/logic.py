@@ -1,6 +1,6 @@
 from typing import Tuple, Optional, Union, List
 
-from ..models.task import Task
+from .models.task import Task
 
 
 class MomentumLogic:
