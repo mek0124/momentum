@@ -4,7 +4,6 @@ from qfluentwidgets import (
 )
 
 from .pages.dashboard import Dashboard
-from .utils.color_theme import COLOR_THEME
 
 
 class Momentum(MSFluentWindow):
@@ -20,15 +19,14 @@ class Momentum(MSFluentWindow):
 
     def set_app_theme(self):
         setTheme(Theme.DARK)
-        setThemeColor(COLOR_THEME['primary'])
+        setThemeColor(self.color_theme['primary'])
 
         self.setStyleSheet(
-            f"background-color: {COLOR_THEME['background']};"
+            f"background-color: {self.color_theme['background']};"
         )
 
     def init_navigation(self):
         self.addSubInterface(self.dashboard, FluentIcon.HOME, "Dashboard")
 
     def closeEvent(self, event):
-        self.db.close()
         event.accept()

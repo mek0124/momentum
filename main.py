@@ -2,10 +2,11 @@ from PySide6.QtWidgets import QApplication, QMessageBox
 from pathlib import Path
 
 from app.app import Momentum
-from app.core.logic import MomentumLogic
-from app.database.db import get_base, get_engine, get_db
-from app.models.task import Task
-from app.utils.color_theme import COLOR_THEME
+
+from core.logic import MomentumLogic
+from core.database.db import get_base, get_engine, get_db
+from core.models.task import Task
+from core.utils.color_theme import COLOR_THEME
 
 from updater.app import Updater
 
@@ -101,9 +102,7 @@ def get_browser_usage_agreement() -> bool:
         return False
 
 
-def get_user_agreement(root_dir: Path) -> bool:
-    ua_file = root_dir / "app" / "storage" / "config.json"
-    
+def get_user_agreement(ua_file: Path) -> bool:
     rw_agree = get_read_write_perms()
     if not rw_agree:
         return False
@@ -117,11 +116,11 @@ def get_user_agreement(root_dir: Path) -> bool:
 
 
 def check_perms(root_dir: Path) -> bool:
-    ua_file = root_dir / "app" / "storage" / "config.json"
+    ua_file = root_dir / "core" / "storage" / "config.json"
     
     try:
         if not ua_file.exists():
-            return get_user_agreement(root_dir)
+            return get_user_agreement(ua_file)
         
         with open(ua_file, 'r', encoding="utf-8-sig") as f:
             data = json.load(f)
@@ -130,12 +129,12 @@ def check_perms(root_dir: Path) -> bool:
         browser_perm = data.get("use_browser", 0)
         
         if rw_perm == 0 or browser_perm == 0:
-            return get_user_agreement(root_dir)
+            return get_user_agreement(ua_file)
         
         return True
         
     except json.JSONDecodeError:
-        return get_user_agreement(root_dir)
+        return get_user_agreement(ua_file)
     except Exception as e:
         print(f"Unknown Exception: {e}")
         return False
@@ -146,6 +145,15 @@ def run_main():
     logic = MomentumLogic(db)
 
     window = Momentum(COLOR_THEME, logic)
+    window.setMinimumWidth(800)
+    window.setMinimumHeight(600)
+    window.show()
+
+    sys.exit(app.exec())
+
+
+def run_updater(root_dir, local_version, latest_version):
+    window = Updater(root_dir, COLOR_THEME, local_version, latest_version)
     window.setMinimumWidth(800)
     window.setMinimumHeight(600)
     window.show()
@@ -188,16 +196,6 @@ def check_for_update(root_dir: Path):
         return False, local_version, latest_version
 
     return latest_version != local_version, local_version, latest_version
-
-
-def run_updater(root_dir, local_version, latest_version):
-    window = Updater(root_dir, COLOR_THEME, local_version, latest_version)
-    window.setMinimumWidth(800)
-    window.setMinimumHeight(600)
-    window.show()
-
-    sys.exit(app.exec())
-
 
 
 if __name__ == '__main__':
