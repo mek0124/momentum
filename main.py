@@ -5,7 +5,7 @@ from app.app import Momentum
 
 from core.logic import MomentumLogic
 from core.database.db import get_base, get_engine, get_db
-from core.models import Task, User  # Import User to ensure Users table is created
+from core.models.task import Task
 from core.utils.color_theme import COLOR_THEME
 
 from updater.app import Updater

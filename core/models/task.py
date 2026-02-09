@@ -1,9 +1,8 @@
-from sqlalchemy import Column, String, Integer, DateTime, ForeignKey
-from sqlalchemy.orm import relationship
-from sqlalchemy.sql import func
-import uuid as uuid_module
+from sqlalchemy import Column, Integer, String, Boolean, DateTime
+from datetime import datetime
 
 from ..database.db import get_base
+
 
 Base = get_base()
 
@@ -11,13 +10,9 @@ Base = get_base()
 class Task(Base):
     __tablename__ = 'tasks'
 
-    id = Column(String(36), primary_key=True, default=lambda: str(uuid_module.uuid4()))
-    title = Column(String, nullable=False, index=True)
+    id = Column(Integer, index = True, primary_key = True)
+    title = Column(String, index = True, unique = True)
     details = Column(String)
-    priority = Column(Integer, index=True, default=3)
-    user_id = Column(String(36), ForeignKey('users.id'), nullable=True)
-    created_at = Column(DateTime, server_default=func.now())
-    updated_at = Column(DateTime, onupdate=func.now())
-
-    # Relationship to user
-    owner = relationship("User", back_populates="tasks")
+    priority = Column(Integer, index = True, default = 3)
+    created_at = Column(DateTime, index = True, default = lambda: datetime.now())
+    updated_at = Column(DateTime, index = True, default = lambda: datetime.now(), onupdate = lambda: datetime.now())
