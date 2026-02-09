@@ -143,17 +143,18 @@ class Dashboard(QWidget):
             scroll_content_layout = QGridLayout(scroll_content)
             scroll_content_layout.setContentsMargins(10, 10, 10, 10)
             scroll_content_layout.setSpacing(15)
-            scroll_content_layout.setAlignment(Qt.AlignTop | Qt.AlignLeft)
+            scroll_content_layout.setAlignment(Qt.AlignTop | Qt.AlignCenter)
 
             for index, task in enumerate(self.all_tasks):
-                row = index // 3
-                col = index % 3
+                row = index // 4
+                col = index % 4
 
                 task_card = QWidget()
                 task_card.setProperty("task_id", str(task.id))
-                task_card.setSizePolicy(
-                    QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding
-                )
+                # task_card.setSizePolicy(
+                #     QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding
+                # )
+                task_card.setFixedSize(250,300)
                 task_card.setStyleSheet(
                     f"""
                         QWidget {{
@@ -309,11 +310,11 @@ class Dashboard(QWidget):
                 task_card_layout.addWidget(task_card_row)
                 task_card_layout.addWidget(btn_container)
 
-                row = index // 3
-                col = index % 3
+                row = index // 4
+                col = index % 4
                 scroll_content_layout.addWidget(task_card, row, col, 1, 1)
 
-            for col in range(3):
+            for col in range(4):
                 scroll_content_layout.setColumnStretch(col, 1)
 
             task_scroll_area.setWidget(scroll_content)
