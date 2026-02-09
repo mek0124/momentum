@@ -6,8 +6,6 @@ from PySide6.QtWidgets import (
 
 from PySide6.QtCore import Qt, QTimer
 
-from ..models.task import Task
-
 
 class Dashboard(QWidget):
     def __init__(self, parent=None):
@@ -22,9 +20,154 @@ class Dashboard(QWidget):
         self.editing_id = ""
 
         self.setup_ui()
+        self.apply_app_styles()
         self.load_tasks()
 
         self.radio_low.setChecked(True)
+
+    def apply_app_styles(self):
+        self.setStyleSheet(
+            f"""
+                QWidget {{
+                    border: none;
+                }}
+
+                QWidget#inner-container {{
+                    background-color: transparent;
+                }}
+
+                QWidget#panel {{
+                    border-left: 2px solid {self.color_theme['primary']};
+                    border-right: 2px solid {self.color_theme['primary']};
+                }}
+
+                QStatusBar {{
+                    background-color: transparent;
+                    border: none;
+                }}
+
+                QLabel#title {{
+                    border: none;
+                    color: {self.color_theme['primary']};
+                    font-weight: bold;
+                    font-style: italic;
+                    font-size: 16px;
+                }}
+
+                QLabel#card-title {{
+                    border: none;
+                    color: {self.color_theme['primary']};
+                    font-weight: bold;
+                    font-style: italic;
+                    font-size: 12px;
+                }}
+
+                QLabel#sub-title {{
+                    font-style: italic;
+                    font-size: 12px;
+                    border: none;
+                    color: {self.color_theme['text_primary']};
+                }}
+
+                QWidget#card {{
+                    background-color: {self.color_theme['surface']};
+                    border: 1px solid {self.color_theme['primary']};
+                    border-radius: {self.color_theme['border_radius_medium']};
+                }}
+
+                QLabel#details {{
+                    font-size: 10px;
+                    color: {self.color_theme['text_primary']};
+                    border: none;
+                }}
+
+                QLabel#success {{
+                    font-size: 10px;
+                    color: {self.color_theme["success"]};
+                }}
+
+                QLabel#warning {{
+                    font-size: 10px;
+                    color: {self.color_theme["warning"]};
+                }}
+
+                QLabel#error {{
+                    font-size: 10px;
+                    color: {self.color_theme["error"]};
+                }}
+
+                QLabel#date-label {{
+                    font-size: 10px;
+                    color: {self.color_theme['text_primary']};
+                }}
+
+                QLineEdit#form-input {{
+                    background-color: transparent;
+                    border: 2px solid {self.color_theme['primary']};
+                    border-radius: {self.color_theme['border_radius_small']};
+                    height: 30px;
+                    font-size: 12px;
+                }}
+
+                QLineEdit#form-input:hover {{
+                    background-color: {self.color_theme['surface_light']};
+                }}
+
+                QLineEdit#form-input:cursor {{
+                    color: {self.color_theme['primary']};
+                }}
+
+                QTextEdit#form-input {{
+                    background-color: transparent;
+                    border: 2px solid {self.color_theme['primary']};
+                    border-radius: {self.color_theme['border_radius_small']};
+                    height: 30px;
+                    font-size: 12px;
+                }}
+
+                QTextEdit#form-input:hover {{
+                    background-color: {self.color_theme['surface_light']};
+                }}
+
+                QTextEdit#form-input:cursor {{
+                    color: {self.color_theme['primary']};
+                }}
+
+                QLabel#form-label {{
+                    border: none;
+                    font-style: italic;
+                    color: {self.color_theme['primary']};
+                    font-size: 12px;
+                }}
+
+                QWidget#row {{
+                    border: none;
+                    height: 30px;
+                }}
+
+                QRadioButton#radio {{
+                    color: {self.color_theme['primary']};
+                    font-size: 12px;
+                }}
+
+                QRadioButton#radio:indicator {{
+                    width: 20px;
+                    height: 20px;
+                    border-radius: {self.color_theme["border_radius_medium"]};
+                }}
+
+                QRadioButton#radio:indicator::unchecked {{
+                    background-color: transparent;
+                    border: 2px solid {self.color_theme['primary']};
+                }}
+
+                QRadioButton#radio:indicator::checked {{
+                    background-color: {self.color_theme['primary']};
+                    border: transparent;
+                    border-radius: {self.color_theme['border_radius_medium']};
+                }}
+            """
+        )
 
     def setup_ui(self):
         if self.layout() is None:
@@ -40,7 +183,11 @@ class Dashboard(QWidget):
                     item.widget().deleteLater()
 
         inner_container = QWidget()
+        inner_container.setObjectName("inner-container")
+
         inner_container_layout = QHBoxLayout(inner_container)
+        inner_container_layout.setContentsMargins(10, 10, 10, 10)
+        inner_container_layout.setSpacing(10)
 
         self.add_task_panel(inner_container_layout)
         self.add_form_panel(inner_container_layout)
@@ -48,7 +195,6 @@ class Dashboard(QWidget):
         inner_container_layout.addStretch()
 
         status_bar_container = QWidget()
-        status_bar_container.setStyleSheet("border: none;")
 
         status_bar_container_layout = QHBoxLayout(status_bar_container)
         status_bar_container_layout.setContentsMargins(0, 0, 0, 0)
@@ -56,7 +202,6 @@ class Dashboard(QWidget):
         status_bar_container_layout.setAlignment(Qt.AlignCenter)
 
         self.status_bar = QStatusBar()
-        self.status_bar.setStyleSheet("border: none; height: 30px;")
 
         status_bar_container_layout.addWidget(self.status_bar)
 
@@ -66,46 +211,20 @@ class Dashboard(QWidget):
 
     def add_task_panel(self, layout):
         panel = QWidget()
-        panel.setStyleSheet(
-            f"""
-                QWidget {{
-                    border-left: 2px solid {self.color_theme['primary']};
-                    border-right: 2px solid {self.color_theme['primary']};
-                }}
-            """
-        )
+        panel.setObjectName("panel")
 
         panel_layout = QVBoxLayout(panel)
-        panel_layout.setContentsMargins(0, 0, 0, 0)
-        panel_layout.setSpacing(0)
+        panel_layout.setContentsMargins(10, 10, 10, 10)
+        panel_layout.setSpacing(10)
         panel_layout.setAlignment(Qt.AlignCenter)
 
         if not self.all_tasks or len(self.all_tasks) == 0:
             label = QLabel("No Tasks Currently Exists!")
-            label.setStyleSheet(
-                f"""
-                    QLabel {{
-                        border: none;
-                        color: {self.color_theme['primary']};
-                        font-weight: bold;
-                        font-style: italic;
-                        font-size: 16px;
-                    }}
-                """
-            )
+            label.setObjectName("title")
             label.setAlignment(Qt.AlignCenter)
 
             label2 = QLabel("Use the form on the right to get started :)")
-            label2.setStyleSheet(
-                f"""
-                    QLabel {{
-                        font-style: italic;
-                        font-size: 12px;
-                        border: none;
-                        color: {self.color_theme['text_primary']};
-                    }}
-                """
-            )
+            label2.setObjectName("sub-title")
             label2.setWordWrap(True)
             label2.setAlignment(Qt.AlignCenter)
 
@@ -118,7 +237,7 @@ class Dashboard(QWidget):
         else:
             task_scroll_area = QScrollArea()
 
-            task_scroll_area_layout = QHBoxLayout(task_scroll_area)
+            task_scroll_area_layout = QVBoxLayout(task_scroll_area)
             task_scroll_area_layout.setContentsMargins(10, 0, 0, 0)
             task_scroll_area_layout.setSpacing(10)
             task_scroll_area_layout.setAlignment(Qt.AlignTop | Qt.AlignLeft)
@@ -126,16 +245,7 @@ class Dashboard(QWidget):
             for task in self.all_tasks:
                 task_card = QWidget()
                 task_card.setProperty("task_id", str(task.id))
-                task_card.setStyleSheet(
-                    f"""
-                        QWidget {{
-                            background-color: {self.color_theme['surface']};
-                            border: 1px solid {self.color_theme['primary']};
-                            border-radius: {self.color_theme['border_radius_medium']};
-                        }}
-                    """
-                )
-                task_card.setFixedSize(180, 180)
+                task_card.setObjectName("card")
 
                 task_card_layout = QVBoxLayout(task_card)
                 task_card_layout.setContentsMargins(5, 5, 5, 5)
@@ -143,30 +253,23 @@ class Dashboard(QWidget):
                 task_card_layout.setAlignment(Qt.AlignCenter | Qt.AlignTop)
 
                 task_title = QLabel(task.title)
-                task_title.setStyleSheet(
-                    f"""
-                        QLabel {{
-                            font-weight: bold;
-                            font-style: italic;
-                            font-size: 12px;
-                            color: {self.color_theme['primary']};
-                            border: none;
-                        }}
-                    """
-                )
+                task_title.setObjectName("card-title")
                 task_title.setAlignment(Qt.AlignCenter)
 
                 details_label = QLabel(task.details)
-                details_label.setStyleSheet(
-                    f"""
-                        QLabel {{
-                            font-size: 10px;
-                            color: {self.color_theme['text_primary']};
-                            border: none;
-                        }}
-                    """
-                )
+                details_label.setObjectName("details")
                 details_label.setAlignment(Qt.AlignCenter)
+
+                priority_label = QLabel(f"Priority: {task.priority}")
+
+                if task.priority == 3:
+                    priority_label.setObjectName("success")
+                elif task.priority == 2:
+                    priority_label.setObjectName("warning")
+                elif task.priority == 1:
+                    priority_label.setObjectName("error")
+
+                priority_label.setAlignment(Qt.AlignCenter)
 
                 task_card_row = QWidget()
                 task_card_row.setStyleSheet("border: none;")
@@ -176,50 +279,17 @@ class Dashboard(QWidget):
                 task_card_row_layout.setSpacing(10)
                 task_card_row_layout.setAlignment(Qt.AlignCenter)
 
-                if task.priority == 3:
-                    color = "success"
-                elif task.priority == 2:
-                    color = "warning"
-                elif task.priority == 1:
-                    color = "error"
-
-                priority_label = QLabel(f"Priority\n{task.priority}")
-                priority_label.setStyleSheet(
-                    f"""
-                        QLabel {{
-                            font-size: 10px;
-                            color: {self.color_theme[color]};
-                        }}
-                    """
-                )
-                priority_label.setAlignment(Qt.AlignCenter)
-
                 created_at_label = QLabel(
                     f"Created On\n{task.created_at.__format__('%m/%d/%Y\n%H:%M')}")
-                created_at_label.setStyleSheet(
-                    f"""
-                        QLabel {{
-                            font-size: 10px;
-                            color: {self.color_theme['text_primary']};
-                        }}
-                    """
-                )
+                created_at_label.setObjectName("date-label")
                 created_at_label.setAlignment(Qt.AlignCenter)
 
-                task_card_row_layout.addWidget(priority_label)
                 task_card_row_layout.addWidget(created_at_label)
 
                 if task.created_at != task.updated_at:
                     updated_at_label = QLabel(
                         f"Last Updated\n{task.updated_at.__format__('%m/%d/%Y\n%H:%M')}")
-                    updated_at_label.setStyleSheet(
-                        f"""
-                            QLabel {{
-                                font-size: 10px;
-                                color: {self.color_theme['text_primary']};
-                            }}
-                        """
-                    )
+                    updated_at_label.setObjectName("date-label")
                     updated_at_label.setAlignment(Qt.AlignCenter)
 
                     task_card_row_layout.addWidget(updated_at_label)
@@ -234,6 +304,7 @@ class Dashboard(QWidget):
 
                 edit_btn = QPushButton("Edit")
                 edit_btn.setProperty("task_id", str(task.id))
+                edit_btn.clicked.connect(self.populate_form)
                 edit_btn.setStyleSheet(
                     f"""
                         QPushButton {{
@@ -245,14 +316,15 @@ class Dashboard(QWidget):
                             font-size: 12px;
                         }}
 
-                        QPushButton::hover {{
+                        QPushButton:hover {{
                             background-color: {self.color_theme['surface_light']};
                         }}
                     """
                 )
-                edit_btn.clicked.connect(self.populate_form)
 
                 del_btn = QPushButton("Delete")
+                del_btn.clicked.connect(self.delete_task)
+                del_btn.setProperty("task_id", str(task.id))
                 del_btn.setStyleSheet(
                     f"""
                         QPushButton {{
@@ -264,19 +336,18 @@ class Dashboard(QWidget):
                             font-size: 12px;
                         }}
 
-                        QPushButton::hover {{
+                        QPushButton:hover {{
                             background-color: {self.color_theme['surface_light']};
                         }}
                     """
                 )
-                del_btn.clicked.connect(self.delete_task)
-                del_btn.setProperty("task_id", str(task.id))
 
                 btn_container_layout.addWidget(edit_btn)
                 btn_container_layout.addWidget(del_btn)
 
                 task_card_layout.addWidget(task_title)
                 task_card_layout.addWidget(details_label, 2)
+                task_card_layout.addWidget(priority_label)
                 task_card_layout.addWidget(task_card_row)
                 task_card_layout.addWidget(btn_container)
 
@@ -296,169 +367,39 @@ class Dashboard(QWidget):
         panel_layout.setAlignment(Qt.AlignCenter)
 
         title_label = QLabel("Title")
-        title_label.setStyleSheet(
-            f"""
-                QLabel {{
-                    border: none;
-                    font-style: italic;
-                    color: {self.color_theme['primary']};
-                    font-size: 12px;
-                }}
-            """
-        )
+        title_label.setObjectName("sub-title")
         title_label.setAlignment(Qt.AlignCenter)
 
         self.title_input = QLineEdit()
-        self.title_input.setStyleSheet(
-            f"""
-                QLineEdit {{
-                    background-color: transparent;
-                    border: 2px solid {self.color_theme['primary']};
-                    border-radius: {self.color_theme['border_radius_small']};
-                    height: 30px;
-                    font-size: 12px;
-                }}
-
-                QLineEdit::hover {{
-                    background-color: {self.color_theme['surface_light']};
-                }}
-
-                QLineEdit::cursor {{
-                    color: {self.color_theme['primary']};
-                }}
-            """
-        )
+        self.title_input.setObjectName("form-input")
         self.title_input.setAlignment(Qt.AlignCenter)
 
         content_label = QLabel("Content")
-        content_label.setStyleSheet(
-            f"""
-                QLabel {{
-                    border: none;
-                    font-style: italic;
-                    color: {self.color_theme['primary']};
-                    font-size: 12px;
-                }}
-            """
-        )
+        content_label.setObjectName("form-label")
         content_label.setAlignment(Qt.AlignCenter)
 
         self.details_input = QTextEdit()
-        self.details_input.setStyleSheet(
-            f"""
-                QTextEdit {{
-                    background-color: transparent;
-                    border: 2px solid {self.color_theme['primary']};
-                    border-radius: {self.color_theme['border_radius_small']};
-                    font-size: 12px;
-                }}
-
-                QTextEdit::hover {{
-                    background-color: {self.color_theme['surface_light']};
-                }}
-            """
-        )
+        self.details_input.setObjectName("form-input")
 
         priority_label = QLabel("Priority")
-        priority_label.setStyleSheet(
-            f"""
-                QLabel {{
-                    border: none;
-                    font-style: italic;
-                    color: {self.color_theme['primary']};
-                    font-size: 12px;
-                }}
-            """
-        )
+        priority_label.setObjectName("form-label")
         priority_label.setAlignment(Qt.AlignCenter)
 
         priority_row = QWidget()
-        priority_row.setStyleSheet("border: none; height: 30px;")
+        priority_row.setObjectName("row")
 
         priority_row_layout = QHBoxLayout(priority_row)
         priority_row_layout.setContentsMargins(0, 0, 0, 0)
         priority_row_layout.setSpacing(10)
 
         self.radio_low = QRadioButton("Low")
-        self.radio_low.setStyleSheet(
-            f"""
-                QRadioButton {{
-                    color: {self.color_theme['primary']};
-                    font-size: 12px;
-                }}
-
-                QRadioButton::indicator {{
-                    width: 20px;
-                    height: 20px;
-                    border-radius: {self.color_theme["border_radius_medium"]};
-                }}
-
-                QRadioButton::indicator::unchecked {{
-                    background-color: transparent;
-                    border: 2px solid {self.color_theme['primary']};
-                }}
-
-                QRadioButton::indicator::checked {{
-                    background-color: {self.color_theme['primary']};
-                    border: transparent;
-                    border-radius: {self.color_theme['border_radius_medium']};
-                }}
-            """
-        )
+        self.radio_low.setObjectName("radio")
 
         self.radio_medium = QRadioButton("Medium")
-        self.radio_medium.setStyleSheet(
-            f"""
-                QRadioButton {{
-                    color: {self.color_theme['primary']};
-                    font-size: 12px;
-                }}
-
-                QRadioButton::indicator {{
-                    width: 20px;
-                    height: 20px;
-                    border-radius: {self.color_theme["border_radius_medium"]};
-                }}
-
-                QRadioButton::indicator::unchecked {{
-                    background-color: transparent;
-                    border: 2px solid {self.color_theme['primary']};
-                }}
-
-                QRadioButton::indicator::checked {{
-                    background-color: {self.color_theme['primary']};
-                    border: transparent;
-                    border-radius: {self.color_theme['border_radius_medium']};
-                }}
-            """
-        )
+        self.radio_medium.setObjectName("radio")
 
         self.radio_high = QRadioButton("High")
-        self.radio_high.setStyleSheet(
-            f"""
-                QRadioButton {{
-                    color: {self.color_theme['primary']};
-                    font-size: 12px;
-                }}
-
-                QRadioButton::indicator {{
-                    width: 20px;
-                    height: 20px;
-                    border-radius: {self.color_theme["border_radius_medium"]};
-                }}
-
-                QRadioButton::indicator::unchecked {{
-                    background-color: transparent;
-                    border: 2px solid {self.color_theme['primary']};
-                }}
-
-                QRadioButton::indicator::checked {{
-                    background-color: {self.color_theme['primary']};
-                    border: transparent;
-                    border-radius: {self.color_theme['border_radius_medium']};
-                }}
-            """
-        )
+        self.radio_high.setObjectName("radio")
 
         button_row = QWidget()
         button_row.setStyleSheet("border: none; height: 50px;")
@@ -479,7 +420,7 @@ class Dashboard(QWidget):
                     font-size: 12px;
                 }}
 
-                QPushButton::hover {{
+                QPushButton:hover {{
                     background-color: {self.color_theme['surface_light']};
                 }}
             """
@@ -499,7 +440,7 @@ class Dashboard(QWidget):
                     font-size: 12px;
                 }}
 
-                QPushButton::hover {{
+                QPushButton:hover {{
                     background-color: {self.color_theme['surface_light']};
                 }}
             """
@@ -633,13 +574,13 @@ class Dashboard(QWidget):
 
                 if task.priority == 1:
                     self.radio_high.setChecked(True)
-                    self.radio_high.setStyleSheet(f"background-color: {self.color_theme['error']};")
+                    self.radio_high.setObjectName("success")
                 elif task.priority == 2:
                     self.radio_medium.setChecked(True)
-                    self.radio_medium.setStyleSheet(f"background-color: {self.color_theme['warning']};")
+                    self.radio_medium.setObjectName("warning")
                 else:
                     self.radio_low.setChecked(True)
-                    self.radio_low.setStyleSheet(f"background-color: {self.color_theme['success']};")
+                    self.radio_low.setObjectName("error")
 
                 self.submit_btn.setText("Update")
                 break
