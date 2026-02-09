@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import QApplication, QMessageBox
 from pathlib import Path
 
-from desktop.app import Momentum
+from app.app import Momentum
 
 from core.logic import MomentumLogic
 from core.database.db import get_base, get_engine, get_db
