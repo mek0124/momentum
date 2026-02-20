@@ -1,4 +1,5 @@
 from PySide6.QtWidgets import QApplication, QMessageBox
+from PySide6.QtGui import QPixmap, QIcon
 from pathlib import Path
 
 from app.app import Momentum
@@ -140,20 +141,26 @@ def check_perms(root_dir: Path) -> bool:
         return False
     
 
-def run_main():
+def run_main(icon_file_path):
     db = next(get_db())
     logic = MomentumLogic(db)
 
     window = Momentum(COLOR_THEME, logic)
+    window.setWindowIcon(
+        QIcon(filename=icon_file_path)
+    )
     window.showMaximized()
 
     sys.exit(app.exec())
 
 
-def run_updater(root_dir, local_version, latest_version):
+def run_updater(root_dir, local_version, latest_version, icon_file_path):
     window = Updater(root_dir, COLOR_THEME, local_version, latest_version)
     window.setMinimumWidth(800)
     window.setMinimumHeight(600)
+    window.setWindowIcon(
+        QIcon(fileName=icon_file_path)
+    )
     window.show()
 
     sys.exit(app.exec())
@@ -205,9 +212,10 @@ if __name__ == '__main__':
         sys.exit(0)
 
     update_ready, local_version, latest_version = check_for_update(root_dir)
+    icon_path = root_dir / "core" / "assets" / "icon.png"
 
     if update_ready and latest_version:
-        run_updater(root_dir, local_version, latest_version)
+        run_updater(root_dir, local_version, latest_version, icon_path)
     
     else:
-        run_main()
+        run_main(icon_path)
