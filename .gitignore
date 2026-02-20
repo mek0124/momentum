@@ -1,6 +1,5 @@
 __pycache__/
 core/storage/
-redo/
 build/
 dist/
 *.egg-info
