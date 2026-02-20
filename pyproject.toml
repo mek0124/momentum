@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "momentum"
-version = "2.0.0"
+version = "2.0.2"
 description = "A light-weight, local-first task tracking application"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -22,7 +22,7 @@ classifiers = [
 ]
 dependencies = [
     "pyside6>=6.9.1",
-    "qfluentwidgets>=1.10.5",
+    "pyside6-fluent-widgets>=1.10.5",
     "sqlalchemy>=2.0.45",
     "python-dotenv>=1.2.1",
     "requests>=2.32.5",
