@@ -14,3 +14,9 @@ Change Log for Momentum
 - merged update thread to separate file
 - updated splash screen progress bar to be more fluid
 - updated readme
+
+### 02/19/2026 - cleaned up files
+- removed 'redo/' from .gitignore
+- corrected package name in pyproject.toml
+  - from: qfluentwidgets>=x.x.x
+  - to: pyside6-fluent-widgets>=x.x.x
