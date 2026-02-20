@@ -50,23 +50,24 @@ Issues = "https://github.com/mek0124/momentum/issues"
 [tool.setuptools]
 packages = [
     "app",
-    "app.core",
-    "app.database", 
-    "app.models",
     "app.pages",
-    "app.utils",
+    "core",
+    "core.database",
+    "core.models",
+    "core.utils",
     "updater",
     "updater.pages",
     "updater.utils",
 ]
+py-modules = ["main"]
 
 [tool.setuptools.package-dir]
 app = "app"
-"app.core" = "app/core"
-"app.database" = "app/database"
-"app.models" = "app/models"
 "app.pages" = "app/pages"
-"app.utils" = "app/utils"
+core = "core"
+"core.database" = "core/database"
+"core.models" = "core/models"
+"core.utils" = "core/utils"
 updater = "updater"
 "updater.pages" = "updater/pages"
 "updater.utils" = "updater/utils"

@@ -89,6 +89,32 @@ python main.py
 
 ---
 
+## Build & Install
+
+Momentum is packaged as a Python package and can be installed with pip:
+
+```bash
+# From the repository root
+pip install -e .
+```
+
+This installs the `momentum` script into your environment's bin directory. After installation, you can run:
+
+```bash
+momentum
+```
+
+To build a wheel for distribution:
+
+```bash
+pip install build
+python -m build --wheel
+```
+
+The built wheel will be in the `dist/` directory.
+
+> Note: The package requires Python 3.12 or newer and dependencies such as PySide6 and qfluentwidgets. If you encounter issues installing qfluentwidgets, ensure you have an up-to-date pip and check the package name on PyPI (it may be `pyside6-fluent-widgets`).
+
 ## Project Layout
 
 |parent|sub-parent|file|description|
