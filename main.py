@@ -142,9 +142,6 @@ def check_perms(root_dir: Path) -> bool:
 
 
 def run_main(icon_file_path):
-    # Ensure database tables exist
-    Base = get_base()
-    Base.metadata.create_all(bind=get_engine())
     db = next(get_db())
     logic = MomentumLogic(db)
 
@@ -152,15 +149,11 @@ def run_main(icon_file_path):
     window.setWindowIcon(QIcon(filename=icon_file_path))
     window.showMaximized()
 
-    sys.exit(app.exec())
-
 
 def run_updater(root_dir, local_version, latest_version, icon_file_path):
     window = Updater(root_dir, COLOR_THEME, local_version, latest_version)
     window.setWindowIcon(QIcon(filename=icon_file_path))
-    window.showMaximized()
-
-    sys.exit(app.exec())
+    window.show()
 
 
 def get_latest_version_from_repo():
@@ -200,19 +193,27 @@ def check_for_update(root_dir: Path):
     return latest_version != local_version, local_version, latest_version
 
 
-if __name__ == "__main__":
+def main():
     app = QApplication(sys.argv)
     root_dir = Path(__file__).parent
     did_agree = check_perms(root_dir)
-
     if not did_agree:
         sys.exit(0)
+
+    # Ensure database tables exist
+    Base = get_base()
+    Base.metadata.create_all(bind=get_engine())
 
     update_ready, local_version, latest_version = check_for_update(root_dir)
     icon_path = root_dir / "app" / "assets" / "icon.png"
 
     if update_ready and latest_version:
         run_updater(root_dir, local_version, latest_version, icon_path)
-
     else:
         run_main(icon_path)
+
+    sys.exit(app.exec())
+
+
+if __name__ == "__main__":
+    main()

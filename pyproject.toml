@@ -77,7 +77,7 @@ app = ["assets/*.png"]
 updater = ["pages/*.py", "utils/*.py"]
 
 [project.scripts]
-momentum = "main:run_main"
+momentum = "main:main"
 
 [project.entry-points."gui_scripts"]
-momentum-gui = "main:run_main"
+momentum-gui = "main:main"
