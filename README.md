@@ -1,6 +1,6 @@
 <table align="center">
   <tr>
-    <th><img src="./app/assets/icon.png" width="60" height="60" /></th>
+    <th><img src="./core/assets/icon.png" width="60" height="60" /></th>
     <th>Momentum</th>
     <th>v2.0.0</th>
   </tr>
