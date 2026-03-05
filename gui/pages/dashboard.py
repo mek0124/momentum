@@ -7,73 +7,10 @@ from PySide6.QtWidgets import (
     QTextEdit,
     QLineEdit,
     QPushButton,
-    QRadioButton,
     QScrollArea,
-    QStatusBar,
-    QSizePolicy,
-    QFrame,
+    QStatusBar
 )
 from PySide6.QtCore import Qt, QTimer
-
-
-MAX_DETAILS_LENGTH = 150
-
-
-class LimitedTextEdit(QTextEdit):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self.max_length = MAX_DETAILS_LENGTH
-        self.counter_label = QLabel(self)
-        self.counter_label.setAlignment(Qt.AlignRight | Qt.AlignBottom)
-        self.counter_label.setStyleSheet(
-            """
-            QLabel {
-                background-color: transparent;
-                color: palette(mid);
-                font-size: 10px;
-                padding: 2px;
-            }
-            """
-        )
-        self.textChanged.connect(self.update_counter)
-
-    def resizeEvent(self, event):
-        super().resizeEvent(event)
-        self.update_counter_position()
-
-    def update_counter_position(self):
-        self.counter_label.setGeometry(self.width() - 65, self.height() - 18, 60, 16)
-
-    def update_counter(self):
-        current = len(self.toPlainText())
-        self.counter_label.setText(f"{current}/{self.max_length}")
-        self.update_counter_position()
-
-    def keyPressEvent(self, event):
-        current_text = self.toPlainText()
-        if len(current_text) >= self.max_length:
-            if event.key() in (
-                Qt.Key_Backspace,
-                Qt.Key_Delete,
-                Qt.Key_Left,
-                Qt.Key_Right,
-                Qt.Key_A,
-                Qt.Key_C,
-                Qt.Key_X,
-                Qt.Key_Z,
-                Qt.Key_Y,
-                Qt.Key_Up,
-                Qt.Key_Down,
-                Qt.Key_Tab,
-                Qt.Key_Home,
-                Qt.Key_End,
-                Qt.Key_Control,
-                Qt.Key_Shift,
-                Qt.Key_Alt,
-            ):
-                super().keyPressEvent(event)
-            return
-        super().keyPressEvent(event)
 
 
 class Dashboard(QWidget):
@@ -90,8 +27,6 @@ class Dashboard(QWidget):
 
         self.setup_ui()
         self.load_tasks()
-
-        self.radio_low.setChecked(True)
 
     def setup_ui(self):
         if self.layout() is None:
@@ -241,8 +176,8 @@ class Dashboard(QWidget):
                 )
                 task_title.setAlignment(Qt.AlignCenter)
 
-                details_label = QLabel(task.details)
-                details_label.setStyleSheet(
+                content_label = QLabel(task.content)
+                content_label.setStyleSheet(
                     f"""
                         QLabel {{
                             font-size: 10px;
@@ -251,7 +186,7 @@ class Dashboard(QWidget):
                         }}
                     """
                 )
-                details_label.setAlignment(Qt.AlignCenter)
+                content_label.setAlignment(Qt.AlignCenter)
 
                 task_card_row = QWidget()
                 task_card_row.setStyleSheet("border: none;")
@@ -260,56 +195,6 @@ class Dashboard(QWidget):
                 task_card_row_layout.setContentsMargins(0, 0, 0, 0)
                 task_card_row_layout.setSpacing(10)
                 task_card_row_layout.setAlignment(Qt.AlignCenter)
-
-                if task.priority == 3:
-                    color = "success"
-                elif task.priority == 2:
-                    color = "warning"
-                elif task.priority == 1:
-                    color = "error"
-
-                priority_label = QLabel(f"Priority\n{task.priority}")
-                priority_label.setStyleSheet(
-                    f"""
-                        QLabel {{
-                            font-size: 10px;
-                            color: {self.color_theme[color]};
-                        }}
-                    """
-                )
-                priority_label.setAlignment(Qt.AlignCenter)
-
-                created_at_label = QLabel(
-                    f"Created On\n{task.created_at.__format__('%m/%d/%Y\n%H:%M')}"
-                )
-                created_at_label.setStyleSheet(
-                    f"""
-                        QLabel {{
-                            font-size: 10px;
-                            color: {self.color_theme["text_primary"]};
-                        }}
-                    """
-                )
-                created_at_label.setAlignment(Qt.AlignCenter)
-
-                task_card_row_layout.addWidget(priority_label)
-                task_card_row_layout.addWidget(created_at_label)
-
-                if task.created_at != task.updated_at:
-                    updated_at_label = QLabel(
-                        f"Last Updated\n{task.updated_at.__format__('%m/%d/%Y\n%H:%M')}"
-                    )
-                    updated_at_label.setStyleSheet(
-                        f"""
-                            QLabel {{
-                                font-size: 10px;
-                                color: {self.color_theme["text_primary"]};
-                            }}
-                        """
-                    )
-                    updated_at_label.setAlignment(Qt.AlignCenter)
-
-                    task_card_row_layout.addWidget(updated_at_label)
 
                 btn_container = QWidget()
                 btn_container.setStyleSheet("border: none;")
@@ -363,7 +248,7 @@ class Dashboard(QWidget):
                 btn_container_layout.addWidget(del_btn)
 
                 task_card_layout.addWidget(task_title)
-                task_card_layout.addWidget(details_label, 2)
+                task_card_layout.addWidget(content_label, 2)
                 task_card_layout.addWidget(task_card_row)
                 task_card_layout.addWidget(btn_container)
 
@@ -437,8 +322,8 @@ class Dashboard(QWidget):
         )
         content_label.setAlignment(Qt.AlignCenter)
 
-        self.details_input = LimitedTextEdit()
-        self.details_input.setStyleSheet(
+        self.content_input = QTextEdit()
+        self.content_input.setStyleSheet(
             f"""
                 QTextEdit {{
                     background-color: transparent;
@@ -449,107 +334,6 @@ class Dashboard(QWidget):
 
                 QTextEdit::hover {{
                     background-color: {self.color_theme["surface_light"]};
-                }}
-            """
-        )
-
-        priority_label = QLabel("Priority")
-        priority_label.setStyleSheet(
-            f"""
-                QLabel {{
-                    border: none;
-                    font-style: italic;
-                    color: {self.color_theme["primary"]};
-                    font-size: 12px;
-                }}
-            """
-        )
-        priority_label.setAlignment(Qt.AlignCenter)
-
-        priority_row = QWidget()
-        priority_row.setStyleSheet("border: none; height: 30px;")
-
-        priority_row_layout = QHBoxLayout(priority_row)
-        priority_row_layout.setContentsMargins(0, 0, 0, 0)
-        priority_row_layout.setSpacing(10)
-
-        self.radio_low = QRadioButton("Low")
-        self.radio_low.setStyleSheet(
-            f"""
-                QRadioButton {{
-                    color: {self.color_theme["primary"]};
-                    font-size: 12px;
-                }}
-
-                QRadioButton::indicator {{
-                    width: 20px;
-                    height: 20px;
-                    border-radius: {self.color_theme["border_radius_medium"]};
-                }}
-
-                QRadioButton::indicator::unchecked {{
-                    background-color: transparent;
-                    border: 2px solid {self.color_theme["primary"]};
-                }}
-
-                QRadioButton::indicator::checked {{
-                    background-color: {self.color_theme["primary"]};
-                    border: transparent;
-                    border-radius: {self.color_theme["border_radius_medium"]};
-                }}
-            """
-        )
-
-        self.radio_medium = QRadioButton("Medium")
-        self.radio_medium.setStyleSheet(
-            f"""
-                QRadioButton {{
-                    color: {self.color_theme["primary"]};
-                    font-size: 12px;
-                }}
-
-                QRadioButton::indicator {{
-                    width: 20px;
-                    height: 20px;
-                    border-radius: {self.color_theme["border_radius_medium"]};
-                }}
-
-                QRadioButton::indicator::unchecked {{
-                    background-color: transparent;
-                    border: 2px solid {self.color_theme["primary"]};
-                }}
-
-                QRadioButton::indicator::checked {{
-                    background-color: {self.color_theme["primary"]};
-                    border: transparent;
-                    border-radius: {self.color_theme["border_radius_medium"]};
-                }}
-            """
-        )
-
-        self.radio_high = QRadioButton("High")
-        self.radio_high.setStyleSheet(
-            f"""
-                QRadioButton {{
-                    color: {self.color_theme["primary"]};
-                    font-size: 12px;
-                }}
-
-                QRadioButton::indicator {{
-                    width: 20px;
-                    height: 20px;
-                    border-radius: {self.color_theme["border_radius_medium"]};
-                }}
-
-                QRadioButton::indicator::unchecked {{
-                    background-color: transparent;
-                    border: 2px solid {self.color_theme["primary"]};
-                }}
-
-                QRadioButton::indicator::checked {{
-                    background-color: {self.color_theme["primary"]};
-                    border: transparent;
-                    border-radius: {self.color_theme["border_radius_medium"]};
                 }}
             """
         )
@@ -600,19 +384,13 @@ class Dashboard(QWidget):
         )
         submit_btn.clicked.connect(self.handle_task_submit)
 
-        priority_row_layout.addWidget(self.radio_low)
-        priority_row_layout.addWidget(self.radio_medium)
-        priority_row_layout.addWidget(self.radio_high)
-
         button_row_layout.addWidget(clear_btn)
         button_row_layout.addWidget(submit_btn)
 
         panel_layout.addWidget(title_label)
         panel_layout.addWidget(self.title_input)
         panel_layout.addWidget(content_label)
-        panel_layout.addWidget(self.details_input, 2)
-        panel_layout.addWidget(priority_label)
-        panel_layout.addWidget(priority_row)
+        panel_layout.addWidget(self.content_input, 2)
         panel_layout.addWidget(button_row)
 
         layout.addWidget(panel, 1)
@@ -620,10 +398,7 @@ class Dashboard(QWidget):
 
     def reset_form(self):
         self.title_input.clear()
-        self.details_input.clear()
-        self.radio_low.setChecked(True)
-        self.radio_medium.setChecked(False)
-        self.radio_high.setChecked(False)
+        self.content_input.clear()
         self.editing_id = ""
         self.setup_ui()
 
@@ -659,61 +434,35 @@ class Dashboard(QWidget):
 
     def save_task(self):
         new_title = self.title_input.text().strip()
-        new_details = self.details_input.toPlainText().strip()
+        new_content = self.content_input.toPlainText().strip()
 
         if not new_title:
             self.handle_error_success(True, "Title Error: title cannot be empty")
             return
 
-        if not new_details:
+        if not new_content:
             self.handle_error_success(
                 True, "Details Error: details cannot be empty", 3000
             )
             return
 
-        if self.radio_low.isChecked():
-            priority = 3
-        elif self.radio_medium.isChecked():
-            priority = 2
-        elif self.radio_high.isChecked():
-            priority = 1
-        else:
-            priority = 3
-
-        new_task = {"title": new_title, "details": new_details, "priority": priority}
-
-        did_save, response = self.logic.save_task(new_task)
+        did_save, response = self.logic.save_task(new_title, new_content)
         self.load_tasks()
         return self.handle_error_success(did_save, response)
 
     def update_task(self):
         new_title = self.title_input.text().strip()
-        new_details = self.details_input.toPlainText().strip()
+        new_content = self.content_input.toPlainText().strip()
 
         if not new_title:
             return self.handle_error_success(True, "Title Error: title cannot be empty")
 
-        if not new_details:
+        if not new_content:
             return self.handle_error_success(
                 True, "Details Error: details cannot be empty"
             )
 
-        if self.radio_low.isChecked():
-            priority = 3
-        elif self.radio_medium.isChecked():
-            priority = 2
-        elif self.radio_high.isChecked():
-            priority = 1
-        else:
-            priority = 3
-
-        updated_task = {
-            "title": new_title,
-            "details": new_details,
-            "priority": priority,
-        }
-
-        did_update, response = self.logic.update_task(self.editing_id, updated_task)
+        did_update, response = self.logic.update_task(self.editing_id, new_title, new_content)
 
         return self.handle_error_success(did_update, response)
 
@@ -725,24 +474,7 @@ class Dashboard(QWidget):
             if str(task.id) == task_id:
                 self.editing_id = task_id
                 self.title_input.setText(task.title)
-                self.details_input.setText(task.details)
-
-                if task.priority == 1:
-                    self.radio_high.setChecked(True)
-                    self.radio_high.setStyleSheet(
-                        f"background-color: {self.color_theme['error']};"
-                    )
-                elif task.priority == 2:
-                    self.radio_medium.setChecked(True)
-                    self.radio_medium.setStyleSheet(
-                        f"background-color: {self.color_theme['warning']};"
-                    )
-                else:
-                    self.radio_low.setChecked(True)
-                    self.radio_low.setStyleSheet(
-                        f"background-color: {self.color_theme['success']};"
-                    )
-
+                self.content_input.setText(task.content)
                 self.submit_btn.setText("Update")
                 break
 
@@ -756,9 +488,8 @@ class Dashboard(QWidget):
 
     def load_tasks(self):
         self.title_input.clear()
-        self.details_input.clear()
+        self.content_input.clear()
         self.title_input.setFocus()
-        self.radio_low.setChecked(True)
         self.all_tasks = self.logic.get_all_tasks()
         self.editing_id = ""
         self.setup_ui()

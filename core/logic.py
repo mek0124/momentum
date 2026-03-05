@@ -1,91 +1,166 @@
-from typing import Tuple, Optional, Union, List
+from typing import Tuple, Union, List
+from pathlib import Path
 
+import json
+import sys
+import os
+
+from .database.db import get_db, get_engine, get_base
 from .models.task import Task
 
 
-class MomentumLogic:
-    def __init__(self, db):
-        self.db = db
+class Logic:
+    def __init__(self, app_dir: Path):
+        self.app_dir = app_dir
+        self.config_file = app_dir / "config.json"
+        self.setup_environment()
 
-    def save_task(self, new_task: dict) -> Tuple[bool, str]:
-        if not new_task:
-            return True, "Task Object Cannot Be Empty"
+    def setup_environment(self):
+        self.app_dir.mkdir(parents=True, exist_ok=True)
+
+        try:
+            with open(self.config_file, 'r', encoding="utf-8-sig") as f:
+                data = json.load(f)
+
+            if data.get("agree") != 1:
+                self.get_user_agreement()
+
+        except FileNotFoundError:
+            self.get_user_agreement()
+
+        except (KeyError, json.JSONDecodeError):
+            if self.config_file.exists():
+                os.remove(self.config_file)
+
+            self.get_user_agreement()
+
+        self.init_db()
+
+    def init_db(self):
+        get_base().metadata.create_all(bind=get_engine())
+
+    def get_user_agreement(self):
+        print(
+            "Momentum requires read/write permissions to create and "
+            "maintain the database that holds your tasks. This "
+            "application cannot run without this permission."
+        )
+
+        user_agree = input("\nDo you agree? (Y/N): ")
+
+        while user_agree.lower() not in ['y', 'n', 'yes', 'no']:
+            print("\nInvalid Input. Input Must Be 'Y' for Yes or 'N' for No")
+            user_agree = input("\nDo you agree? (Y/N): ")
+
+        match user_agree.lower():
+            case 'y' | 'yes':
+                self.update_user_config()
+
+            case 'n' | 'no':
+                print(
+                    "\nYou declined the user agreement. This application "
+                    "cannot run without this permission. If you change "
+                    "your mind later, run any command again"
+                )
+                sys.exit(0)
+
+    def update_user_config(self):
+        try:
+            with open(self.config_file, 'w', encoding="utf-8-sig") as new:
+                json.dump({"agree": 1}, new, indent=2)
+
+        except FileExistsError:
+            with open(self.config_file, 'w+', encoding="utf-8-sig") as new:
+                json.dump({"agree": 1}, new, indent=2)
+
+        except (KeyError, json.JSONDecodeError):
+            if self.config_file.exists():
+                os.remove(self.config_file)
+
+            with open(self.config_file, 'w+', encoding="utf-8-sig") as new:
+                json.dump({"agree": 1}, new, indent=2)
+
+    def save_task(self, title: str, content: str) -> Tuple[bool, str]:
+        db = next(get_db())
+
+        if not title and not content:
+            return False, "Title and Content are Requried"
         
-        found_title = self.db.query(Task).filter(Task.title == new_task["title"]).first()
+        found_title = db.query(Task).filter(Task.title == title).first()
 
         if found_title:
-            return True, "Title Already Exists"
+            return False, "Title Already Exists"
         
         task_to_save = Task(
-            title = new_task["title"],
-            details = new_task["details"],
-            priority = new_task["priority"]
+            title = title,
+            content = content
         )
         
         try:
-            self.db.add(task_to_save)
-            self.db.commit()
-            return False, "Task Saved Successfully"
+            db.add(task_to_save)
+            db.commit()
+            return True, "Task Saved Successfully"
         
         except Exception as e:
             print(f"Unknown Exception Saving Task: {e}")
-            self.db.rollback()
-            return True, "Failed to Save Task"
+            db.rollback()
+            return False, "Failed to Save Task"
         
-    def update_task(self, task_id: int, updated_task: dict) -> Tuple[bool, str]:
-        if not task_id or not updated_task:
-            return True, "Invalid Operation: Task ID and Task Info Cannot Be Empty"
+    def update_task(self, task_id: int, new_title: str = None, new_content: str = None) -> Tuple[bool, str]:
+        db = next(get_db())
+
+        if not new_title and not new_content:
+            return False, "Title and Content cannot both be empty"
         
         if not task_id:
-            return True, "Task Id Cannot Be Empty"
+            return False, "Task Id Cannot Be Empty"
         
-        if not updated_task:
-            return True, "Task Object Cannot Be Empty"
-        
-        found_task = self.db.query(Task).filter(Task.id == task_id).first()
+        found_task = db.query(Task).filter(Task.id == task_id).first()
 
         if not found_task:
-            return True, f"No Task Found By Id: {task_id}"
+            return False, f"No Task Found By Id: {task_id}"
         
-        if found_task.title == updated_task["title"] and \
-            found_task.details == updated_task["details"]:
-            return False, "No Changes Made"
-        
+        if new_title:
+            found_task.title = new_title
+
+        if new_content:
+            found_task.content = new_content
+
         try:
-            self.db.query(Task).filter(Task.id == task_id).update(updated_task)
-            self.db.commit()
+            db.commit()
+            db.refresh(found_task)
             return True, "Task Updated Successfully"
         
         except Exception as e:
             print(f"Unknown Exception Updating Task: {e}")
-            self.db.rollback()
+            db.rollback()
             return False, "Failed to Update Task"
         
     def delete_task(self, task_id: int) -> Tuple[bool, str]:
+        db = next(get_db())
+
+        if not task_id:
+            return False, "Task ID cannot be empty"
+        
+        found_task = db.query(Task).filter(Task.id == task_id).first()
+
+        if not found_task:
+            return False, f"No task found by ID: {task_id}"
+        
         try:
-            self.db.query(Task).filter(Task.id == task_id).delete()
-            self.db.commit()
-            return False, "Task Deleted Successfully"
+            db.delete(found_task)
+            db.commit()
+            return True, "Task Deleted Successfully"
         
         except Exception as e:
             print(f"Unknown Exception Deleting Task: {e}")
-            self.db.rollback()
-            return True, "Failed to Delete Task"
+            db.rollback()
+            return False, "Failed to Delete Task"
         
     def get_all_tasks(self) -> Union[List, None]:
-        try:
-            return self.db.query(Task).all()
-        
-        except Exception as e:
-            print(f"Unknown Exception Retrieving All Tasks: {e}")
-            self.db.rollback()
-            return None
+        db = next(get_db())
+        return db.query(Task).all()
         
     def get_task_by_id(self, task_id) -> Union[Task, None]:
-        try:
-            return self.db.query(Task).filter(Task.id == task_id).first()
-        
-        except Exception as e:
-            print(f"Unknown Exception Retrieving Task: {e}")
-            self.db.rollback()
-            return None
+        db = next(get_db())
+        return db.query(Task).filter(Task.id == task_id).first()

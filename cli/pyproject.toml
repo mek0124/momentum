@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "momentum-cli"
+version = "1.0.0"
+description = "CLI interface for the Momentum task application"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "momentum-core>=0.1.0",
+    "click>=8.3.1",
+]
+
+[project.scripts]
+momentum = "cli.main:cli"
+
+[tool.setuptools]
+package-dir = {"" = ".."}
+packages = ["cli"]
+
+[tool.setuptools.package-data]
+"*" = ["*.py"]

@@ -1,4 +1,4 @@
-from .logic import MomentumLogic
+from .logic import Logic
 
 
-__all__ = ["MomentumLogic"]
+__all__ = ["Logic"]

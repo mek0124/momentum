@@ -2,8 +2,16 @@ from qfluentwidgets import (
     MSFluentWindow, setTheme, setThemeColor,
     Theme, FluentIcon
 )
+from PySide6.QtWidgets import QApplication
+from PySide6.QtGui import QPixmap
+from pathlib import Path
 
 from .pages.dashboard import Dashboard
+
+from core.logic import Logic
+from core.utils.color_theme import COLOR_THEME
+
+import sys
 
 
 class Momentum(MSFluentWindow):
@@ -30,3 +38,23 @@ class Momentum(MSFluentWindow):
 
     def closeEvent(self, event):
         event.accept()
+
+
+def main():
+    app = QApplication(sys.argv)
+    app_dir = Path.home() / ".momentum"
+
+    logic = Logic(app_dir)
+
+    window = Momentum(COLOR_THEME, logic)
+    window.setWindowTitle("Momentum")
+    window.setWindowIcon(QPixmap("./core/assets/icon.png"))
+    window.setMinimumWidth(800)
+    window.setMinimumHeight(600)
+    window.show()
+
+    sys.exit(app.exec())
+
+
+if __name__ == '__main__':
+    main()
