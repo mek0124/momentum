@@ -1,161 +1,203 @@
-<table align="center">
-  <tr>
-    <th><img src="./core/assets/icon.png" width="60" height="60" /></th>
-    <th>Momentum</th>
-    <th>v2.0.0</th>
-  </tr>
-</table>
-
 <div align="center">
-  
-  ![Momentum](https://img.shields.io/badge/Momentum-local--first-blue)
+  <img src="./core/assets/icon.png" width="120" height="120" />
+  <h1>Momentum</h1>
+  <h4>
+    A local‑first task manager for the terminal, desktop, and automation.
+  </h4>
+  <p>
+    CLI • TUI • GUI --- powered by a shared core.
+  </p>
+
   ![Python](https://img.shields.io/badge/Python-3.12+-blue)
-  ![PySide6](https://img.shields.io/badge/PySide6-6.9+-green)
-  ![License](https://img.shields.io/badge/License-MIT-green)
+  ![License](https://img.shields.io/badge/License-MIT-green) ![Local
+First](https://img.shields.io/badge/Design-local--first-blue)
+
 </div>
 
+---
 
-Momentum is a task manager built with PySide6 and SQLAlchemy
+# Overview
 
--- FOSS --MIT Licensed --**local-first** --minimalist --No online accounts --No online cloud --No tracking
+**Momentum** is a minimalist task management application built with a
+**modular mono‑repo architecture**.
 
-Just You and Your Tasks...
+It provides three interfaces that all share the same core logic:
+
+• **CLI** -- for scripting and automation\
+• **TUI** -- for terminal workflows\
+• **GUI** -- for desktop users
+
+All interfaces operate on the same **local SQLite database**, ensuring
+your data always stays on your machine.
+
+No accounts.\
+No telemetry.\
+No cloud dependency.
+
+Just you and your tasks.
 
 ---
 
-## Why Momentum?
+# Philosophy
 
-Most task managers are bloated, cloud-dependent, or opinionated.
-Momentums' FOSS version is intentionally boring — fast, local, and hackable.
+Momentum follows a few simple principles:
 
-- 🗂 Local SQLite database
-- 🌓 Dark UI, modern CSS
-- 🔒 Your data never leaves your machine
-
----
-
-## Features
-
-- Create, edit, delete tasks
-- Priority levels (Low / Medium / High)
-- Optional due dates & times
-- Live clock UI
-- Responsive layout
-- Session-based identity (no passwords)
+• **Local‑first** --- your data belongs to you\
+• **Minimalism** --- fewer features, done well\
+• **Hackable** --- readable code and clear architecture\
+• **No lock‑in** --- simple SQLite storage
 
 ---
 
-## Install
+# Features
 
-```bash
-# clone the repo
+✔ Create tasks\
+✔ Edit tasks\
+✔ Delete tasks\
+✔ List tasks\
+✔ Local SQLite database\
+✔ CLI / TUI / GUI interfaces\
+✔ Modular architecture for future expansion
+
+---
+
+# Architecture
+
+Momentum is structured as a **mono‑repo** containing multiple
+installable packages.
+
+    momentum/
+    │
+    ├── cli/        → Command line interface
+    ├── tui/        → Terminal UI (Rich based)
+    ├── gui/        → Desktop application (PySide6 + Fluent UI)
+    │
+    ├── core/       → Shared application logic
+    │   ├── database
+    │   ├── models
+    │   ├── utils
+    │   └── logic.py
+    │
+    ├── pyproject.toml
+    └── README.md
+
+Each interface imports and uses the **shared core logic layer**.
+
+    CLI/TUI/GUI
+         │
+        ▼
+    Momentum Core
+         │
+        ▼
+    SQLite Database
+
+---
+
+# Installation
+
+Clone the repository:
+
+``` bash
 git clone https://github.com/mek0124/momentum.git
-
-# cd into the project
 cd momentum
+```
 
-# create the virtual environment
+Create a virtual environment:
+
+``` bash
 python -m venv .venv
-
-# activate the virtual environment
-# linux/mac
 source .venv/bin/activate
-
-# windows
-.venv\Scripts\Activate.ps1
-
-# install the dependencies
-pip install -r pyproject.toml"
 ```
 
-Create `.env`:
+Install the project:
 
-```env
-SECRET_KEY=change-me
-SQLALCHEMY_DB_URL=sqlite:///./core/storage/main.db
-```
-
-Run:
-
-```bash
-# linux/mac
-python3 main.py
-
-# windows
-python main.py
-```
-
-> The latest release also comes with an executable that <u>is **not** compatible</u> with Windows.
-
----
-
-## Build & Install
-
-Momentum is packaged as a Python package and can be installed with pip:
-
-```bash
-# From the repository root
+``` bash
 pip install -e .
 ```
 
-This installs the `momentum` script into your environment's bin directory. After installation, you can run:
+---
 
-```bash
-momentum
-```
+# Running Momentum
 
-To build a wheel for distribution:
+After installation you can launch any interface.
 
-```bash
-pip install build
-python -m build --wheel
-```
+### CLI
 
-The built wheel will be in the `dist/` directory.
+    momentum
 
-> Note: The package requires Python 3.12 or newer and dependencies such as PySide6 and qfluentwidgets. If you encounter issues installing qfluentwidgets, ensure you have an up-to-date pip and check the package name on PyPI (it may be `pyside6-fluent-widgets`).
+Example:
 
-## Project Layout
-
-|parent|sub-parent|file|description|
-|-|-|-|-|
-|app|||Momentum main application|
-|||app.py|Momentum main window class|
-||assets|| static assets folder|
-|||icon.png| icon|
-||core|| logic layer|
-|||logic.py| logic class|
-||database|| data layer|
-|||db.py| database configuration|
-||models|| data validation layer|
-|||task.py|validation class for task|
-||pages||ui layer|
-|||dashboard.py|user landing screen|
-||storage||app/user data storage folder|
-|||config.json|user permissions storage file|
-|||main.db|user task database file|
-||utils||utilities folder|
-|||color_theme.py|color theme file|
-|updater|||Momentum update application|
-|||app.py|Momentum update window class|
-||pages||ui layer|
-|||dashboard.py|user landing screen|
-||utils||utilities folder|
-|||update_thread.py|update utility class|
+    momentum hello --name Mek
+    momentum add --title "Task" --content "Example task"
+    momentum list
 
 ---
 
-## Philosophy
+### Terminal UI
 
-Momentum follows a few rules:
+    momentum-tui
 
-- Local-first always
-- Simple > clever
-- Readable code > abstractions
-- Ship features that matter
+Provides a keyboard driven terminal interface powered by **Rich**.
 
 ---
 
-## License
+### Desktop GUI
 
-MIT © mek0124
+    momentum-gui
+
+Launches the **PySide6 Fluent UI desktop application**.
+
+---
+
+# Data Storage
+
+Momentum automatically creates a local data directory after you've agreed to the read/write permissions:
+
+    ~/.momentum/
+
+Inside you will find:
+
+    config.json
+    main.db
+
+The database is a **SQLite file** that can be inspected or backed up
+manually.
+
+------------------------------------------------------------------------
+
+# Development
+
+Install development dependencies:
+
+``` bash
+pip install -e ".[dev]"
+```
+
+Recommended tools:
+
+    black
+    pytest
+    mypy
+    isort
+
+Run tests:
+
+``` bash
+pytest
+```
+
+------------------------------------------------------------------------
+
+# Contributing
+
+Contributions are welcome.
+
+Please read **CONTRIBUTING.md** before submitting a pull request.
+
+------------------------------------------------------------------------
+
+# License
+
+MIT License
+
+Copyright (c) mek0124
