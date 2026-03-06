@@ -9,8 +9,8 @@
   </p>
 
   ![Python](https://img.shields.io/badge/Python-3.12+-blue)
-  ![License](https://img.shields.io/badge/License-MIT-green) ![Local
-First](https://img.shields.io/badge/Design-local--first-blue)
+  ![License](https://img.shields.io/badge/License-MIT-green) 
+  ![Local First](https://img.shields.io/badge/Design-local--first-blue)
 
 </div>
 
