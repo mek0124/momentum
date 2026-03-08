@@ -2,14 +2,14 @@
   <img src="./core/assets/icon.png" width="120" height="120" />
   <h1>Momentum</h1>
   <h4>
-    A local‑first task manager for the terminal, desktop, and automation.
+    A local‑first task manager for the web.
   </h4>
   <p>
-    CLI • TUI • GUI --- powered by a shared core.
+    Built with Flask • SQLite • Modern HTML/CSS/JS
   </p>
 
   ![Python](https://img.shields.io/badge/Python-3.12+-blue)
-  ![License](https://img.shields.io/badge/License-MIT-green) 
+  ![License](https://img.shields.io/badge/License-MIT-green)
   ![Local First](https://img.shields.io/badge/Design-local--first-blue)
 
 </div>
@@ -18,17 +18,9 @@
 
 # Overview
 
-**Momentum** is a minimalist task management application built with a
-**modular mono‑repo architecture**.
+**Momentum** is a minimalist task management application with a clean, modern web interface.
 
-It provides three interfaces that all share the same core logic:
-
-• **CLI** -- for scripting and automation\
-• **TUI** -- for terminal workflows\
-• **GUI** -- for desktop users
-
-All interfaces operate on the same **local SQLite database**, ensuring
-your data always stays on your machine.
+All data is stored **locally** in a SQLite database on your machine.
 
 No accounts.\
 No telemetry.\
@@ -42,54 +34,31 @@ Just you and your tasks.
 
 Momentum follows a few simple principles:
 
-• **Local‑first** --- your data belongs to you\
-• **Minimalism** --- fewer features, done well\
-• **Hackable** --- readable code and clear architecture\
-• **No lock‑in** --- simple SQLite storage
+- **Local-first** — your data belongs to you
+- **Minimalism** — fewer features, done well
+- **Hackable** — readable code and clear architecture
+- **No lock-in** — simple SQLite storage
 
 ---
 
 # Features
 
-✔ Create tasks\
-✔ Edit tasks\
-✔ Delete tasks\
-✔ List tasks\
+✔ Create, edit, and delete tasks\
+✔ Mark tasks as complete/incomplete\
+✔ Filter tasks (All, Active, Completed)\
 ✔ Local SQLite database\
-✔ CLI / TUI / GUI interfaces\
-✔ Modular architecture for future expansion
+✔ Modern, responsive dark UI\
+✔ Keyboard shortcuts (`/` to focus search, `Esc` to close modal)
 
 ---
 
-# Architecture
+# Screenshots
 
-Momentum is structured as a **mono‑repo** containing multiple
-installable packages.
-
-    momentum/
-    │
-    ├── cli/        → Command line interface
-    ├── tui/        → Terminal UI (Rich based)
-    ├── gui/        → Desktop application (PySide6 + Fluent UI)
-    │
-    ├── core/       → Shared application logic
-    │   ├── database
-    │   ├── models
-    │   ├── utils
-    │   └── logic.py
-    │
-    ├── pyproject.toml
-    └── README.md
-
-Each interface imports and uses the **shared core logic layer**.
-
-    CLI/TUI/GUI
-         │
-        ▼
-    Momentum Core
-         │
-        ▼
-    SQLite Database
+The application features a clean, modern dark theme with:
+- Smooth animations and transitions
+- Responsive design for all screen sizes
+- Intuitive task management interface
+- Modal-based editing
 
 ---
 
@@ -97,21 +66,21 @@ Each interface imports and uses the **shared core logic layer**.
 
 Clone the repository:
 
-``` bash
+```bash
 git clone https://github.com/mek0124/momentum.git
 cd momentum
 ```
 
 Create a virtual environment:
 
-``` bash
+```bash
 python -m venv .venv
-source .venv/bin/activate
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 ```
 
-Install the project:
+Install dependencies:
 
-``` bash
+```bash
 pip install -e .
 ```
 
@@ -119,85 +88,104 @@ pip install -e .
 
 # Running Momentum
 
-After installation you can launch any interface.
+Start the Flask application:
 
-### CLI
+```bash
+python app.py
+```
 
-    momentum
+Open your browser and navigate to:
 
-Example:
-
-    momentum hello --name Mek
-    momentum add --title "Task" --content "Example task"
-    momentum list
-
----
-
-### Terminal UI
-
-    momentum-tui
-
-Provides a keyboard driven terminal interface powered by **Rich**.
-
----
-
-### Desktop GUI
-
-    momentum-gui
-
-Launches the **PySide6 Fluent UI desktop application**.
+```
+http://localhost:5000
+```
 
 ---
 
 # Data Storage
 
-Momentum automatically creates a local data directory after you've agreed to the read/write permissions:
+Momentum automatically creates a local data directory:
 
-    ~/.momentum/
+```
+~/.momentum/
+```
 
 Inside you will find:
 
-    config.json
-    main.db
+```
+main.db    → SQLite database with your tasks
+```
 
-The database is a **SQLite file** that can be inspected or backed up
-manually.
+The database can be inspected or backed up manually.
 
-------------------------------------------------------------------------
+---
+
+# API Endpoints
+
+Momentum exposes a RESTful API for programmatic access:
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/tasks` | Get all tasks (optional: `?status=active` or `?status=completed`) |
+| GET | `/api/tasks/<id>` | Get a single task |
+| POST | `/api/tasks` | Create a new task (body: `{title, content}`) |
+| PUT | `/api/tasks/<id>` | Update a task (body: `{title?, content?, completed?}`) |
+| DELETE | `/api/tasks/<id>` | Delete a task |
+| POST | `/api/tasks/toggle/<id>` | Toggle task completion |
+
+---
 
 # Development
 
 Install development dependencies:
 
-``` bash
+```bash
 pip install -e ".[dev]"
 ```
 
 Recommended tools:
 
-    black
-    pytest
-    mypy
-    isort
+- black (formatting)
+- pytest (testing)
+- mypy (type checking)
+- isort (import sorting)
 
 Run tests:
 
-``` bash
+```bash
 pytest
 ```
 
-------------------------------------------------------------------------
+---
+
+# Keyboard Shortcuts
+
+| Key | Action |
+|-----|--------|
+| `/` | Focus on the task title input |
+| `Esc` | Close edit modal |
+
+---
 
 # Contributing
 
-Contributions are welcome.
+Contributions are welcome!
 
-Please read **CONTRIBUTING.md** before submitting a pull request.
+Please feel free to submit issues and pull requests.
 
-------------------------------------------------------------------------
+---
 
 # License
 
 MIT License
 
 Copyright (c) mek0124
+
+---
+
+# Tech Stack
+
+- **Backend:** Flask, Flask-SQLAlchemy
+- **Database:** SQLite
+- **Frontend:** Vanilla HTML, CSS, JavaScript
+- **Fonts:** Inter (Google Fonts)
