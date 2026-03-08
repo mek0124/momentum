@@ -13,8 +13,15 @@ from pathlib import Path
 app = Flask(__name__)
 
 # Configure database - store in user's home directory
-home = Path.home()
-data_dir = home / ".momentum"
+if os.environ.get('VERCEL'):
+    data_dir = Path('/tmp/.momentum')
+else:
+    home = Path.home()
+    data_dir = home / ".momentum"
+
+data_dir.mkdir(parents=True, exist_ok=True)
+db_path = data_dir / "main.db"
+
 data_dir.mkdir(parents=True, exist_ok=True)
 db_path = data_dir / "main.db"
 
@@ -217,6 +224,7 @@ def init_db():
         print(f"Database initialized at: {db_path}")
 
 
+init_db()
+
 if __name__ == "__main__":
-    init_db()
     app.run(debug=True, host="0.0.0.0", port=5000)
