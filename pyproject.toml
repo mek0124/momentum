@@ -32,7 +32,7 @@ Repository = "https://github.com/mek0124/momentum.git"
 Documentation = "https://github.com/mek0124/momentum"
 
 [project.scripts]
-momentum = "app:app"
+app = "app:app"
 
 [tool.setuptools.packages.find]
 where = ["."]
