@@ -1,191 +1,73 @@
-<div align="center">
-  <img src="./core/assets/icon.png" width="120" height="120" />
-  <h1>Momentum</h1>
-  <h4>
-    A local‑first task manager for the web.
-  </h4>
-  <p>
-    Built with Flask • SQLite • Modern HTML/CSS/JS
-  </p>
+# React + TypeScript + Vite
 
-  ![Python](https://img.shields.io/badge/Python-3.12+-blue)
-  ![License](https://img.shields.io/badge/License-MIT-green)
-  ![Local First](https://img.shields.io/badge/Design-local--first-blue)
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-</div>
+Currently, two official plugins are available:
 
----
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-# Overview
+## React Compiler
 
-**Momentum** is a minimalist task management application with a clean, modern web interface.
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-All data is stored **locally** in a SQLite database on your machine.
+## Expanding the ESLint configuration
 
-No accounts.\
-No telemetry.\
-No cloud dependency.
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-Just you and your tasks.
+```js
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
 
----
+      // Remove tseslint.configs.recommended and replace with this
+      tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      tseslint.configs.stylisticTypeChecked,
 
-# Philosophy
-
-Momentum follows a few simple principles:
-
-- **Local-first** — your data belongs to you
-- **Minimalism** — fewer features, done well
-- **Hackable** — readable code and clear architecture
-- **No lock-in** — simple SQLite storage
-
----
-
-# Features
-
-✔ Create, edit, and delete tasks\
-✔ Mark tasks as complete/incomplete\
-✔ Filter tasks (All, Active, Completed)\
-✔ Local SQLite database\
-✔ Modern, responsive dark UI\
-✔ Keyboard shortcuts (`/` to focus search, `Esc` to close modal)
-
----
-
-# Screenshots
-
-The application features a clean, modern dark theme with:
-- Smooth animations and transitions
-- Responsive design for all screen sizes
-- Intuitive task management interface
-- Modal-based editing
-
----
-
-# Installation
-
-Clone the repository:
-
-```bash
-git clone https://github.com/mek0124/momentum.git
-cd momentum
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
 ```
 
-Create a virtual environment:
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
-```bash
-python -m venv .venv
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
+
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs['recommended-typescript'],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
 ```
-
-Install dependencies:
-
-```bash
-pip install -e .
-```
-
----
-
-# Running Momentum
-
-Start the Flask application:
-
-```bash
-python app.py
-```
-
-Open your browser and navigate to:
-
-```
-http://localhost:5000
-```
-
----
-
-# Data Storage
-
-Momentum automatically creates a local data directory:
-
-```
-~/.momentum/
-```
-
-Inside you will find:
-
-```
-main.db    → SQLite database with your tasks
-```
-
-The database can be inspected or backed up manually.
-
----
-
-# API Endpoints
-
-Momentum exposes a RESTful API for programmatic access:
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/tasks` | Get all tasks (optional: `?status=active` or `?status=completed`) |
-| GET | `/api/tasks/<id>` | Get a single task |
-| POST | `/api/tasks` | Create a new task (body: `{title, content}`) |
-| PUT | `/api/tasks/<id>` | Update a task (body: `{title?, content?, completed?}`) |
-| DELETE | `/api/tasks/<id>` | Delete a task |
-| POST | `/api/tasks/toggle/<id>` | Toggle task completion |
-
----
-
-# Development
-
-Install development dependencies:
-
-```bash
-pip install -e ".[dev]"
-```
-
-Recommended tools:
-
-- black (formatting)
-- pytest (testing)
-- mypy (type checking)
-- isort (import sorting)
-
-Run tests:
-
-```bash
-pytest
-```
-
----
-
-# Keyboard Shortcuts
-
-| Key | Action |
-|-----|--------|
-| `/` | Focus on the task title input |
-| `Esc` | Close edit modal |
-
----
-
-# Contributing
-
-Contributions are welcome!
-
-Please feel free to submit issues and pull requests.
-
----
-
-# License
-
-MIT License
-
-Copyright (c) mek0124
-
----
-
-# Tech Stack
-
-- **Backend:** Flask, Flask-SQLAlchemy
-- **Database:** SQLite
-- **Frontend:** Vanilla HTML, CSS, JavaScript
-- **Fonts:** Inter (Google Fonts)
