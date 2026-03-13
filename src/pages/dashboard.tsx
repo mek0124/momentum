@@ -183,9 +183,17 @@ export default function Dashboard() {
 
   return (
     <div className="flex flex-col items-center justify-center w-full flex-grow p-4 bg-gradient-to-br from-secondary to-teritary min-h-screen">
-      <div className="w-full max-w-6xl flex flex-col lg:flex-row gap-6">
+      {/* Centered Header */}
+      <div className="w-full max-w-6xl mb-8 text-center">
+        <h1 className="text-4xl font-bold text-text_primary tracking-wider">
+          Momentum
+        </h1>
+        <p className="text-text_secondary mt-2">Stay focused, achieve more</p>
+      </div>
+      
+      <div className="w-full max-w-[65vw] flex flex-col lg:flex-row gap-6">
         {/* Task List Section */}
-        <div className="flex flex-col flex-grow lg:w-1/2 bg-white/10 backdrop-blur-sm rounded-2xl border border-accent shadow-xl overflow-hidden">
+        <div className="flex flex-col flex-grow lg:w-[55%] bg-white/10 backdrop-blur-sm rounded-2xl border border-accent shadow-xl overflow-hidden">
           <div className="p-4 border-b border-accent bg-secondary/50">
             <h2 className="text-xl font-bold text-text_primary flex items-center gap-2">
               <FontAwesomeIcon icon={faPencil} />
@@ -215,7 +223,7 @@ export default function Dashboard() {
         {/* Task Form Section */}
         <form
           onSubmit={handleSubmit}
-          className="flex flex-row flex-grow lg:w-1/2 bg-white/10 backdrop-blur-sm rounded-2xl border border-accent shadow-xl overflow-hidden"
+          className="flex flex-row flex-grow lg:w-[45%] bg-white/10 backdrop-blur-sm rounded-2xl border border-accent shadow-xl overflow-hidden"
         >
           <div className="flex flex-col flex-grow w-1/2 p-6 border-r border-accent">
             <h3 className="text-lg font-bold text-text_primary mb-4">Task Details</h3>
