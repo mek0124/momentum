@@ -1,3 +1,11 @@
+<table align="center">
+  <tr>
+    <th><img src="./core/assets/icon.png" width="60" height="60" /></th>
+    <th>Momentum</th>
+    <th>v2.0.0</th>
+  </tr>
+</table>
+
 <div align="center">
   <img src="./core/assets/icon.png" width="120" height="120" />
   <h1>Momentum</h1>
