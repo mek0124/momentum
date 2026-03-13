@@ -7,129 +7,193 @@
 </table>
 
 <div align="center">
-  
-  ![Momentum](https://img.shields.io/badge/Momentum-local--first-blue)
+  <img src="./core/assets/icon.png" width="120" height="120" />
+  <h1>Momentum</h1>
+  <h4>
+    A local‑first task manager for the web.
+  </h4>
+  <p>
+    Built with Flask • SQLite • Modern HTML/CSS/JS
+  </p>
+
   ![Python](https://img.shields.io/badge/Python-3.12+-blue)
-  ![PySide6](https://img.shields.io/badge/PySide6-6.9+-green)
   ![License](https://img.shields.io/badge/License-MIT-green)
+  ![Local First](https://img.shields.io/badge/Design-local--first-blue)
+
 </div>
 
+---
 
-Momentum is a task manager built with PySide6 and SQLAlchemy
+# Overview
 
--- FOSS --MIT Licensed --**local-first** --minimalist --No online accounts --No online cloud --No tracking
+**Momentum** is a minimalist task management application with a clean, modern web interface.
 
-Just You and Your Tasks...
+All data is stored **locally** in a SQLite database on your machine.
+
+No accounts.\
+No telemetry.\
+No cloud dependency.
+
+Just you and your tasks.
 
 ---
 
-## Why Momentum?
+# Philosophy
 
-Most task managers are bloated, cloud-dependent, or opinionated.
-Momentums' FOSS version is intentionally boring — fast, local, and hackable.
+Momentum follows a few simple principles:
 
-- 🗂 Local SQLite database
-- 🌓 Dark UI, modern CSS
-- 🔒 Your data never leaves your machine
-
----
-
-## Features
-
-- Create, edit, delete tasks
-- Priority levels (Low / Medium / High)
-- Optional due dates & times
-- Live clock UI
-- Responsive layout
-- Session-based identity (no passwords)
+- **Local-first** — your data belongs to you
+- **Minimalism** — fewer features, done well
+- **Hackable** — readable code and clear architecture
+- **No lock-in** — simple SQLite storage
 
 ---
 
-## Install
+# Features
+
+✔ Create, edit, and delete tasks\
+✔ Mark tasks as complete/incomplete\
+✔ Filter tasks (All, Active, Completed)\
+✔ Local SQLite database\
+✔ Modern, responsive dark UI\
+✔ Keyboard shortcuts (`/` to focus search, `Esc` to close modal)
+
+---
+
+# Screenshots
+
+The application features a clean, modern dark theme with:
+- Smooth animations and transitions
+- Responsive design for all screen sizes
+- Intuitive task management interface
+- Modal-based editing
+
+---
+
+# Installation
+
+Clone the repository:
 
 ```bash
-# clone the repo
 git clone https://github.com/mek0124/momentum.git
-
-# cd into the project
 cd momentum
-
-# create the virtual environment
-python -m venv .venv
-
-# activate the virtual environment
-# linux/mac
-source .venv/bin/activate
-
-# windows
-.venv\Scripts\Activate.ps1
-
-# install the dependencies
-pip install -r pyproject.toml"
 ```
 
-Create `.env`:
-
-```env
-SECRET_KEY=change-me
-SQLALCHEMY_DB_URL=sqlite:///./core/storage/main.db
-```
-
-Run:
+Create a virtual environment:
 
 ```bash
-# linux/mac
-python3 main.py
-
-# windows
-python main.py
+python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 ```
 
-> The latest release also comes with an executable that <u>is **not** compatible</u> with Windows.
+Install dependencies:
+
+```bash
+pip install -e .
+```
 
 ---
 
-## Project Layout
+# Running Momentum
 
-|parent|sub-parent|file|description|
-|-|-|-|-|
-|app|||Momentum main application|
-|||app.py|Momentum main window class|
-||assets|| static assets folder|
-|||icon.png| icon|
-||core|| logic layer|
-|||logic.py| logic class|
-||database|| data layer|
-|||db.py| database configuration|
-||models|| data validation layer|
-|||task.py|validation class for task|
-||pages||ui layer|
-|||dashboard.py|user landing screen|
-||storage||app/user data storage folder|
-|||config.json|user permissions storage file|
-|||main.db|user task database file|
-||utils||utilities folder|
-|||color_theme.py|color theme file|
-|updater|||Momentum update application|
-|||app.py|Momentum update window class|
-||pages||ui layer|
-|||dashboard.py|user landing screen|
-||utils||utilities folder|
-|||update_thread.py|update utility class|
+Start the Flask application:
+
+```bash
+python app.py
+```
+
+Open your browser and navigate to:
+
+```
+http://localhost:5000
+```
 
 ---
 
-## Philosophy
+# Data Storage
 
-Momentum follows a few rules:
+Momentum automatically creates a local data directory:
 
-- Local-first always
-- Simple > clever
-- Readable code > abstractions
-- Ship features that matter
+```
+~/.momentum/
+```
+
+Inside you will find:
+
+```
+main.db    → SQLite database with your tasks
+```
+
+The database can be inspected or backed up manually.
 
 ---
 
-## License
+# API Endpoints
 
-MIT © mek0124
+Momentum exposes a RESTful API for programmatic access:
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/tasks` | Get all tasks (optional: `?status=active` or `?status=completed`) |
+| GET | `/api/tasks/<id>` | Get a single task |
+| POST | `/api/tasks` | Create a new task (body: `{title, content}`) |
+| PUT | `/api/tasks/<id>` | Update a task (body: `{title?, content?, completed?}`) |
+| DELETE | `/api/tasks/<id>` | Delete a task |
+| POST | `/api/tasks/toggle/<id>` | Toggle task completion |
+
+---
+
+# Development
+
+Install development dependencies:
+
+```bash
+pip install -e ".[dev]"
+```
+
+Recommended tools:
+
+- black (formatting)
+- pytest (testing)
+- mypy (type checking)
+- isort (import sorting)
+
+Run tests:
+
+```bash
+pytest
+```
+
+---
+
+# Keyboard Shortcuts
+
+| Key | Action |
+|-----|--------|
+| `/` | Focus on the task title input |
+| `Esc` | Close edit modal |
+
+---
+
+# Contributing
+
+Contributions are welcome!
+
+Please feel free to submit issues and pull requests.
+
+---
+
+# License
+
+MIT License
+
+Copyright (c) mek0124
+
+---
+
+# Tech Stack
+
+- **Backend:** Flask, Flask-SQLAlchemy
+- **Database:** SQLite
+- **Frontend:** Vanilla HTML, CSS, JavaScript
+- **Fonts:** Inter (Google Fonts)
