@@ -193,7 +193,7 @@ export default function Dashboard() {
             </h2>
           </div>
           
-          <div className="flex flex-col flex-grow overflow-y-auto max-h-[1008px]">
+          <div className="flex flex-col flex-grow overflow-y-auto h-[768px]">
             {allTasks.length === 0 ? (
               <div className="flex flex-col items-center justify-center w-full flex-grow p-8 text-center">
                 <FontAwesomeIcon icon={faExclamationTriangle} className="text-4xl text-text_secondary mb-4" />
@@ -215,9 +215,9 @@ export default function Dashboard() {
         {/* Task Form Section */}
         <form
           onSubmit={handleSubmit}
-          className="flex flex-row flex-grow lg:w-[45%] bg-white/10 backdrop-blur-sm rounded-2xl border border-accent shadow-xl overflow-hidden"
+          className="flex flex-row flex-grow lg:w-[55%] bg-white/10 backdrop-blur-sm rounded-2xl border border-accent shadow-xl overflow-hidden"
         >
-          <div className="flex flex-col flex-grow w-1/2 p-6 border-r border-accent overflow-y-auto max-h-[1008px]">
+          <div className="flex flex-col flex-grow w-1/2 p-6 border-r border-accent overflow-y-auto h-[768px]">
             <h3 className="text-lg font-bold text-text_primary mb-4">Task Details</h3>
             
             {/* Title */}
