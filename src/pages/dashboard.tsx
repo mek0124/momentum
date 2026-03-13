@@ -183,13 +183,6 @@ export default function Dashboard() {
 
   return (
     <div className="flex flex-col items-center justify-center w-full flex-grow p-4 bg-gradient-to-br from-secondary to-teritary min-h-screen">
-      {/* Top Bar with Centered Momentum */}
-      <div className="w-full max-w-[65vw] mb-4 text-center">
-        <h1 className="text-3xl font-bold text-text_primary tracking-widest">
-          MOMENTUM
-        </h1>
-      </div>
-      
       <div className="w-full max-w-[65vw] flex flex-col lg:flex-row gap-6">
         {/* Task List Section */}
         <div className="flex flex-col flex-grow lg:w-[55%] bg-white/10 backdrop-blur-sm rounded-2xl border border-accent shadow-xl overflow-hidden">
