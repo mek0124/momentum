@@ -217,7 +217,7 @@ export default function Dashboard() {
           onSubmit={handleSubmit}
           className="flex flex-row flex-grow lg:w-[55%] bg-white/10 backdrop-blur-sm rounded-2xl border border-accent shadow-xl overflow-hidden"
         >
-          <div className="flex flex-col flex-grow w-1/2 p-6 border-r border-accent overflow-y-auto h-[768px]">
+          <div className="flex flex-col justify-start gap-16 flex-grow w-1/2 p-6 border-r border-accent overflow-y-auto h-[768px]">
             <h3 className="text-lg font-bold text-text_primary mb-4">Task Details</h3>
             
             {/* Title */}
@@ -329,7 +329,7 @@ export default function Dashboard() {
               <button
                 type="button"
                 onClick={clearForm}
-                className="flex-1 px-4 py-3 border-2 border-primary rounded-xl outline-none text-text_primary hover:bg-primary/20 transition-colors flex items-center justify-center gap-2"
+                className="flex-1 px-4 py-3 border-2 border-error rounded-xl outline-none text-error hover:bg-error/20 transition-colors flex items-center justify-center gap-2"
               >
                 <FontAwesomeIcon icon={faRefresh} />
                 Reset
