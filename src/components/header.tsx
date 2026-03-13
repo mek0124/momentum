@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 
+import AppIcon from '../assets/icon.png';
 
 
 export default function Header() {
@@ -39,6 +40,28 @@ export default function Header() {
   }, []);
 
   return (
-    
+    <div className="flex flex-row items-center justify-center w-full border-b-2 border-b-primary">
+      <img
+        src={AppIcon}
+        alt="Momentum App Icon"
+        width="80"
+        height="80"
+        className="m-1 rounded-2xl"
+      />
+
+      <h1 className="font-bold italic text-2xl text-center w-full text-text_primary">
+        Momentum
+      </h1>
+
+      <div className="flex flex-col items-center justify-center w-[20%] gap-3 mr-3">
+        <span className="italic text-xs text-text_primary w-full text-end">
+          {cTime}
+        </span>
+
+        <span className="italic text-xs text-text_primary w-full text-end">
+          {cDate}
+        </span>
+      </div>
+    </div>
   );
 };
